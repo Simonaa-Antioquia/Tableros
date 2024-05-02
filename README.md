@@ -20,7 +20,7 @@ Está conformado por tres paneles que permiten, no solo conocer el precio de los
 
 **Tablero2**: El tablero permite comprender la importancia que tiene cada municipio del país en el abastecimiento de Medellín. El tablero proporciona información detallada sobre todos los productos, permitiendo especificar el municipio del cual se desea obtener el alimento y/o el alimento del cual se quiere obtener información, así como el periodo de tiempo para el cual se desea generar la información.
 
-![Previsualización](Tablero_2/grafica_principales_municipios_traen_2024-05-02.png){width="475"}
+![Previsualización](Tablero_2/grafica_principales_municipios_traen_2024-05-02.png)
 
 **Tablero3_c**: El propósito del tablero es evidenciar la importancia que Antioquia tiene como destino en los envíos de productos alimentarios de otros departamentos. Por ejemplo, en el mapa se puede observar que algunos departamentos envían hasta el 60% de su abastecimiento a Antioquia.
 
@@ -36,7 +36,7 @@ Este tablero ofrece información histórica tanto anual como mensual, tanto gene
 
 **Tablero6**: El tablero presenta los resultados del índice de Herfindahl-Hirschman (HH), diseñado para evaluar la diversidad de alimentos disponibles en Antioquia. El Panel A muestra el comportamiento del índice en términos mensuales o anuales. Por otro lado, el Panel B identifica los productos que más contribuyen al índice, es decir, los alimentos más "disponibles" en los centros de acopio de Medellín en un año y/o mes especifico.
 
-![Previsualización](Tablero6/Captura de pantalla 2024-05-02 134732.png){width="508"}
+![Previsualización](Tablero6/preview_tablero.png)
 
 **Tablero7**: El tablero presenta los resultados del Índice Herfindahl-Hirschman, el cual calcula el nivel de concentración de los municipios que abastecen a Medellín. En otras palabras, este índice nos permite comprender qué tan concentrados están los municipios que suministran productos a las centrales de abastecimiento de Medellín. Un índice cercano a 1 indica que un solo municipio es responsable del abastecimiento, mientras que un índice cercano a cero indica que la provisión de Medellín depende de varios municipios.
 
