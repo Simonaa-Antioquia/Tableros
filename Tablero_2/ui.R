@@ -46,7 +46,7 @@ ui <- fluidPage(
   div(class = "scrollable-content",
       fluidRow(
         column(3,
-               selectInput("anio", "Año", c("Todos los años" = "", as.character(unique(abastecimiento_medellin$anio))))),
+               selectInput("anio", "Año", c("Todos los años" = "", as.character(unique(sort(abastecimiento_medellin$anio)))))),
         column(3,
                selectInput("mes", "Mes", c("Todos los meses" = "", as.character(unique(abastecimiento_medellin$mes))))),
         column(3,
