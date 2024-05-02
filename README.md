@@ -1,3 +1,5 @@
+![](logo.jpeg)
+
 # Repositorio de Tableros SABA
 
 Este repositorio contiene los códigos fuentes de los tableros dinámicos realizados para el proyectos del Sistema de Abastecimiento Agroaliemntario de Antioquia, realizado entre la Universidad EAFIT, la Organización de la Naciones Unidad para la Alimentación y la Agricultura (FAO) y la Gobernación de Antioquia.
