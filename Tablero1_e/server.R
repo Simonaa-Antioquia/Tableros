@@ -10,57 +10,84 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readxl);library(reshape2);library(ggplot2);library(gganimate);library(dplyr);
-library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);
-  library(magick); library(gifski)
+library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(stringr)
 ################################################################################-
-
 server <- function(input, output, session) {
-  
-  output$producto <- renderUI({
-    if (input$tipo == "Producto") {
-      selectInput("producto", "Seleccione producto:",  choices = unique(data$producto))
+  resultado <- reactive({
+    tipo <- input$tipo
+    anio_seleccionado <- input$anio
+    productos_seleccionados <- input$producto
+    
+    
+    if (input$anio == "") {
+      if (input$mes == "") {
+        if (input$tipo == 1) {
+          result <- diferencias_precios(input$tipo,"","")
+        } else if (input$tipo == 0) {
+          result <- diferencias_precios(input$tipo,"","",input$producto)
+        }
+      } else {
+        if (input$tipo == 1) {
+          result <- diferencias_precios(input$tipo,"",input$mes)
+        } else if (input$tipo == 0) {
+          result <- diferencias_precios(input$tipo,"",input$mes,input$producto)
+        }
+      }
+    } else {
+      if (input$mes == "") {
+        if (input$tipo == 1) {
+          result <- diferencias_precios(input$tipo,input$anio,"")
+        } else if (input$tipo == 0) {
+          result <- diferencias_precios(input$tipo,input$anio,"",input$producto)
+        }
+      } else {
+        if (input$tipo == 1) {
+          result <- diferencias_precios(input$tipo,input$anio,input$mes)
+        } else if (input$tipo == 0) {
+          result <- diferencias_precios(input$tipo,input$anio,input$mes,input$producto)
+        }
+      }
     }
   })
   
-  resultado <- reactive({
-    diferencias_precios(input$tipo, input$anio, input$mes, input$producto)
-  })
+  output$plot <- renderPlot({
+    resultado()$grafico
+  }, res = 96)
   
-  output$plot <- renderImage({
-    # Use the result from resultado()
-    res <- resultado()
-    
-    # Return a list containing the filename
-    list(src = res$gif_path,
-         contentType = 'image/gif'
-    )}, deleteFile = TRUE)
+  output$vistaTabla <- renderTable({
+    if (!is.null(resultado()$datos)) {
+      head(resultado()$datos, 5)
+    }
+  })
   
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_principales_municipios_reciben_", Sys.Date(), ".gif", sep="")
+      paste("grafica-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Copy the GIF file to the download location
-      file.copy(resultado()$gif_path, file)
+      # Usa ggsave en lugar de png y dev.off
+      ggsave(file, plot = resultado()$grafico, width = 10, height = 10, dpi = 300)
     }
   )
-  
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
-      write_csv(resultado()$datos, file)
+      write.csv(resultado()$datos, file)
     }
   )
   
+  # En el servidor
+  # En el servidor
   output$subtitulo <- renderText({
-    res <- resultado()
+    res <- resultado()  # Usa la variable reactiva 'resultado'
+    print(res)  # Imprime el resultado para depuración
     precio_max <- res$precio_max
     precio_min <- res$precio_min
     ciudad_max <- res$ciudad_max
     ciudad_min <- res$ciudad_min
     
-    return(paste0(ciudad_max," es $", precio_max, " costosa que Medellín, mientras que ", ciudad_min," es $", precio_min," más barata."))
+    return(paste("El menor precio reportado para el periodo y producto seleccionado es", precio_min,"y se reporto en", ciudad_min, "frente al mayor precio reportado en", ciudad_max, "y fue de",precio_max,"pesos")) 
   })
 }

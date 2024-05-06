@@ -39,7 +39,7 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("¿Qué tan importante es Antioquia para lo que reciven otros departamentos?", class = "main-header"),
+  tags$h1("¿Qué tan importante es Antioquia para lo que reciben otros departamentos?", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -57,7 +57,7 @@ ui <- fluidPage(
   div(
     fluidRow(
       column(12,
-             plotOutput("grafico"),
+             plotOutput("grafico",height = "300px"),
              downloadButton("descargar", "Descargar gráfica"),
              downloadButton("descargarDatos", "Descargar datos")
              #,
@@ -65,5 +65,9 @@ ui <- fluidPage(
       )
     ),
     tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
-  )
+  ),
+  tags$div(
+    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+    style = "position: absolute; bottom: 0; width: 100%;"
+  ) 
 )

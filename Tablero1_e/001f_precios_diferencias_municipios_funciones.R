@@ -10,74 +10,78 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readxl);library(reshape2);library(ggplot2);library(gganimate);library(dplyr);
-library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel)
+library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(stringr)
 ################################################################################-
 
-data <- readRDS("base_precios_vs_medellin.rds")
+#data <- readRDS("02_Indices/Output/base_precios_vs_medellin.rds")
+# Cargamos bases de datos
+data_comparacion_anual_mensual_producto <- readRDS("base_precios_data_comparacion_anual_mensual_producto.rds")
+data_comparacion_anual_mensual <- readRDS("base_precios_data_comparacion_anual_mensual.rds")
+data_comparacion_mensual_producto <- readRDS("base_precios_data_comparacion_mensual_producto.rds")
+data_comparacion_mensual <- readRDS("base_precios_data_comparacion_mensual.rds")
+data_comparacion_anual_producto <- readRDS("base_precios_data_comparacion_anual_producto.rds")
+data_comparacion_anual <- readRDS("base_precios_data_comparacion_anual.rds")
+data_comparacion_producto <- readRDS("base_precios_data_comparacion_producto.rds")
+data_comparacion <- readRDS("base_precios_data_comparacion.rds")
 
-diferencias_precios <- function(opcion1,opcion2 = NULL, opcion3 = NULL,opcion4 = NULL) {
-  df <- data
+
+col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203", "#F1B709", "#F39F06", "#BE7E11",
+                 "#08384D", "#094B5C", "#00596C", "#006A75", "#007A71", "#00909C", "#0088BB", "#007CC3", "#456ABB")
+
+#FUNCION
+#Opciones: 
+#  1 es tipo de funcion 
+#  2 es año
+#  3 es mes
+#  4 es producto 
+
+diferencias_precios <- function(opcion1, opcion2 = NULL, opcion3 = NULL,opcion4 = NULL) {
+ 
+# Cuando no se pone ninguna opcion se muestra el promedio general de datos  
+   if (opcion1 == 1 & opcion2 == "" & opcion3 =="" & is.null(opcion4)) {
+    df <- data_comparacion 
+# Se pone la opcion del año
+  } else if (opcion1 == 1 & opcion2 != "" & opcion3 =="" & is.null(opcion4)) {
+    df <- data_comparacion_anual %>% 
+      filter(year == opcion2)
+# Se pone la opcion del mes     
+  } else if (opcion1 == 1 & opcion2 == "" & opcion3 !="" & is.null(opcion4)) {
+    df <- data_comparacion_mensual %>%
+      filter(mes == opcion3)
+# Se pone la opcion del mes y del año    
+  } else if (opcion1 == 1 & opcion2 != "" & opcion3 !="" & is.null(opcion4)) {
+    df <- data_comparacion_anual_mensual %>%
+      filter(mes == opcion3 & year == opcion2)
+# La opcion 1 cambia a 0. Todo es por producto
+# Informacion General de precios por producto    
+  } else if (opcion1 == 0 & opcion2 == "" & opcion3 =="" & !is.null(opcion4)) {
+    df <- data_comparacion_producto %>%
+      filter(opcion4 == producto)
+# Informacion anual (promedio) por producto    
+  } else if (opcion1 == 0 & opcion2 != "" & opcion3 =="" & !is.null(opcion4)) {
+    df <- data_comparacion_anual_producto %>%
+      filter(opcion4 == producto & opcion2 == year)
+# Informacion mensual (promedio) pro prodcuto  
+    } else if (opcion1 == 0 & opcion2 == "" & opcion3 !="" & !is.null(opcion4)) {
+    df <- data_comparacion_mensual_producto %>%
+      filter(opcion4==producto & opcion3 == mes)
+# Infrmacion anual - mensual por producto    
+    } else if (opcion1 == 0 & opcion2 != "" & opcion3 !="" & !is.null(opcion4)) {
+      df_lista <- data_comparacion_anual_mensual_producto[[opcion4]]
+      df_lista <- as.data.frame(df_lista)
+      df <- filter(df_lista, year == opcion2 & mes == opcion3)
+}
   
-  if (opcion2 != "" & opcion3 != "") {
-    df <- df %>% filter(year == opcion2 & mes == opcion3)
-    
-    if(!is.null(opcion4)) {
-      var <- 29
-      std <- 0
-    } else {
-      var <- 30
-      std <- 9
-    }
-  } else if (opcion2 != "") {
-    df <- df %>% filter(year == opcion2)
-    
-    if(!is.null(opcion4)) {
-      var <- 33
-      std <- 15
-    } else {
-      var <- 34
-      std <- 17
-    }
-  } else if (opcion3 != "") {
-    df <- df %>% filter(mes == opcion3)
-    
-    if(!is.null(opcion4)) {
-      var <- 31
-      std <- 11
-    } else {
-      var <- 32
-      std <- 13
-    }
-  } else {
-    if(!is.null(opcion4)) {
-      var <- 36
-      std <- 21
-    } else {
-      var <- 35
-      std <- 19
-    }
-  }
+
+df <- df %>%
+  dplyr::rename_with(~ ifelse(str_starts(.x, "sd_"), "dev", .x))
   
-  if (!is.null(opcion4)) {
-    df <- df %>%
-      filter(producto == opcion4)
-  }
+df <- df %>%
+  dplyr::rename_with(~ ifelse(str_starts(.x, "comparacion"), "comp", .x))  
+
   
-  if(std != 0){
-    df <- df[,c(var,6,37,std)]
-    colnames(df)[4] <- "dev"
-    
-    if(sum(is.na(df$dev)) > 0){
-      df$dev[is.na(df$dev)] <- 1
-    }
-    
-  } else {
-    df <- df[,c(var,6,37)]
-  }
-  
-  df <- df[!(duplicated(df[c("ciudad")])),]
-  
-  colnames(df)[1] <- "comp"
+df <- df[!(duplicated(df[c("ciudad")])),]
+
   
   #Calcular indices de entrada al gráfico
   positives <- df[df$comp>0,c("comp","ciudad")]
@@ -93,7 +97,6 @@ diferencias_precios <- function(opcion1,opcion2 = NULL, opcion3 = NULL,opcion4 =
   indices <- rbind(positives,negatives)
   
   df <- merge(df,indices,by=c("comp","ciudad"),all = T)
-  
   df$indice[is.na(df$indice)] <- 0
   
   #Alternar ángulos
@@ -104,46 +107,25 @@ diferencias_precios <- function(opcion1,opcion2 = NULL, opcion3 = NULL,opcion4 =
     } else {
       angulos <- c(angulos,-90)
     }
-    
   }
   
-  #Mapa
-  if(std != 0){
-    map <- ggplot(df, aes(x=comp,y=axis,color=ciudad)) +
-      geom_point(aes(size = dev), alpha = 0.6) +
-      theme_bw() +
-      theme(legend.position="none",axis.title.y=element_blank(),axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
-      geom_text(aes(label=ciudad),size = 4.5,hjust=2, vjust=0, angle = angulos) +
-      #geom_text_repel(aes(label=ciudad),size = 4.5,segment.color = 'transparent',hjust=2,vjust=0,angle = 90) +
-      geom_vline(xintercept = 0,linetype = "longdash",size=0.5,alpha = 0.2) +
-      # gganimate specific bits:
-      labs(title = 'Precio promedio mensual en relación a Medellín', x = 'Diferencia de precio', y = '') +
-      transition_reveal(indice) +
-      view_follow() +
-      ease_aes('linear')+
-      scale_size(range = c(5,25))
-  } else {
-    map <- ggplot(df, aes(x=comp,y=axis,color=ciudad)) +
-      geom_point(size=10) +
-      theme_bw() +
-      theme(legend.position="none",axis.title.y=element_blank(),axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
-      geom_text(aes(label=ciudad),size = 4.5,hjust=2, vjust=0, angle = 90) +
-      geom_vline(xintercept = 0,linetype = "longdash",size=0.5,alpha = 0.2) +
-      # gganimate specific bits:
-      labs(title = 'Precio promedio mensual en relación a Medellín', x = 'Diferencia de precio', y = '') +
-      transition_reveal(indice) +
-      view_follow() +
-      ease_aes('linear')
-  }
+  map <- ggplot(df, aes(x=comp,y=1,color=ciudad)) +
+    geom_point(aes(size = dev), alpha = 0.8) +
+    theme_bw() +
+    theme(legend.position="none",axis.title.y=element_blank(),axis.text.y=element_blank(),axis.ticks.y=element_blank()) +
+    geom_text(aes(label=ciudad),size = 3.5,hjust=2, vjust=0, angle = angulos, colour = "#8B8989") +  
+    geom_vline(xintercept = 0,linetype = "longdash",size=0.5,alpha = 0.2) +
+    labs(title = 'Precio promedio mensual en relación a Medellín', x = 'Diferencia de precio', y = '') +
+    scale_size(range = c(5,20)) +
+    scale_color_manual(values = col_palette) 
   
-  p<-anim_save("outfile.gif",animate(map))
   precio_max <- round(max(df$comp))
   precio_min <- round(min(df$comp)*-1)
   ciudad_max <- df$ciudad[which.max(df$comp)]
   ciudad_min <- df$ciudad[which.min(df$comp)]
   
   return(list(
-    grafico = p,
+    grafico = map,
     datos = df,
     precio_max=precio_max,
     precio_min=precio_min,
@@ -152,4 +134,6 @@ diferencias_precios <- function(opcion1,opcion2 = NULL, opcion3 = NULL,opcion4 =
   ))
 }
 
-#diferencias_precios(opcion1 = "General", opcion2 = 2013, opcion3 = "")
+#
+
+diferencias_precios(opcion1 = 0, opcion2 = 2014, opcion3 = "",opcion4="Aguacate")

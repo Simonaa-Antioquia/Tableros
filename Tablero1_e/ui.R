@@ -1,6 +1,5 @@
 #Proyecto FAO
 #Procesamiento datos SIPSA
-# UI
 ################################################################################-
 #Autores: Juliana Lalinde, Laura Quintero, Germán Angulo
 #Fecha de creacion: 21/02/2024
@@ -11,14 +10,12 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readxl);library(reshape2);library(ggplot2);library(gganimate);library(dplyr);
-library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel)
+library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(stringr)
 ################################################################################-
+
 source("001f_precios_diferencias_municipios_funciones.R")
 
-#SHINY
-library(shiny)
 
-# Definir la interfaz de usuario
 ui <- fluidPage(
   tags$head(
     tags$style(HTML("
@@ -35,39 +32,52 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
       }
-      #plot img {
-        display: block;
-        margin: auto;
-        width: 50%;
-        height: auto;
+      .center {
+        display: flex;
+        justify-content: center;
       }
     "))
   ),
-  tags$h1("Comparación de precios", class = "main-header"),
+  tags$h1("Diferencia de precios entre departamentos", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
     style = "margin-bottom: 20px;"
-  ),  
+  ),
   div(class = "scrollable-content",
       fluidRow(
         column(3,
-               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(data$year)))))),
+               selectInput("tipo", "Función:", 
+                           choices = list("General" = 1, 
+                                          "Producto" = 0 ))
+        ),
         column(3,
-               selectInput("mes", "Mes", c("Todos los meses" = "", 1:12), selected = "")),
+               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(data_comparacion_anual_producto$year)))))),
         column(3,
-               uiOutput("producto")),
+               selectInput("mes", "Mes", c("Todos los meses" = "", 1:12), selected = "")), 
         column(3,
-               selectInput("tipo", "Tipo de mapa:", choices = c("General", "Producto")))
-      )),
+               conditionalPanel(
+                 condition = "input.tipo == 0 ",
+                 selectInput("producto", "Seleccione los productos:", 
+                             choices = c(NULL, unique(data_comparacion_producto$producto)))
+               )
+        )
+        
+      ) 
+  ),
   div(
     fluidRow(
       column(12,
-             imageOutput("plot"),
+             imageOutput("plot",height = "300px"),
              downloadButton("descargar", "Descargar gráfica"),
              downloadButton("descargarDatos", "Descargar datos")
       )
     ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
-  )
+    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;"),
+    
+  ),
+  tags$div(
+    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+    style = "position: absolute; bottom: 0; width: 100%;"
+  ) 
 )

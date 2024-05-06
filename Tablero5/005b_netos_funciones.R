@@ -36,7 +36,7 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
     df <- df %>%
       select("anio","producto", "total_importado")
     if (length(productos_seleccionados) == 0){
-      stop("Para esta opcion debe escoger los productos que quiere graficar")
+      message("Para esta opcion debe escoger los productos que quiere graficar")
     }
   } else if (tipo == 3) {
     df <- data_mensual
@@ -53,27 +53,42 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
     }
   }
   # Filtrar los productos seleccionados solo para las opciones 2 y 4
-  if (tipo %in% c(2, 4)) {
+  if (tipo %in% c(2)) {
     df <- df[df$producto %in% productos_seleccionados, ]
     p<-ggplot(df, aes(x = anio, y = total_importado, color = producto)) +
       geom_line() +
-      labs(x = "Año", y = "Neto") +
-      #scale_x_continuous(breaks = pretty_breaks(n = 10)) +
+      labs(x = "Año", y = "Miles de toneladas") +
+      scale_x_continuous(breaks = seq(min(df$anio), max(df$anio))) +
       theme_minimal()  
-  } else {
-  p<-ggplot(df, aes(x = anio, y = total_importado)) +
+  } else if(tipo %in% c(4)) {
+    df <- df[df$producto %in% productos_seleccionados, ]
+    p<-ggplot(df, aes(x = anio, y = total_importado, color = producto)) +
       geom_line() +
-      labs(x = "Año", y = "Netos")+
-    #scale_x_continuous(breaks = pretty_breaks(n = 10)) +
+      labs(x = "Año", y = "Miles de toneladas") +
+      #scale_x_continuous(breaks = seq(min(df$anio), max(df$anio))) +
+      theme_minimal()  
+  }else if(tipo %in% c(3)){
+    p<-ggplot(df, aes(x = anio, y = total_importado)) +
+      geom_line() +
+      labs(x = "Año", y = "Miles de toneladas") +
+      #scale_x_continuous(breaks = seq(min(df$anio), max(df$anio))) +
+      theme_minimal()  
+  }else {
+    p<-ggplot(df, aes(x = anio, y = total_importado)) +
+      geom_line() +
+      labs(x = "Año", y = "Miles de toneladas") +
+      scale_x_continuous(breaks = seq(min(df$anio), max(df$anio))) +
       theme_minimal()  
   }
   
+  min_ton<-round(min(df$total_importado)*-1)
   fecha_min <- df$anio[which.min(df$total_importado)]
   
   return(list(
     grafico = p,
     datos = df,
-    fecha_min=fecha_min
+    fecha_min=fecha_min,
+    min_ton=min_ton
   ))
   
 }
@@ -81,9 +96,9 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
 
 # OPCIONES
 #neto_grafica(1)
-#neto_grafica(2, c("carne de cerdo","arroz"))
+#neto_grafica(2, c("Carne de cerdo","Arroz"))
 #neto_grafica(3)
-#neto_grafica(4,c("carne de cerdo","arroz"))
+#neto_grafica(4,c("Carne de cerdo","Arroz"))
 
 
 

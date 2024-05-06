@@ -61,7 +61,7 @@ ui <- fluidPage(
   div(
     fluidRow(
       column(12,
-             plotOutput("grafico"),
+             plotOutput("grafico",height = "300px"),
              downloadButton("descargar", "Descargar gráfica"),
              downloadButton("descargarDatos", "Descargar datos")
              #,
@@ -69,5 +69,9 @@ ui <- fluidPage(
       )
     ),
     tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
-  )
+  ),
+  tags$div(
+    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+    style = "position: absolute; bottom: 0; width: 100%;"
+  ) 
 )

@@ -14,9 +14,9 @@ library(glue);library(tidyverse);library(gridExtra);library(corrplot)
 options(scipen = 999)
 ################################################################################-
 
-data<-read.csv("base_precios_cambio.csv")%>%
+data<-readRDS("base_precios_cambio.rds")%>%
   filter(ciudad == "Medellín")
-complet<-read.csv("base_precios_cantidades_distancias.csv")
+complet<-readRDS("base_precios_cantidades_distancias.rds")
 
 ##Funcion para ver el promedio por mes de los precios y cantidades en todos los años
 

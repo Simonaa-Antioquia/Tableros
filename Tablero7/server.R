@@ -4,6 +4,7 @@
 #Autores: Juan Carlos, Juliana Lalinde, Laura Quintero, Germán Angulo
 #Fecha de creacion: 14/03/2024
 #Fecha de ultima modificacion: 21/02/2024
+# Tablero 7
 ################################################################################
 # Paquetes 
 ################################################################################
@@ -17,6 +18,12 @@ server <- function(input, output, session) {
     tipo <- input$tipo
     anio_seleccionado <- input$anio
     productos_seleccionados <- input$producto
+    
+    if ((tipo == 2 || tipo == 4) && is.null(productos_seleccionados)) {
+      validate(
+        need(FALSE, "Debe seleccionar un producto.")
+      )
+    }
     
     if (is.null(productos_seleccionados)) {
       productos_seleccionados <- ""
@@ -74,6 +81,10 @@ server <- function(input, output, session) {
   
   # En el servidor
   output$subtitulo <- renderText({
+    if ((input$tipo == 2 || input$tipo == 4) && is.null(input$producto)) {
+      return("Debe seleccionar un producto.")
+    }
+    
     resultado <- grafica_indice_mun(input$tipo, input$anio, input$producto)
     tipo <- input$tipo
     max_IHH <- resultado$max_vulnerabilidad

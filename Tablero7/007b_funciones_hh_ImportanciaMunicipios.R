@@ -74,7 +74,7 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
     df <- df[df$producto %in% productos_seleccionados, ]
     p <- ggplot(df, aes(x = fecha, y = IHH, color = producto)) +
       geom_line() +
-      labs(x = "Fecha", y = "Importancia de los Municipios en el abastecimiento") +
+      labs(x = "Fecha", y = "Municipios en el abastecimiento") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
       theme(text = element_text(family = "Prompt", size = 16)) 
@@ -86,7 +86,7 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
     }
     p<- ggplot(df, aes(x = fecha, y = IHH)) +
       geom_line() +
-      labs(x = "Fecha", y = "Importancia de los Municipios en el abastecimiento") +
+      labs(x = "Fecha", y = "Municipios en el abastecimiento") +
       theme_minimal()  +
       scale_color_manual(values = col_palette) +
       theme(text = element_text(family = "Prompt", size = 16)) 
@@ -111,12 +111,12 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
 
 # Ejemplos:
 # Informacion anual 
-grafica_indice_mun(1)
-grafica_indice_mun(2,"",c("ARROZ","CARNE DE CERDO","FRÍJOL"))
-grafica_indice_mun(3)
-grafica_indice_mun(3,2023)
-grafica_indice_mun(4,"",c("ARROZ","CARNE DE CERDO","FRÍJOL"))
-grafica_indice_mun(4,2022,c("ARROZ","CARNE DE CERDO","FRÍJOL"))
+#grafica_indice_mun(1)
+#grafica_indice_mun(2,"",c("ARROZ","CARNE DE CERDO","FRÍJOL"))
+#grafica_indice_mun(3)
+#grafica_indice_mun(3,2023)
+#grafica_indice_mun(4,"",c("ARROZ","CARNE DE CERDO","FRÍJOL"))
+#grafica_indice_mun(4,2022,c("ARROZ","CARNE DE CERDO","FRÍJOL"))
 
 
 
