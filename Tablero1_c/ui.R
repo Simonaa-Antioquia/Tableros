@@ -51,8 +51,8 @@ ui <- fluidPage(
     fluidRow(
       column(12,
              plotOutput("grafico",height = "300px"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
+             downloadButton("descargar", "Gráfica"),
+             downloadButton("descargarDatos", "Datos")
              #,
              #tableOutput("vistaTabla") 
       )
