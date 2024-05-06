@@ -34,16 +34,19 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL) {
   }
   
   df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
-
+  
   map <- leaflet() %>%
-        addTiles()
-    
+    addTiles()
+  
   for(i in 1:nrow(df)) {
     dir <- matrix(unlist(df[i,18][[1]]), ncol = 2)
     map <- map %>% addPolylines(data = dir, color = "#0D8D38", stroke = 0.05, opacity = 0.8)
   }
   
-  map
+  return(list(
+    grafico=map,
+    datos=df
+  ))
 }
 
 ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
@@ -88,7 +91,7 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
   
   df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
   
-  colours <- colorRampPalette(c("red","#F2E203","#0D8D38"))(n_distinct(df[,var]))
+  colours <- colorRampPalette(c("#F2E203","#0088BB","#0D8D38"))(n_distinct(df[,var]))
   
   importancia_ordenada <- unique(df[,var])
   colnames(importancia_ordenada) <- "importancia"
@@ -104,12 +107,11 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
   importancia_max <- round(max(df$importancia)*100,2)
   importancia_min <- round(min(df$importancia)*100,2)
   
-  
   map <- leaflet() %>%
     addTiles() %>%
     addLegend(
       position = "bottomright",
-      colors = colorRampPalette(c("red", "yellow","green"))(10),
+      colors = colorRampPalette(c("#F2E203","#0088BB","#0D8D38"))(10),
       labels = c(importancia_min,"","","","","","","","",importancia_max),
       opacity = 1,
       title = "Importancia (%)"
@@ -120,5 +122,8 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
     map <- map %>% addPolylines(data = dir, color = df$colour[i], stroke = 0.05, opacity = 0.8)
   }
   
-  map
+  return(list(
+    grafico=map,
+    datos=df
+  ))
 }
