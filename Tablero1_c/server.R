@@ -27,6 +27,11 @@ server <- function(input, output, session) {
     }
   })
   
+  observeEvent(input$reset, {
+    updateSelectInput(session, "producto", selected = "todo")
+    updateSelectInput(session, "variable", selected = "precio_prom")
+    updateSelectInput(session, "anio", selected = "todo")
+  })
   
   output$grafico <- renderPlotly({
     plotly::ggplotly(resultado()$grafico)

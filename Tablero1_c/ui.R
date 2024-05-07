@@ -46,12 +46,14 @@ ui <- fluidPage(
     ),
     div(class = "scrollable-content",
         fluidRow(
-          column(4,
+          column(3,
                  selectInput("producto", "Seleccione producto:", c("Todos los productos" = "todo", as.character(names(which(table(data$producto) > 12)))))),
-          column(4, 
+          column(3, 
                  selectInput("variable", "Seleccione la variable", c("Precio promedio" = "precio_prom", "Cambio porcentual" = "cambio_pct", "Cambio porcentual año anterior"="cambio_pct_anual"))),
-          column(4, 
-                 selectInput("anio", "Seleccione el año", c("Todos los años" = "todo", sort(unique(data$anio)))))
+          column(3, 
+                 selectInput("anio", "Seleccione el año", c("Todos los años" = "todo", sort(unique(data$anio))))),
+          column(1,
+                 actionButton("reset", "Restablecer filtros"))
         )),
     div(
       fluidRow(

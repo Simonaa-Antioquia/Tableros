@@ -63,6 +63,23 @@ server <- function(input, output, session) {
     cantidades_max<-resultado$cantidades_max
     precio_max<-resultado$precio_max
     
+    output$mensaje1 <- renderText({
+      #resultado <- resultado()
+      #volatil<-resultado$producto_vol
+      return("volatil")
+    })
+    
+    output$mensaje2 <- renderText({
+      #resultado <- resultado()
+      #promedio_camb<-resultado$promedio_camb
+      return("promedio_camb")
+    })
+    
+    output$mensaje3 <- renderText({
+      #resultado <- resultado()
+      #promedio_camb_an<-resultado$promedio_camb_an
+      return("promedio_camb_an")
+    })
     #if(input$anio == ""){
     return(paste0("El mes más caro es ", mes_max,", siendo ", precio_max," pesos con ",cantidades_max," mil de toneladas ingresadas y ",distancia_max," kilómetros recorridos"))
     #} 
