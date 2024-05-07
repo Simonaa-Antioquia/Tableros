@@ -16,8 +16,11 @@ source("001b_indices_precios_funciones.R")
 
 # Define la interfaz de usuario
 ui <- fluidPage(
-  tags$head(
-    tags$style(HTML("
+  tags$div(
+    style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
+    tags$head(
+      tags$title("Cantidades, precios y distancias recorridas por mes"),  # Añade esta línea
+      tags$style(HTML("
       .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
@@ -33,7 +36,7 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("Cantidades, precios y distancias recorridas por mes", class = "main-header"),
+  tags$h1("Relación entre volúmenes, distancias recorridas y precios de los alimentos", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -48,12 +51,20 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(12,
+      column(10,
              plotOutput("grafico",height = "300px"),
              downloadButton("descargar", "Descargar gráfica"),
              downloadButton("descargarDatos", "Descargar datos")
              #,
              #tableOutput("vistaTabla") 
+      ),
+      column(2, 
+             wellPanel(textOutput("mensaje1"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje3"),
+                       style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
     tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
@@ -61,5 +72,6 @@ ui <- fluidPage(
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
-  ) 
+  )
+)
 )
