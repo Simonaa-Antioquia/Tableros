@@ -49,12 +49,18 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(12,
+      column(8,
              plotOutput("grafico",height = "300px"),
              downloadButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos")
-             #,
-             #tableOutput("vistaTabla") 
+      ),
+      column(4, 
+             wellPanel(textOutput("mensaje1"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje3"),
+                       style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
     tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")

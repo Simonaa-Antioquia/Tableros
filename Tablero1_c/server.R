@@ -60,15 +60,26 @@ server <- function(input, output, session) {
     }
   )
   
-  
   # En el servidor
   output$subtitulo <- renderText({
     resultado <- resultado()
-    promedio <- resultado$promedio
-    if(input$producto == ""){
-      producto <- "todos los productos"}else{input$producto}
-    #if(input$anio == ""){
-    return(paste0("Promedio de precios es: ", promedio))
-    #} 
+    promedio <- formatC(resultado$promedio, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
+    fecha_max <- resultado$fecha_max
+    fecha_min <- resultado$fecha_min
+    return(paste0("El precio promedio",ifelse(input$producto==""," por kg",paste0(" del kg de ", input$producto)) ," fue de $", promedio,
+                  ". El mes con el precio más alto fue ", fecha_max, " y el más bajo fue ", fecha_min))
+  })
+  
+  
+  output$mensaje1 <- renderText({
+    paste0("El producto seleccionado es: ", input$producto)
+  })
+  
+  output$mensaje2 <- renderText({
+    paste0("El año seleccionado es: ", input$anio)
+  })
+  
+  output$mensaje3 <- renderText({
+    paste0("El promedio de precios para ", input$producto, " en el año ", input$anio, " es: $", resultado()$promedio)
   })
 }

@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(plotly)
 options(scipen = 999)
 ################################################################################-
 
@@ -90,27 +90,29 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
     
     # Prepara los datos
     df_graf <- df %>%
-      arrange(ciudad, producto, mes_y_ano) %>%
-      mutate(cambio_pct = (precio_prom / lag(precio_prom) - 1) * 100)  %>%
+      arrange(ciudad, producto, mes_y_ano)%>%
+      mutate(precio_prom=round(precio_prom)) %>%
+      mutate(cambio_pct = round((precio_prom / lag(precio_prom) - 1) * 100))  %>%
       mutate(mes_y_ano = floor_date(as.Date(as.yearmon(mes_y_ano, "%Y-%m"), frac = 1), "month")) %>%
       drop_na(mes_y_ano) %>%
       complete(ciudad, producto, mes_y_ano = seq.Date(min(mes_y_ano, na.rm = TRUE), max(mes_y_ano, na.rm = TRUE), by = "month")) %>%
-      mutate(cambio_pct_anual = (precio_prom / lag(precio_prom, 12) - 1) * 100) 
+      mutate(cambio_pct_anual = round((precio_prom / lag(precio_prom, 12) - 1) * 100))
   } else {
     df <- df %>%
       group_by(ciudad, mes_y_ano, anio) %>%
-      summarise(precio_prom = mean(precio_prom, na.rm = TRUE), .groups = "drop")
+      summarise(precio_prom = round(mean(precio_prom, na.rm = TRUE)), .groups = "drop")
     
     df <- df %>%
       filter(ciudad == "Medellín")
     
     df_graf <- df %>%
       arrange(ciudad, mes_y_ano) %>%
-      mutate(cambio_pct = (precio_prom / lag(precio_prom) - 1) * 100) %>%
+      mutate(precio_prom=round(precio_prom))%>%
+      mutate(cambio_pct = round((precio_prom / lag(precio_prom) - 1) * 100)) %>%
       mutate(mes_y_ano = floor_date(as.Date(as.yearmon(mes_y_ano, "%Y-%m"), frac = 1), "month")) %>%
       drop_na(mes_y_ano) %>%
       complete(ciudad, mes_y_ano = seq.Date(min(mes_y_ano, na.rm = TRUE), max(mes_y_ano, na.rm = TRUE), by = "month")) %>%
-      mutate(cambio_pct_anual = (precio_prom / lag(precio_prom, 12) - 1) * 100) 
+      mutate(cambio_pct_anual = round((precio_prom / lag(precio_prom, 12) - 1) * 100)) 
   }
   
   # Si se proporciona un valor para fecha, filtra por año
@@ -122,22 +124,38 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
                    ifelse(variable=="cambio_pct", "Cambio porcentual","Cambio porcentual año anterior"))
   titulo<-paste("Tendencia de", tolower(vaiable2),ifelse(is.null(alimento),"",paste("para", alimento) ))
   # Crea la gráfica
+  
+  if(is.null(fecha)){
   p<-ggplot(df_graf, aes(x = mes_y_ano, y = !!sym(variable), group = 1)) +
     geom_line(color = "#0D8D38") +
     scale_x_date(date_labels = "%Y-%m", date_breaks = "6 month") +
-    labs(x = "Fecha", y = "", 
-         title = titulo) +
+    xlab("Fecha")+
+    labs( y = "", 
+         title = "") +
     theme_minimal()
+  }else{
+    p<-ggplot(df_graf, aes(x = mes_y_ano, y = !!sym(variable), group = 1)) +
+      geom_line(color = "#0D8D38") +
+      scale_x_date(date_labels = "%b", date_breaks = "1 month") +
+      xlab("Fecha")+
+      labs( y = "", 
+           title = "") +
+      theme_minimal()
+  }
+  
+  map<-plotly::ggplotly(p)
   
   return(
     list(
-      grafico=p,
+      grafico=map,
       datos=df_graf
     )
   )
   
 }
 
+# graficar_variable(data, "precio_prom")
+#, alimento = "", fecha="2020")
 # Usa la función para graficar la variable "precio" para la ciudad "Bogota" y el producto "Arroz"
 
 # Define la función
@@ -148,21 +166,28 @@ graficar_variables <- function(df, producto=NULL, fecha = NULL) {
   grafica3 <- graficar_variable(df, "cambio_pct_anual", producto, fecha)
   
   # Muestra las tres gráficas juntas
-  p<-grid.arrange(grafica1$grafico, grafica2$grafico, grafica3$grafico, ncol = 1)
+  p<-plotly::subplot(grafica1$grafico, grafica2$grafico, grafica3$grafico, nrows = 3)
   datos<-unique(rbind(grafica1$datos,grafica2$datos,grafica3$datos))
   promedio <- round(mean(datos$precio_prom, na.rm = TRUE))
+  fecha_max <- format(as.Date(datos$mes_y_ano[which.max(datos$precio_prom)]), "%B-%Y")
+  fecha_min <- format(as.Date(datos$mes_y_ano[which.min(datos$precio_prom)]), "%B-%Y")
+  precio_max <- round(max(datos$precio_prom, na.rm = TRUE))
+  precio_min <- round(min(datos$precio_prom, na.rm = TRUE))
   return(
     list(
       grafico=p,
       datos=datos,
-      promedio=promedio
+      promedio=promedio,
+      fecha_max=fecha_max,
+      fecha_min=fecha_min,
+      precio_max=precio_max,
+      precio_min=precio_min
     )
   )
 }
 
 # Usa la función para graficar las variables "precio_prom", "cambio_pct" y "cambio_pct_anual" para la ciudad "Medellín" y el producto "Papa negra"
 #graficar_variables(data, producto = "Papa criolla")
-
 
 
 #graficar_variables(data, fecha = "2020")
