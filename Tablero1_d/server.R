@@ -26,9 +26,9 @@ server <- function(input, output, session) {
   })
   
   
-  output$grafico <- renderPlot({
-    resultado()$grafico
-  }, res = 100)
+  output$grafico <- renderPlotly({
+    plotly::ggplotly(resultado()$grafico)
+  })
   
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
@@ -38,12 +38,12 @@ server <- function(input, output, session) {
   
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_precios_cantidades_", Sys.Date(), ".png", sep="")
+      paste("grafica-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      png(file, width = 2300, height = 1500, res = 300)  # Especifica el ancho y el alto de la imagen
-      print(resultado()$grafico)
-      dev.off()
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
     }
   )
   output$descargarDatos <- downloadHandler(
@@ -66,19 +66,19 @@ server <- function(input, output, session) {
     output$mensaje1 <- renderText({
       #resultado <- resultado()
       #volatil<-resultado$producto_vol
-      return("volatil")
+      return("Poner mensaje")
     })
     
     output$mensaje2 <- renderText({
       #resultado <- resultado()
       #promedio_camb<-resultado$promedio_camb
-      return("promedio_camb")
+      return("Poner mensaje")
     })
     
     output$mensaje3 <- renderText({
       #resultado <- resultado()
       #promedio_camb_an<-resultado$promedio_camb_an
-      return("promedio_camb_an")
+      return("Poner mensaje")
     })
     #if(input$anio == ""){
     return(paste0("El mes más caro es ", mes_max,", siendo ", precio_max," pesos con ",cantidades_max," mil de toneladas ingresadas y ",distancia_max," kilómetros recorridos"))

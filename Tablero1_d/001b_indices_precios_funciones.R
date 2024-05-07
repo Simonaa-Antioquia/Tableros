@@ -36,26 +36,25 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
     summarise(cantidad = sum(suma_kg, na.rm = TRUE)/1000000, precio_prom = mean(precio_prom, na.rm = TRUE),
               distancia = mean(distancia, na.rm = TRUE))
   
-  datos_producto$tooltip_text1<-paste()
+  # Crea el gráfico base con la primera línea de datos
+  graf <- plot_ly(datos_producto, x = ~mes, y = ~cantidad, type = "scatter", mode = "lines",
+                  name = "Cantidad", text = ~paste("Cantidades: ", round(cantidad),"Kg"), hoverinfo = "text", 
+                  line = list(color = "#0D8D38")) %>%
+    layout(title = "",#paste("Cantidad, precio mensual y distancia de", alimento, ifelse(is.null(fecha), "", paste("en", fecha))),
+           xaxis = list(title = "Mes", tickvals = seq(1, 12, 1), ticktext = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")),
+           yaxis = list(title = "", showticklabels = FALSE),
+           legend = list(orientation = "h", x = 0.5, y = -0.1, xanchor = "center"))  
   
-  # Crea el gráfico
-  graf<-ggplot(datos_producto, aes(x = mes)) +
-    geom_line(aes(y = cantidad, color = "Cantidad"), size = 1) +
-    geom_line(aes(y = precio_prom / max(datos_producto$precio_prom) * max(datos_producto$cantidad), color = "Precio/Kg"), size = 1) +
-    geom_line(aes(y = distancia / max(datos_producto$distancia) * max(datos_producto$cantidad), color = "Distancia - Km"), size = 1) +
-    geom_text(aes(y = distancia / max(datos_producto$distancia) * max(datos_producto$cantidad), label = round(distancia, 1)), color = "black", check_overlap = TRUE) +
-    scale_y_continuous(
-      name = "Miles de toneladas",
-      sec.axis = sec_axis(~ . * max(datos_producto$precio_prom) / max(datos_producto$cantidad), name = "Precio/Kg")
-    ) +
-    scale_x_continuous(breaks = seq(1, 12, 1), labels = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")) + 
-    scale_color_manual(values = c("Cantidad" = "#0D8D38", "Precio/Kg" = "#00596C", "Distancia - Km" = "#F1B709")) +
-    labs(title = paste("Cantidad, precio mensual y distancia de", alimento, ifelse(is.null(fecha), "", paste("en", fecha))),
-         x = "Mes",
-         color = "Variable") +
-    theme_minimal()
+  # Añade las otras líneas con tooltips personalizadas
+  graf <- graf %>%
+    add_trace(y = ~precio_prom / max(datos_producto$precio_prom) * max(datos_producto$cantidad), name = "Precio/Kg", text = ~paste("Precio: $", formatC(precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)),
+              hoverinfo = "text", line = list(color = "#00596C")) %>%
+    add_trace(y = ~distancia / max(datos_producto$distancia) * max(datos_producto$cantidad), name = "Distancia - Km", text = ~paste("Distancia: ", round(distancia),"Km"), hoverinfo = "text", line = list(color = "#F1B709"))
   
-  p<-plotly::ggplotly(graf)
+  p<-graf
+#  p <- plotly::ggplotly(graf, tooltip = "text")
+
+  #p <- (graf)#, tooltip = c("y", "color", "text"))
   
   nombres_meses <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
   mes_max <- nombres_meses[datos_producto$mes[which.max(datos_producto$precio_prom)]]
