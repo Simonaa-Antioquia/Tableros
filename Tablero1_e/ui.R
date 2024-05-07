@@ -32,6 +32,11 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
       }
+      
+      .sub-header3 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 15px;
+      }
       .center {
         display: flex;
         justify-content: center;
@@ -67,17 +72,37 @@ ui <- fluidPage(
   ),
   div(
     fluidRow(
-      column(12,
-             plotlyOutput("plot"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
+      column(8,
+             plotly::plotlyOutput("plot"),
+             downloadButton("descargar", "Gráfica"),
+             downloadButton("descargarDatos", "Datos"),
+             actionButton("github", "GitHub", icon = icon("github"))
+      ),
+      
+      column(4, 
+             wellPanel(textOutput("mensaje1"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje3"),
+                       style = "background-color: #094735; color: #FFFFFF;")
       )
-    ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;"),
+    ), 
+ 
+    fluidRow(
+        style = "margin-top: 10px;",
+        tags$div(
+          tags$strong("Notas:", class = "sub-header3"),
+          tags$p("Este grafico muestra la diferencia de precios promedio entre las diferentes ciudades y Medellín", class = "sub-header3", style = "margin-top: 1px;"),
+          tags$p("El tamaño de cada una de las bolas depende de la desviacion estandar del precio a nivel departamento", class = "sub-header3", style = "margin-top: 1px;")
+        )
+      )
     
   ),
+  fluidRow(
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
-  ) 
+  ))
+  
 )

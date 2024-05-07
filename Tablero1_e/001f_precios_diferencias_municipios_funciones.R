@@ -129,19 +129,19 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
     
 
     # Convertir a plotly y especificar que el texto del tooltip viene de la columna 'text'
-    p <- ggplotly(map, tooltip = "text")
+    p <- plotly::ggplotly(map, tooltip = "text")
     
 
     for(i in 1:nrow(df)) {
       yshift_value <- ifelse(i %% 2 == 0, 80, -80)  # Alternar entre 70 y -70
-      p <- p %>% add_annotations(
+      p <- p %>% plotly::add_annotations(
         x = df$comp[i], 
         y = 1, 
         text = df$ciudad[i], 
         showarrow = FALSE, 
         yshift = yshift_value,  
         textangle = -90,
-        font = list(size = 18, family = 'Prompt', color = "#838B8B")
+        font = list(size = 15, family = 'Prompt', color = "#838B8B")
       )
     }
 
