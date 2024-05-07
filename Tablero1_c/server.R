@@ -28,9 +28,9 @@ server <- function(input, output, session) {
   })
   
   
-  output$grafico <- renderPlot({
-    resultado()$grafico
-  })#, res = 100)
+  output$grafico <- renderPlotly({
+    plotly::ggplotly(resultado()$grafico)
+  })
   
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
@@ -40,14 +40,12 @@ server <- function(input, output, session) {
   
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_tendencia_precios_", Sys.Date(), ".png", sep="")
+      paste("grafica-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Forzar la ejecución de la función reactiva
-      res <- resultado()
-      
-      # Usa ggsave para guardar el gráfico
-      ggplot2::ggsave(filename = file, plot = res$grafico, width = 13, height = 7, dpi = 300)
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 480, vheight = 480)
     }
   )
   
