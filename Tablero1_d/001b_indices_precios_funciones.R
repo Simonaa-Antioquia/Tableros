@@ -41,9 +41,11 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
                   name = "Cantidad", text = ~paste("Cantidades: ", round(cantidad),"Kg"), hoverinfo = "text", 
                   line = list(color = "#0D8D38")) %>%
     layout(title = "",#paste("Cantidad, precio mensual y distancia de", alimento, ifelse(is.null(fecha), "", paste("en", fecha))),
-           xaxis = list(title = "Mes", tickvals = seq(1, 12, 1), ticktext = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic")),
-           yaxis = list(title = "", showticklabels = FALSE),
-           legend = list(orientation = "h", x = 0.5, y = -0.1, xanchor = "center"))  
+           xaxis = list(title = "Mes", tickvals = seq(1, 12, 1), ticktext = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"), showgrid = FALSE),
+           yaxis = list(title = "", showticklabels = FALSE, showgrid = FALSE),
+           legend = list(orientation = "h", x = 0.5, y = 1.1, xanchor = "center"),
+           plot_bgcolor = "white", 
+           paper_bgcolor = "white")  
   
   # Añade las otras líneas con tooltips personalizadas
   graf <- graf %>%
@@ -58,9 +60,9 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
   
   nombres_meses <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
   mes_max <- nombres_meses[datos_producto$mes[which.max(datos_producto$precio_prom)]]
-  distancia_max <- round(datos_producto$distancia[which.max(datos_producto$precio_prom)], 1)
-  cantidades_max <- round(datos_producto$cantidad[which.max(datos_producto$precio_prom)], 1)
-  precio_max <- round(max(datos_producto$precio_prom), 1)
+  distancia_max <- round(datos_producto$distancia[which.max(datos_producto$precio_prom)])
+  cantidades_max <- round(datos_producto$cantidad[which.max(datos_producto$precio_prom)])
+  precio_max <- formatC(max(datos_producto$precio_prom), format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
   producto_sel <- ifelse(alimento == "total", "todos los productos", alimento)
   anio_sel <- c(fecha,"todos los años")
   

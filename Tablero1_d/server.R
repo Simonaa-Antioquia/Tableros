@@ -18,7 +18,7 @@ server <- function(input, output, session) {
   
   
   resultado<-reactive({
-    if(input$anio == ""){
+    if(input$anio == "todos"){
       graficar_producto_y_precio(complet, input$producto)}
     else{
       graficar_producto_y_precio(complet,  input$producto, input$anio)
@@ -27,7 +27,13 @@ server <- function(input, output, session) {
   
   
   output$grafico <- renderPlotly({
-    plotly::ggplotly(resultado()$grafico)
+    res<-resultado()
+    res$grafico
+  })
+  
+  observeEvent(input$reset, {
+    updateSelectInput(session, "producto", selected = "total")
+    updateSelectInput(session, "anio", selected = "todos")
   })
   
   output$vistaTabla <- renderTable({
@@ -55,6 +61,10 @@ server <- function(input, output, session) {
     }
   )
   
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
+  
   # En el servidor
   output$subtitulo <- renderText({
     resultado <- resultado()
@@ -81,7 +91,7 @@ server <- function(input, output, session) {
       return("Poner mensaje")
     })
     #if(input$anio == ""){
-    return(paste0("El mes más caro es ", mes_max,", siendo ", precio_max," pesos con ",cantidades_max," mil de toneladas ingresadas y ",distancia_max," kilómetros recorridos"))
+    return(paste0("El mes más caro es ", mes_max,", siendo $", precio_max," con ",cantidades_max," mil de toneladas ingresadas y ",distancia_max," kilómetros recorridos"))
     #} 
   })
 }

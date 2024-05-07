@@ -63,6 +63,10 @@ server <- function(input, output, session) {
     }
   )
   
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
+  
   # En el servidor
   output$subtitulo <- renderText({
     resultado <- resultado()

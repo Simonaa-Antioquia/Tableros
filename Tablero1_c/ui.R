@@ -52,7 +52,7 @@ ui <- fluidPage(
                  selectInput("variable", "Seleccione la variable", c("Precio promedio" = "precio_prom", "Cambio porcentual" = "cambio_pct", "Cambio porcentual año anterior"="cambio_pct_anual"))),
           column(3, 
                  selectInput("anio", "Seleccione el año", c("Todos los años" = "todo", sort(unique(data$anio))))),
-          column(1,
+          column(3,
                  actionButton("reset", "Restablecer filtros"))
         )),
     div(
@@ -60,7 +60,8 @@ ui <- fluidPage(
         column(10,
                plotlyOutput("grafico"),
                downloadButton("descargar", "Gráfica"),
-               downloadButton("descargarDatos", "Datos")
+               downloadButton("descargarDatos", "Datos"),
+               actionButton("github", "GitHub", icon = icon("github"))
         ),
         column(2, 
                wellPanel(textOutput("mensaje1"),

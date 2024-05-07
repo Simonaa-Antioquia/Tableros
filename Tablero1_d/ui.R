@@ -47,14 +47,17 @@ ui <- fluidPage(
         column(4,
                selectInput("producto", "Seleccione producto:", c("Todos los productos" = "total", as.character(unique(complet$producto))))),
         column(4,
-               selectInput("anio", "Seleccione un año:", c("Todos los años"="", sort(unique(complet$anio)))))
+               selectInput("anio", "Seleccione un año:", c("Todos los años"="todos", sort(unique(complet$anio))))),
+        column(4,
+               actionButton("reset", "Restablecer filtros"))
       )),
   div(
     fluidRow(
       column(10,
-             plotOutput("grafico",height = "300px"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
+             plotlyOutput("grafico",height = "300px"),
+             downloadButton("descargar", "Gráfica"),
+             downloadButton("descargarDatos", "Datos"),
+             actionButton("github", "GitHub", icon = icon("github"))
              #,
              #tableOutput("vistaTabla") 
       ),
@@ -67,7 +70,8 @@ ui <- fluidPage(
                        style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
+    tags$div(tags$p("Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+                    tags$br(),"La información solo se muestra para los precios en el centro de acopio de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
