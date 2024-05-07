@@ -19,7 +19,6 @@ server <- function(input, output, session) {
     anio_seleccionado <- input$anio
     productos_seleccionados <- input$producto
     
-    
     if (input$anio == "") {
       if (input$mes == "") {
         if (input$tipo == 1) {
@@ -52,7 +51,12 @@ server <- function(input, output, session) {
   })
   
   output$plot <- plotly::renderPlotly({
-    plotly::ggplotly(resultado()$grafico)
+    res <- resultado()
+    if (is.character(res)) {
+      return(NULL)  # No hay gráfico para mostrar
+    } else {
+      plotly::ggplotly(res$grafico)
+    }
   })
   
   output$vistaTabla <- renderTable({
@@ -85,40 +89,66 @@ server <- function(input, output, session) {
     browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
   })
   
-  # En el servidor
-
   output$subtitulo <- renderText({
-    res <- resultado()  
-    print(res)  
-    precio_max <- res$precio_max
-    precio_min <- res$precio_min
-    ciudad_max <- res$ciudad_max
-    ciudad_min <- res$ciudad_min
-    
-    return(paste("El menor precio reportado para el periodo y producto seleccionado es", precio_min," pesos por debajo del precio de Medellin y se reporto en", ciudad_min,". El mayor precio reportado fue en", ciudad_max, "y fue de",precio_max,"pesos mas que el precio de Medellín")) 
+    tryCatch({
+      # Intenta ejecutar este código
+      res <- resultado()  
+      print(res)  
+      precio_max <- res$precio_max
+      precio_min <- res$precio_min
+      ciudad_max <- res$ciudad_max
+      ciudad_min <- res$ciudad_min
+      
+      return(paste("El menor precio reportado para el periodo y producto seleccionado es", precio_min," pesos por debajo del precio de Medellin y se reporto en", ciudad_min,". El mayor precio reportado fue en", ciudad_max, "y fue de",precio_max,"pesos mas que el precio de Medellín")) 
+    }, error = function(e) {
+      # Si ocurre un error, ejecuta este código
+      return("No hay datos disponibles.")
+    })
   })
   
   output$mensaje1 <- renderText({
-    if (input$tipo != 1) {
-      paste0("El producto seleccionado es: ", input$producto)
-    } else {
-      "En esta opción no se filtro por ningun producto"
-    }
+    tryCatch({
+      # Intenta ejecutar este código
+      if (input$tipo != 1) {
+        return(paste0("El producto seleccionado es: ", input$producto))
+      } else {
+        return("En esta opción no se filtro por ningun producto")
+      }
+    }, error = function(e) {
+      # Si ocurre un error, ejecuta este código
+      return("No hay datos disponibles.")
+    })
   })
+  
   
   output$mensaje2 <- renderText({
-    if (input$tipo != 1) {
-      paste0("El lugar más costoso para comprar ", input$producto, " es ", resultado()$ciudad_max, ". Es ", resultado()$precio_max, " más costoso que comprarlo en Medellín.")
-    } else {
-      paste0("El lugar más costoso para comprar alimentos es ", resultado()$ciudad_max, ". En promedio es ", resultado()$precio_max, " más costoso que comprarlos en Medellín.")
-    }
+    tryCatch({
+      # Intenta ejecutar este código
+      if (input$tipo != 1) {
+        return(paste0("El lugar más costoso para comprar ", input$producto, " es ", resultado()$ciudad_max, ". Es ", resultado()$precio_max, " más costoso que comprarlo en Medellín."))
+      } else {
+        return(paste0("El lugar más costoso para comprar alimentos es ", resultado()$ciudad_max, ". En promedio es ", resultado()$precio_max, " más costoso que comprarlos en Medellín."))
+      }
+    }, error = function(e) {
+      # Si ocurre un error, ejecuta este código
+      return("No hay datos disponibles.")
+    })
   })
   
+  
   output$mensaje3 <- renderText({
-    if (input$tipo !=1) {
-      paste0("El lugar más economico para comprar ", input$producto, " es ", resultado()$ciudad_min, ". Es ", resultado()$precio_min, " pesos más barato que comprarlo en Medellín.")
-    } else {
-      paste0("El lugar más economico para comprar alimentos es ", resultado()$ciudad_min, ". En promedio es ", resultado()$precio_min, " más barato que comprarlos en Medellín.")
-    }
-  })
+    tryCatch({
+      # Intenta ejecutar este código
+      if (input$tipo != 1) {
+        return(paste0("El lugar más economico para comprar ", input$producto, " es ", resultado()$ciudad_min, ". Es ", resultado()$precio_min, " pesos más barato que comprarlo en Medellín."))
+      } else {
+        return(paste0("El lugar más economico para comprar alimentos es ", resultado()$ciudad_min, ". En promedio es ", resultado()$precio_min, " más barato que comprarlos en Medellín."))
+      }
+    }, error = function(e) {
+      # Si ocurre un error, ejecuta este código
+      return("No hay datos disponibles.")
+    })
+  })  
+  
+
 }

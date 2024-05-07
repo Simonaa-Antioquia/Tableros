@@ -70,7 +70,12 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
         df_lista <- data_comparacion_anual_mensual_producto[[opcion4]]
         df_lista <- as.data.frame(df_lista)
         df <- filter(df_lista, year == opcion2 & mes == opcion3)
-  }
+      }
+    
+    # Verificar si df está vacío
+    if(nrow(df) == 0) {
+      return("No hay datos disponibles para los criterios seleccionados.")
+    }
     
   
   df <- df %>%
@@ -119,7 +124,7 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
       #geom_text(aes(label=ciudad),size = 3.5, hjust=0.5, vjust=-2, angle = 90, colour = "#000000") +  
       geom_vline(xintercept = 0,linetype = "longdash",size=0.5,alpha = 0.2) +
       labs(title = ' ', x = ' ', y = '') +
-      scale_size(range = c(5,20)) +
+      scale_size(range = c(5,15)) +
       scale_color_manual(values = col_palette)
     
     precio_max <- round(max(df$comp))
@@ -141,7 +146,7 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
         showarrow = FALSE, 
         yshift = yshift_value,  
         textangle = -90,
-        font = list(size = 15, family = 'Prompt', color = "#838B8B")
+        font = list(size = 10, family = 'Prompt', color = "#838B8B")
       )
     }
 

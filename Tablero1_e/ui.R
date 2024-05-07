@@ -91,9 +91,8 @@ ui <- fluidPage(
  
     fluidRow(
       column(8,  # Ajusta el número de columnas aquí
-             style = "margin-top: 5px;",
+             style = "margin-top: 2px;",
              tags$div(
-               tags$strong("Notas:", class = "sub-header3"),
                tags$p("Este grafico muestra la diferencia de precios promedio entre las diferentes ciudades y Medellín", class = "sub-header3", style = "margin-top: 0px;"),
                tags$p("El tamaño de cada una de las bolas depende de la desviacion estandar del precio a nivel departamento", class = "sub-header3", style = "margin-top: 0px;")
              )
