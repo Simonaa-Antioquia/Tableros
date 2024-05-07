@@ -73,7 +73,7 @@ ui <- fluidPage(
   div(
     fluidRow(
       column(8,
-             plotly::plotlyOutput("plot"),
+             plotly::plotlyOutput("plot", height = "300px"),
              downloadButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github"))
@@ -102,7 +102,7 @@ ui <- fluidPage(
   fluidRow(
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
-    style = "position: absolute; bottom: 0; width: 100%;"
+    style = "position: fixed; bottom: 0; width: 100%;"
   ))
   
 )
