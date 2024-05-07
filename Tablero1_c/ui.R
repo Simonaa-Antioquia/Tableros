@@ -17,56 +17,64 @@ source("001b_indices_precios_funciones.R")
 
 # Define la interfaz de usuario
 ui <- fluidPage(
-  tags$head(
-    tags$style(HTML("
-      .main-header {
-        font-family: 'Prompt', sans-serif;
-        font-size: 40px;
-        color: #0D8D38;
-      }
-      .sub-header {
-        font-family: 'Prompt', sans-serif;
-        font-size: 20px;
-      }
-      .sub-header2 {
-        font-family: 'Prompt', sans-serif;
-        font-size: 15px;
-      }
-    "))
-  ),
-  tags$h1("Comportamiento de los precios en el tiempo", class = "main-header"),
-  div(
-    textOutput("subtitulo"),
-    class = "sub-header2",
-    style = "margin-bottom: 20px;"
-  ),
-  div(class = "scrollable-content",
-      fluidRow(
-        column(4,
-               selectInput("producto", "Seleccione producto:", c("Todos los productos" = "", as.character(names(which(table(data$producto) > 12)))))),
-        column(4, 
-               selectInput("anio", "Seleccione el año", c("Todos los años" = "", sort(unique(data$anio)))))
-      )),
-  div(
-    fluidRow(
-      column(8,
-             plotlyOutput("grafico"),
-             downloadButton("descargar", "Gráfica"),
-             downloadButton("descargarDatos", "Datos")
-      ),
-      column(4, 
-             wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
-      )
-    ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
-  ),
+  #titlePanel("Precios en el tiempo"),
   tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
-    style = "position: absolute; bottom: 0; width: 100%;"
-  ) 
+    style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
+    tags$head(
+      tags$title("Comportamiento de los precios en el tiempo"),  # Añade esta línea
+      tags$style(HTML("
+        .main-header {
+          font-family: 'Prompt', sans-serif;
+          font-size: 40px;
+          color: #0D8D38;
+        }
+        .sub-header {
+          font-family: 'Prompt', sans-serif;
+          font-size: 20px;
+        }
+        .sub-header2 {
+          font-family: 'Prompt', sans-serif;
+          font-size: 15px;
+        }
+      "))
+    ),
+    tags$h1("Comportamiento de los precios en el tiempo", class = "main-header"),
+    div(
+      textOutput("subtitulo"),
+      class = "sub-header2",
+      style = "margin-bottom: 20px;"
+    ),
+    div(class = "scrollable-content",
+        fluidRow(
+          column(4,
+                 selectInput("producto", "Seleccione producto:", c("Todos los productos" = "todo", as.character(names(which(table(data$producto) > 12)))))),
+          column(4, 
+                 selectInput("variable", "Seleccione la variable", c("Precio promedio" = "precio_prom", "Cambio porcentual" = "cambio_pct", "Cambio porcentual año anterior"="cambio_pct_anual"))),
+          column(4, 
+                 selectInput("anio", "Seleccione el año", c("Todos los años" = "todo", sort(unique(data$anio)))))
+        )),
+    div(
+      fluidRow(
+        column(10,
+               plotlyOutput("grafico"),
+               downloadButton("descargar", "Gráfica"),
+               downloadButton("descargarDatos", "Datos")
+        ),
+        column(2, 
+               wellPanel(textOutput("mensaje1"),
+                         style = "background-color: #0D8D38; color: #FFFFFF;"),
+               wellPanel(textOutput("mensaje2"),
+                         style = "background-color: #005A45; color: #FFFFFF;"),
+               wellPanel(textOutput("mensaje3"),
+                         style = "background-color: #094735; color: #FFFFFF;")
+        )
+      ),
+      tags$div(tags$p("Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+                      tags$br(),"La información solo se muestra para los precios en el centro de acopio de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
+    ),
+    tags$div(
+      tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+      style = "position: absolute; bottom: 0; width: 100%;"
+    )
+  )
 )

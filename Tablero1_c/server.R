@@ -16,14 +16,14 @@ options(scipen = 999)
 server <- function(input, output, session) {
   
   resultado<-reactive({
-    if(input$anio == "" && input$producto == ""){
-      graficar_variables(data)
-    } else if(input$producto == ""){
-      graficar_variables(data,  fecha = input$anio)
-    } else if(input$anio == ""){
-      graficar_variables(data, input$producto)
+    if(input$anio == "todo" && input$producto == "todo"){
+      graficar_variable(data, variable=input$variable)
+    } else if(input$producto == "todo"){
+      graficar_variable(data, variable=input$variable,  fecha = input$anio)
+    } else if(input$anio == "todo"){
+      graficar_variable(data,variable=input$variable, input$producto)
     } else{
-      graficar_variables(data, input$producto, input$anio)
+      graficar_variable(data,variable=input$variable, input$producto, input$anio)
     }
   })
   
@@ -45,7 +45,7 @@ server <- function(input, output, session) {
     content = function(file) {
       tempFile <- tempfile(fileext = ".html")
       htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 480, vheight = 480)
+      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
     }
   )
   
@@ -70,14 +70,20 @@ server <- function(input, output, session) {
   
   
   output$mensaje1 <- renderText({
-    paste0("El producto seleccionado es: ", input$producto)
+    resultado <- resultado()
+    volatil<-resultado$producto_vol
+    return(volatil)
   })
   
   output$mensaje2 <- renderText({
-    paste0("El año seleccionado es: ", input$anio)
+    resultado <- resultado()
+    promedio_camb<-resultado$promedio_camb
+    return(promedio_camb)
   })
   
   output$mensaje3 <- renderText({
-    paste0("El promedio de precios para ", input$producto, " en el año ", input$anio, " es: $", resultado()$promedio)
+    resultado <- resultado()
+    promedio_camb_an<-resultado$promedio_camb_an
+    return(promedio_camb_an)
   })
 }
