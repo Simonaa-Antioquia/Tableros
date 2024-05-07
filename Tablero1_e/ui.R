@@ -68,7 +68,7 @@ ui <- fluidPage(
   div(
     fluidRow(
       column(12,
-             imageOutput("plot",height = "300px"),
+             plotlyOutput("plot"),
              downloadButton("descargar", "Descargar gráfica"),
              downloadButton("descargarDatos", "Descargar datos")
       )

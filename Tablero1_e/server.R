@@ -10,7 +10,8 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readxl);library(reshape2);library(ggplot2);library(gganimate);library(dplyr);
-library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(stringr)
+library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(stringr);
+library(shiny); library(plotly)
 ################################################################################-
 server <- function(input, output, session) {
   resultado <- reactive({
@@ -50,9 +51,9 @@ server <- function(input, output, session) {
     }
   })
   
-  output$plot <- renderPlot({
-    resultado()$grafico
-  }, res = 96)
+  output$plot <- renderPlotly({
+    ggplotly(resultado()$grafico)
+  })
   
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
@@ -65,10 +66,12 @@ server <- function(input, output, session) {
       paste("grafica-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Usa ggsave en lugar de png y dev.off
-      ggsave(file, plot = resultado()$grafico, width = 10, height = 10, dpi = 300)
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2)
     }
   )
+    
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
@@ -79,10 +82,10 @@ server <- function(input, output, session) {
   )
   
   # En el servidor
-  # En el servidor
+
   output$subtitulo <- renderText({
-    res <- resultado()  # Usa la variable reactiva 'resultado'
-    print(res)  # Imprime el resultado para depuración
+    res <- resultado()  
+    print(res)  
     precio_max <- res$precio_max
     precio_min <- res$precio_min
     ciudad_max <- res$ciudad_max
