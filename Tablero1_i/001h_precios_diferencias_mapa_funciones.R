@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readxl);library(reshape2);library(ggplot2);library(gganimate);library(dplyr);
-library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel)
+library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(plotly)
 ################################################################################-
 
 data <- readRDS("base_precios_vs_medellin.rds")%>%
@@ -25,49 +25,33 @@ Anio=2014
 Mes=11
 Producto= "Aguacate papelillo"
 
-mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
-  df<-data
-  if(!is.null(Anio) && !is.null(Mes) && !is.null(Producto)){
-    df<-df%>%filter(year==Anio& mes==Mes& producto==Producto)%>%
-      rename(comp=comparacion_anual_mensual_producto)%>%
-      select(cod_depto, departamento, comp)%>%
-      unique()
-  } else if(!is.null(Anio) && !is.null(Mes) && is.null(Producto)){
-    df<-df%>%filter(year==Anio& mes==Mes)%>%
-      rename(comp=comparacion_anual_mensual)%>%
-      select(cod_depto, departamento, comp)%>%
-      unique()
-  } else if(!is.null(Anio) && is.null(Mes) && is.null(Producto)){
-    df<-df%>%filter(year==Anio)%>%
-      rename(comp=comparacion_anual)%>%
-      select(cod_depto, departamento, comp)%>%
-      unique()
-  } else if(is.null(Anio) && is.null(Mes) && is.null(Producto)){
-    df<-df%>%#filter(year==Anio& mes==Mes& producto==Producto)%>%
-      rename(comp=comparacion)%>%
-      select(cod_depto, departamento, comp)%>%
-      unique()
-  } else if(is.null(Anio) && !is.null(Mes) && !is.null(Producto)){
-    df<-df%>%filter(mes==Mes& producto==Producto)%>%
-      rename(comp=comparacion_mensual_producto)%>%
-      select(cod_depto, departamento, comp)%>%
-      unique()
-  } else if(is.null(Anio) && is.null(Mes) && !is.null(Producto)){
-    df<-df%>%filter(producto==Producto)%>%
-      rename(comp=comparacion_producto)%>%
-      select(cod_depto, departamento, comp)%>%
-      unique()
-  } else if(is.null(Anio) && !is.null(Mes) && is.null(Producto)){
-    df<-df%>%filter(mes==Mes)%>%
-      rename(comp=comparacion_mensual)%>%
-      select(cod_depto, departamento, comp)%>%
-      unique()
-  } else {
-    df<-df%>%filter(year==Anio&producto==Producto)%>%
-      rename(comp=comparacion_anual_producto)%>%
-      select(cod_depto, departamento, comp)%>%
-      unique()
+mapa_dif <- function(Anio = NULL, Mes = NULL, Producto = NULL) {
+  df <- data
+  
+  # Determina qué columnas y condiciones de filtrado usar
+  cols <- c("cod_depto", "departamento")
+  cond <- list()
+  comp_col <- "comparacion"
+  if (!is.null(Anio)) {
+    cond$year <- Anio
+    comp_col <- "comparacion_anual"
   }
+  if (!is.null(Mes)) {
+    cond$mes <- Mes
+    comp_col <- "comparacion_mensual"
+  }
+  if (!is.null(Producto)) {
+    cond$producto <- Producto
+    comp_col <- "comparacion_producto"
+  }
+  
+  # Realiza la operación de filtrado y selección una sola vez
+  df <- df %>%
+    filter(!!!cond) %>%
+    rename(comp = all_of(comp_col)) %>%
+    select(cod_depto, departamento, comp) %>%
+    unique()
+  
   
   mapa<-shapefile%>%left_join(df, by = c("dpto_ccdgo"="cod_depto"))
   
@@ -75,13 +59,16 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
                   ifelse(is.null(Mes), "", paste("para el mes", Mes)), 
                   ifelse(is.null(Producto), "", paste("-", Producto)))
   
+  mapa$tooltip_text<-ifelse(is.na(mapa$departamento),"",paste("Departamento: ",mapa$departamento,
+                              "<br>Diferencia de precio: $", round(mapa$comp)))
+  
   if (nrow(df) == 0) {
     print("No hay datos disponibles")
   } else {
     p <- ggplot() +
-    geom_sf(data = mapa, aes(fill = comp)) +
-    scale_fill_gradient2(low = "#1A4922", mid = "white", high = "#08384D", midpoint = 0, na.value = "white", name = "Porcentaje") +
-    labs(title = titulo) +
+    geom_sf(data = mapa, aes(fill = comp, text = tooltip_text)) +
+    scale_fill_gradient2(low = "#1A4922", mid = "white", high = "#F39F06", midpoint = 0, na.value = "#D5D5D5", name = "Diferencia\ndel precio") +
+    labs(title = "") +
     theme_minimal() +
     theme(
       plot.background = element_blank(),  # Hace que el fondo sea transparente
@@ -92,13 +79,16 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
       axis.ticks = element_blank(),
       axis.title = element_blank()
     )
-    }
+    map<-plotly::ggplotly(p, tooltip = "text")
+  }
+  
+  
   precio_max <- ifelse(nrow(df) == 0,"",round(max(df$comp)))
   precio_min <- ifelse(nrow(df) == 0,"",round(min(df$comp)*-1))
   ciudad_max <- df$departamento[which.max(df$comp)]
   ciudad_min <- df$departamento[which.min(df$comp)]
   return(list(
-    grafico=p,
+    grafico=map,
     datos=df,
     precio_max=precio_max,
     precio_min=precio_min,

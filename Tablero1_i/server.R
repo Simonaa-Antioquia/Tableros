@@ -16,43 +16,43 @@ server <- function(input, output, session) {
   
   resultado<-reactive({
     # Comprobar si solo se ha seleccionado un producto
-    if (input$producto != "" && input$anio == "" && input$mes == "") {
+    if (input$producto != "todo" && input$anio == "todo" && input$mes == "todo") {
       mapa_dif(Producto = input$producto) #Producto en los 10 Anios
-    } else if (input$producto != "" && input$anio != "" && input$mes == "") {
+    } else if (input$producto != "todo" && input$anio != "todo" && input$mes == "todo") {
       mapa_dif(Anio = input$anio, Producto = input$producto) #Producto en determinado Anio
-    } else if(input$producto == "" && input$anio == "" && input$mes == ""){
+    } else if(input$producto == "todo" && input$anio == "todo" && input$mes == "todo"){
       mapa_dif()#Todos los Anios
-    } else if(input$producto == "" && input$anio != "" && input$mes == ""){
+    } else if(input$producto == "todo" && input$anio != "todo" && input$mes == "todo"){
       mapa_dif(Anio = input$anio)#Ano en específico
-    } else if(input$producto == "" && input$anio != "" && input$mes != ""){
+    } else if(input$producto == "todo" && input$anio != "todo" && input$mes != "todo"){
       mapa_dif(Anio = input$anio, Mes = input$mes)#Anio y mes específico
-    } else if(input$producto != "" && input$anio == "" && input$mes != ""){
+    } else if(input$producto != "todo" && input$anio == "todo" && input$mes != "todo"){
       mapa_dif(Mes = input$mes , Producto = input$producto)#mes en todos los Anios por producto
-    } else if(input$producto == "" && input$anio == "" && input$mes != ""){
+    } else if(input$producto == "todo" && input$anio == "todo" && input$mes != "todo"){
       mapa_dif(Mes = input$mes) #Mes en específico
     } else{
       mapa_dif(Anio = input$anio, Mes = input$mes ,Producto = input$producto)#Anio, mes y producto específico
     } 
   })
   
-  output$grafico <- renderPlot({
-    data <- resultado()
-    validate(
-      need(nrow(data$datos) > 0, "No hay datos disponibles")
-    )
-    data$grafico
-  }, res = 100)
+  observeEvent(input$reset, {
+    updateSelectInput(session, "producto", selected = "todo")
+    updateSelectInput(session, "mes", selected = "todo")
+    updateSelectInput(session, "anio", selected = "todo")
+  })
+  
+  output$grafico <- renderPlotly({
+    plotly::ggplotly(resultado()$grafico)
+  })
   
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_precios_diferencias_", Sys.Date(), ".png", sep="")
+      paste("grafica-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Forzar la ejecución de la función reactiva
-      res <- resultado()
-      
-      # Usa ggsave para guardar el gráfico
-      ggplot2::ggsave(filename = file, plot = res$grafico, width = 7, height = 7, dpi = 400)
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
     }
   )
   
@@ -65,6 +65,10 @@ server <- function(input, output, session) {
     }
   )
   
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
+  
   # En el servidor
   output$subtitulo <- renderText({
     resultado <- resultado()
@@ -74,5 +78,23 @@ server <- function(input, output, session) {
     ciudad_min <- resultado$ciudad_min
     
     return(paste0(ciudad_max," es $", precio_max, " costosa que Medellín, mientras que ", ciudad_min," es $", precio_min," más barata."))
+  })
+  
+  output$mensaje1 <- renderText({
+    #resultado <- resultado()
+    #volatil<-resultado$producto_vol
+    return("Poner mensaje")
+  })
+  
+  output$mensaje2 <- renderText({
+    #resultado <- resultado()
+    #promedio_camb<-resultado$promedio_camb
+    return("Poner mensaje")
+  })
+  
+  output$mensaje3 <- renderText({
+    #resultado <- resultado()
+    #promedio_camb_an<-resultado$promedio_camb_an
+    return("Poner mensaje")
   })
 }

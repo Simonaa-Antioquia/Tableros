@@ -20,7 +20,10 @@ productos_filtrados <- producto_counts[producto_counts$Freq > 11, "Var1"]
 
 # Definir la interfaz de usuario
 ui <- fluidPage(
-  tags$head(
+  tags$div(
+    style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
+    tags$head(
+      tags$title("Mapa comparación de precios"),  # Añade esta línea
     tags$style(HTML("
       .main-header {
         font-family: 'Prompt', sans-serif;
@@ -52,26 +55,38 @@ ui <- fluidPage(
   div(class = "scrollable-content",
       fluidRow(
         column(3,
-               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(data$year)))))),
+               selectInput("anio", "Año", c("Todos los años" = "todo", sort(as.character(unique(data$year)))))),
         column(3,
-               selectInput("mes", "Mes", c("Todos los meses" = "", 1:12), selected = "")),
+               selectInput("mes", "Mes", c("Todos los meses" = "todo", 1:12), selected = "")),
         column(3,
-               selectInput("producto", "Producto", c("Todos los productos" = "", sort(as.character(unique(productos_filtrados))))))
+               selectInput("producto", "Producto", c("Todos los productos" = "todo", sort(as.character(unique(productos_filtrados)))))),
+        column(3,
+               actionButton("reset", "Restablecer filtros"))
       )),
   div(
     fluidRow(
-      column(12,
-             plotOutput("grafico",height = "300px"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
-             #,
+      column(10,
+             plotlyOutput("grafico"),
+             downloadButton("descargar", "Gráfica"),
+             downloadButton("descargarDatos", "Datos"),
+             actionButton("github", "GitHub", icon = icon("github"))#,
              #tableOutput("vistaTabla") 
+      ),
+      column(2, 
+             wellPanel(textOutput("mensaje1"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje3"),
+                       style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
+    tags$div(tags$p("Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+                    tags$br(),"La información solo se muestra para los precios en el centro de acopio de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
-  ) 
+  )
+  )
 )
