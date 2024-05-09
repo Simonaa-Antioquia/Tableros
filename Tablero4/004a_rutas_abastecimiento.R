@@ -5,7 +5,6 @@
 #Fecha de creacion: 24/02/2024
 #Fecha de ultima modificacion: 24/02/2024
 ################################################################################-
-setwd("C:/Users/tusig/OneDrive - Universidad EAFIT/FAO/01_Analisis_Empirico/")
 # Limpiar el entorno de trabajo
 rm(list=ls())
 # Paquetes 
