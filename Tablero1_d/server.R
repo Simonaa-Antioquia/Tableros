@@ -91,7 +91,7 @@ server <- function(input, output, session) {
       return("Poner mensaje")
     })
     #if(input$anio == ""){
-    return(paste0("El mes más caro es ", mes_max,", siendo $", precio_max," con ",cantidades_max," mil de toneladas ingresadas y ",distancia_max," kilómetros recorridos"))
+    return(paste0("El mes más caro es ", mes_max,", siendo $", precio_max," con ",cantidades_max," mil toneladas ingresadas y ",distancia_max," kilómetros recorridos"))
     #} 
   })
 }

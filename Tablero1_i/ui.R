@@ -24,7 +24,11 @@ ui <- fluidPage(
     style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
     tags$head(
       tags$title("Mapa comparación de precios"),  # Añade esta línea
-    tags$style(HTML("
+      tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
+      tags$style(HTML("
+      body {
+        overflow-x: hidden;
+      }
       .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
@@ -54,22 +58,21 @@ ui <- fluidPage(
   ),  
   div(class = "scrollable-content",
       fluidRow(
-        column(3,
+        column(4,
                selectInput("anio", "Año", c("Todos los años" = "todo", sort(as.character(unique(data$year)))))),
-        column(3,
+        column(4,
                selectInput("mes", "Mes", c("Todos los meses" = "todo", 1:12), selected = "")),
-        column(3,
-               selectInput("producto", "Producto", c("Todos los productos" = "todo", sort(as.character(unique(productos_filtrados)))))),
-        column(3,
-               actionButton("reset", "Restablecer filtros"))
+        column(4,
+               selectInput("producto", "Producto", c("Todos los productos" = "todo", sort(as.character(unique(productos_filtrados))))))
       )),
   div(
     fluidRow(
       column(10,
-             plotlyOutput("grafico"),
+             leafletOutput("grafico"),
              downloadButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
-             actionButton("github", "GitHub", icon = icon("github"))#,
+             actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("reset", "Restablecer", icon = icon("refresh"))#,
              #tableOutput("vistaTabla") 
       ),
       column(2, 
