@@ -114,8 +114,7 @@ server <- function(input, output, session) {
       updateSelectInput(session, "mes", selected = "")
       updateSelectInput(session, "producto", selected = NULL)
     })
-    
-  }
+    }
   
   observeEvent(input$reset, {
     updateSelectInput(session, "tipo", selected = 1)

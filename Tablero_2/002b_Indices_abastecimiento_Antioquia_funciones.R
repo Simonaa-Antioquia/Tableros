@@ -118,6 +118,11 @@ tiempo <- function(opcion1, opcion2 = NULL, opcion3 = NULL, opcion4 = NULL) {
 importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NULL) {
   df <- abastecimiento_medellin
   
+  if (is.null(municipios) || length(municipios) == 0) {
+    return(NULL)
+  }
+  
+  
   # Año seleccionado
   if (!is.null(Año)) {
     df <- df %>% dplyr::filter(anio == Año)
@@ -183,6 +188,9 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
     
   }
   
+  
+  municipios <- min(municipios, 18)
+  
   df <- df  %>% 
     arrange(desc(all_of(columna_porcentaje))) %>% 
     mutate( mpio_origen = factor( mpio_origen, levels =  mpio_origen)) %>% 
@@ -190,9 +198,9 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
   
   # Grafica  
   # Crear un título dinámico
-  titulo <- paste("Importancia de los", length(unique(df$ mpio_origen)), "municipios principales", ifelse(is.null(Año), "", paste("en el año", Año)), 
-                  ifelse(is.null(Mes), "", paste("en el mes de", Mes)), 
-                  ifelse(is.null(Producto), "", paste("-", Producto)))
+  #titulo <- paste("Importancia de los", length(unique(df$ mpio_origen)), "municipios principales", ifelse(is.null(Año), "", paste("en el año", Año)), 
+  #                ifelse(is.null(Mes), "", paste("en el mes de", Mes)), 
+  #                ifelse(is.null(Producto), "", paste("-", Producto)))
   
   # Definir los colores de inicio y fin
   #start_color <- "#6B0077"
@@ -207,15 +215,19 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
   col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203", "#F1B709", "#F39F06", "#BE7E11",
                    "#08384D", "#094B5C", "#00596C", "#006A75", "#007A71", "#00909C", "#0088BB", "#007CC3", "#456ABB")
   
-  # Ahora puedes usar col_palette en tu gráfico
-  p<-ggplot(df, aes(x =  mpio_origen, y = as.numeric(all_of(columna_porcentaje)), fill =  mpio_origen)) +
+  df$tooltip_text <- paste("Ciudad de origen: ", df$mpio_origen, "<br>Porcentaje: ", round(df$columna_porcentaje, 3))
+  
+  p <- ggplot(df, aes(x =  forcats::fct_reorder(mpio_origen, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill =  mpio_origen, text = tooltip_text)) +
     geom_bar(stat = "identity") +
     geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 0.01)), hjust = -0.1) +
     coord_flip() +
-    labs(x = "Municipio", y = "Porcentaje", title = titulo) +
+    labs(x = " ", y = "Porcentaje", title = " ") +
     scale_fill_manual(values = col_palette) +  # Agregar la paleta de colores
     theme_minimal() +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none") 
+  
+  p <- plotly::ggplotly(p, tooltip = "text")
+  
   
   porcentaje_max<-round(max(df$columna_porcentaje)*100,1)
   lugar_max<-df$mpio_origen[which.max(df$columna_porcentaje)]

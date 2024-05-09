@@ -94,7 +94,6 @@ ui <- fluidPage(
         )
       ), 
       fluidRow(
-        
         column(12,
                style = "margin-top: 2px;",
                tags$div(

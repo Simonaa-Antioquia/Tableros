@@ -18,9 +18,10 @@ options(scipen = 999)
 source("002b_Indices_abastecimiento_Antioquia_funciones.R")
 
 
-# Definir la interfaz de usuario
 ui <- fluidPage(
   tags$head(
+    tags$title("Diferencia de precios entre ciudades"),  # Añade esta línea
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
     tags$style(HTML("
       .main-header {
         font-family: 'Prompt', sans-serif;
@@ -35,39 +36,75 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
       }
+      .sub-header3 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 15px;
+      }
+      .center {
+        display: flex;
+        justify-content: center;
+      }
+      .scrollable-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+      }
+      
     "))
   ),
-  tags$h1("Importancia de los municipios que abastecen a Antioquia", class = "main-header"),
+  tags$h1("⁠Importancia de los municipios que abastecen antioquia", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
     style = "margin-bottom: 20px;"
   ),  
-  div(class = "scrollable-content",
+  div(
       fluidRow(
         column(3,
-               selectInput("anio", "Año", c("Todos los años" = "", as.character(unique(abastecimiento_medellin$anio))))),
+               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_medellin$anio)))))),
         column(3,
-               selectInput("mes", "Mes", c("Todos los meses" = "", as.character(unique(abastecimiento_medellin$mes))))),
+               selectInput("mes", "Mes", c("Todos los meses" = "", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, 
+                                           "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, 
+                                           "Diciembre" = 12), selected = "")),
         column(3,
-               numericInput("municipios", "Número de municipios", value = 10, min = 1, max = 50)),
+               numericInput("municipios", "Número de municipios", value = 10, min = 1, max = 18)),
         column(3,
                selectInput("producto", "Producto",c("Todos los productos" = "", as.character(unique(abastecimiento_medellin$producto)))))
       )),
-  div(
-    fluidRow(
-      column(12,
-             plotOutput("grafico",height = "300px"),
+  fluidRow(
+    column(8,
+           div(
+             plotly::plotlyOutput("grafico",height = "400px"),
              downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
+             downloadButton("descargarDatos", "Descargar datos"),
+             actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("reset", "Restrablecer",icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
-      )
-    ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
+           )),
+    column(4, 
+           div(
+             wellPanel(textOutput("mensaje1"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje3"),
+                       style = "background-color: #094735; color: #FFFFFF;")
+           ))
   ),
-  tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
-    style = "position: absolute; bottom: 0; width: 100%;"
-  ) 
+  fluidRow(
+    column(12,
+           style = "margin-top: 2px;",
+           tags$div(
+             tags$p("Este gráfico muestra la importancia que tiene cada municipio en el abastecimiento de la central mayorista y minorista de Medellín.", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
+           )
+    )
+  ),
+    fluidRow(
+    tags$div(
+      tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+      style = "width: 100%; margin:0;"  
+    )
+  )
 )

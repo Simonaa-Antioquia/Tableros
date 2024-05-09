@@ -16,7 +16,12 @@ options(scipen = 999)
 # Definir la función de servidor
 server <- function(input, output, session) {
   
+
+  
   resultado<-reactive({
+    if (is.null(input$municipios) || is.na(input$municipios) || input$municipios == 0) {
+      return(NULL)
+    }
     # Comprobar si solo se ha seleccionado un producto
     if (input$producto != "" && input$anio == "" && input$mes == "") {
       importancia(Producto = input$producto)
@@ -39,9 +44,18 @@ server <- function(input, output, session) {
     }
   })
   
-  output$grafico <- renderPlot({
-    resultado()$grafico
-  }, res = 100)
+
+
+  output$grafico <- plotly::renderPlotly({
+    res <- resultado()
+    if (is.character(res) || length(res) == 0 || is.null(input$municipios) || input$municipios < 1) {
+      return(NULL)  # No hay gráfico para mostrar
+    } else {
+      res$grafico  # Devuelve el gráfico Plotly
+    }
+  })
+
+  
   
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
@@ -71,15 +85,41 @@ server <- function(input, output, session) {
     }
   )
   
+  
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
+  
   # En el servidor
   output$subtitulo <- renderText({
     resultado <- resultado()
     lugar_max <- resultado$lugar_max
     porcentaje_max<-resultado$porcentaje_max
-    #if(input$anio == ""){
-    return(paste0("El principal municipio de donde viene la comida a Antioquia es ", lugar_max, " con un ", porcentaje_max,"%"))
-    #}
+   
+    if (is.na(input$municipios) || is.null(input$municipios )){
+      return("Por favor ingrese el numero de municipios que quiere graficar")
+    } else {
+      return(paste0(lugar_max, "es el municipio con mayor importancia en el abastecimeinto de Antioquia, aporta ",porcentaje_max,"%"))
+    }
   })
+  
+ 
+ observeEvent(input$reset, {
+      updateSelectInput(session, "municipios", selected = 10)
+      updateSelectInput(session, "anio", selected = "")
+      updateSelectInput(session, "mes", selected = "")
+      updateSelectInput(session, "producto", selected = NULL)
+    })
+ 
+ output$mensaje1 <- renderText({
+    if (is.na(input$municipios)) {
+       return("")
+     } else   {
+       return(paste0("El municipio mas importante en el abastecimiento es: ", resultado()$lugar_max))
+     }
+ })
+ 
+  
 }
 
 
