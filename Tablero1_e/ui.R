@@ -17,11 +17,9 @@ source("001f_precios_diferencias_municipios_funciones.R")
 
 ui <- fluidPage(
   tags$head(
+    tags$title("Cantidades, precios y distancias recorridas por mes"),  # Añade esta línea
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
     tags$style(HTML("
-    @font-face {
-        font-family: 'Prompt';
-        src: url('Prompt.ttf') format('truetype');
-      }
       .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
