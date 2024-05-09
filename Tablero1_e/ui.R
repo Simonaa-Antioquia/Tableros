@@ -17,7 +17,7 @@ source("001f_precios_diferencias_municipios_funciones.R")
 
 ui <- fluidPage(
   tags$head(
-    tags$title("Cantidades, precios y distancias recorridas por mes"),  # Añade esta línea
+    tags$title("Diferencia de precios entre ciudades"),  # Añade esta línea
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
     tags$style(HTML("
       .main-header {
@@ -50,7 +50,7 @@ ui <- fluidPage(
   ),
   tags$div(
     class = "scrollable-content",
-    tags$h1("Diferencia de precios entre departamentos", class = "main-header"),
+    tags$h1("Diferencia de precios entre ciudades", class = "main-header"),
     div(
       textOutput("subtitulo"),
       class = "sub-header2",
@@ -65,7 +65,7 @@ ui <- fluidPage(
         column(3,
                selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(data_comparacion_anual_producto$year)))))),
         column(3,
-               selectInput("mes", "Mes", c("Todos los meses" = "", 1:12), selected = "")), 
+               selectInput("mes", "Mes", c("Todos los meses" = "", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, "Diciembre" = 12), selected = "")),
         column(3,
                conditionalPanel(
                  condition = "input.tipo == 0 ",
@@ -94,14 +94,16 @@ ui <- fluidPage(
         )
       ), 
       fluidRow(
+        
         column(12,
                style = "margin-top: 2px;",
                tags$div(
-                 tags$p("Este grafico muestra la diferencia de precios promedio entre las diferentes ciudades y Medellín", class = "sub-header3", style = "margin-top: 3px;"),
-                 tags$p("El tamaño de cada una de las bolas depende de la desviacion estandar del precio a nivel departamento", class = "sub-header3", style = "margin-top: 3px;"),
-               tags$p("Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header3", style = "margin-top: 3px;")
-                 )
+                 tags$p("Este gráfico muestra la diferencia de precios promedio entre las diferentes ciudades y Medellín", class = "sub-header2", style = "margin-top: 3px;"),
+                 tags$p("El tamaño de cada una de las bolas depende de la variación del precio dentro de cada ciudad", class = "sub-header2", style = "margin-top: 3px;"),
+                 tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
+               )
         )
+        
       )
     ),
     fluidRow(

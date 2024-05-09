@@ -99,7 +99,7 @@ server <- function(input, output, session) {
       ciudad_max <- res$ciudad_max
       ciudad_min <- res$ciudad_min
       
-      return(paste("El menor precio reportado para el periodo y producto seleccionado es $", precio_min," por debajo del precio de Medellin y se reporto en", ciudad_min,". El mayor precio reportado fue en", ciudad_max, "y fue de $",precio_max,"pesos mas que el precio de Medellín")) 
+      return(paste("El menor precio reportado para el período y producto seleccionado es $", precio_min, "por debajo del precio de Medellín y se reportó en", ciudad_min, ". El mayor precio reportado fue en", ciudad_max, "y fue de $", precio_max, "pesos más que el precio de Medellín"))
     }, error = function(e) {
       # Si ocurre un error, ejecuta este código
       return("No hay datos disponibles.")
