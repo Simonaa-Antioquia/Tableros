@@ -10,8 +10,8 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(tools)
-library(sf)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(ggrepel);library(leaflet)
+library(sf);library(plotly)
 options(scipen = 999)
 ################################################################################-
 
@@ -44,15 +44,15 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
   if (!is.null(Año) && !is.null(Mes) && !is.null(Producto)) {
     
     df<- df  %>%
-      distinct(anio,codigo_depto_destino,producto,mes, .keep_all = TRUE) %>%
-      select(anio,codigo_depto_destino, mes, producto, porcentaje_dpto_mes_producto)  
+      distinct(anio,mpio_destino,mpio_destino,codigo_depto_destino,producto,mes, .keep_all = TRUE) %>%
+      select(anio,mpio_destino,codigo_depto_destino, mes, producto, porcentaje_dpto_mes_producto)  
     df <- df %>% rename( columna_porcentaje = porcentaje_dpto_mes_producto)
     
   } else if (!is.null(Año) && !is.null(Mes)) {
     
     df<- df  %>%
-      distinct(anio,codigo_depto_destino,mes, .keep_all = TRUE) %>%
-      select(anio,codigo_depto_destino, mes, porcentaje_dpto_mes)  
+      distinct(anio,mpio_destino,codigo_depto_destino,mes, .keep_all = TRUE) %>%
+      select(anio,mpio_destino,codigo_depto_destino, mes, porcentaje_dpto_mes)  
     columna_porcentaje <- "porcentaje_dpto_mes"
     df <- df %>% rename( columna_porcentaje = porcentaje_dpto_mes)
     
@@ -60,8 +60,8 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
   } else if (!is.null(Año) && !is.null(Producto)) {
     
     df<- df  %>%
-      distinct(anio,codigo_depto_destino,producto, .keep_all = TRUE) %>%
-      select(anio,codigo_depto_destino, producto, porcentaje_dpto_anio_producto)  
+      distinct(anio,mpio_destino,codigo_depto_destino,producto, .keep_all = TRUE) %>%
+      select(anio,mpio_destino,codigo_depto_destino, producto, porcentaje_dpto_anio_producto)  
     columna_porcentaje <- "porcentaje_dpto_anio_producto"
     df <- df %>% rename( columna_porcentaje =porcentaje_dpto_anio_producto)
     
@@ -69,49 +69,63 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
     # No se tienen ni mes ni producto
     
     df<- df  %>%
-      distinct(anio,codigo_depto_destino, .keep_all = TRUE) %>%
-      select(anio,codigo_depto_destino, porcentaje_dpto_anio)  
+      distinct(anio,mpio_destino,codigo_depto_destino, .keep_all = TRUE) %>%
+      select(anio,mpio_destino,codigo_depto_destino, porcentaje_dpto_anio)  
     df <- df %>% rename( columna_porcentaje = porcentaje_dpto_anio)
     
   }else if (!is.null(Producto)){
     # No se tienen ni mes ni producto
     
     df<- df  %>%
-      distinct(codigo_depto_destino,producto, .keep_all = TRUE) %>%
-      select(codigo_depto_destino,producto, porcentaje_dpto_prod)  
+      distinct(mpio_destino,codigo_depto_destino,producto, .keep_all = TRUE) %>%
+      select(mpio_destino,codigo_depto_destino,producto, porcentaje_dpto_prod)  
     df <- df %>% rename( columna_porcentaje = porcentaje_dpto_prod)
     
   } else {
     
     df<- df  %>%
-      distinct(codigo_depto_destino, .keep_all = TRUE) %>%
-      select(codigo_depto_destino, porcentaje_dpto)  
+      distinct(mpio_destino,codigo_depto_destino, .keep_all = TRUE) %>%
+      select(mpio_destino,codigo_depto_destino, porcentaje_dpto)  
     df <- df %>% rename( columna_porcentaje = porcentaje_dpto)
     
   }
-  df<-df%>%filter(codigo_depto_destino !=5)
-  mapa<-shapefile%>%left_join(df, by = c("dpto_ccdgo"="codigo_depto_destino"))
+  df<-df#%>%filter(codigo_depto_destino !=5)
+  if (nrow(df) == 0) {
+    print("No hay datos disponibles")
+  } else {mapa<-shapefile%>%left_join(df, by = c("dpto_ccdgo"="codigo_depto_destino"))%>%
+    mutate(columna_porcentaje=columna_porcentaje*100)
   
   # Crear un título dinámico
   #titulo <- paste("Porcentaje que llega de Antioquia del total", ifelse(is.null(Año), "", paste("en el año", Año)),
   #                ifelse(is.null(Mes), "", paste("para el mes", Mes)), 
   #                ifelse(is.null(Producto), "", paste("-", Producto)))
   
-  p<-ggplot() +
-    geom_sf(data = mapa, aes(fill = columna_porcentaje*100)) +
-    scale_fill_gradient(low = "#0D8D38", high = "#F2E203", na.value = "white", name = "Porcentaje") +
-    labs(title = " ") +
-    theme_minimal() +
-    theme(
-      plot.background = element_blank(),  # Hace que el fondo sea transparente
-      panel.background = element_blank(),  # Hace que el fondo del panel sea transparente
-      panel.grid = element_blank(),  # Elimina las líneas de la cuadrícula
-      axis.line = element_blank(),
-      axis.text = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title = element_blank()
-      )
-      
+  mapa <- mapa %>% #filter(!is.na(columna_porcentaje))%>% 
+    arrange(columna_porcentaje)%>%mutate(columna_porcentaje2=columna_porcentaje*-1)
+  
+  min_val <- min(abs(na.omit(mapa$columna_porcentaje)))
+  max_val <- max(abs(na.omit(mapa$columna_porcentaje)))
+  
+  valores_sin_na <- na.omit(mapa$columna_porcentaje)
+  my_palette_sin_na <- colorNumeric(palette = c("#F2E203", "#1A4922"), domain = valores_sin_na)
+  
+  # Crear una paleta de colores personalizada
+  my_palette <- colorNumeric(palette = colorRampPalette(c("#F2E203", "#1A4922"))(length(unique(mapa$columna_porcentaje))), domain = c(min_val,max_val),  na.color = "#C5C7C6")
+  
+  # Crear el mapa interactivo
+  p <- leaflet(mapa) %>%
+    addProviderTiles(providers$CartoDB.Positron) %>%
+    addPolygons(fillColor = ~my_palette(columna_porcentaje),
+                fillOpacity = 0.8, 
+                color = "#D5D5D5", 
+                weight = 1,
+                popup = ~ifelse(is.na(columna_porcentaje),"",paste0("<strong>Departamento: </strong>", tools::toTitleCase(tolower(mapa$dpto_cnmbr)), 
+                                "<br><strong>Diferencia del precio: </strong>", round(columna_porcentaje),"%")),
+                highlightOptions = highlightOptions(color = "white", 
+                                                    weight = 2,
+                                                    bringToFront = FALSE)) %>%
+    addLegend(pal = my_palette_sin_na, values = ~valores_sin_na, opacity = 0.7, title = "Porcentaje")#, na.label = "")
+    
       porcentaje_max<-round(max(df$columna_porcentaje)*100,1)
       # Encontrar el índice del valor máximo ignorando los NA
       indice_max <- which(mapa$columna_porcentaje == max(mapa$columna_porcentaje, na.rm = TRUE))
@@ -123,11 +137,12 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
         porcentaje_max=porcentaje_max,
         dpto_max=dpto_max
       ))
+  }
 }
 
 #col_en_ant()
 #col_en_ant(Año=2023)
 #col_en_ant(Año=2023, Mes=1)
-#col_en_ant(Año=2023, Mes=1, Producto = "arroz")
+#col_en_ant(Año=2013, Mes=1, Producto = "tomates otros")
 #col_en_ant(Año=2023, Producto = "arroz")
 #col_en_ant(Producto = "arroz")

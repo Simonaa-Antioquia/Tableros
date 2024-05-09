@@ -9,7 +9,7 @@
 rm(list=ls())
 # Paquetes 
 ################################################################################-
-library(reshape2);library(sf);library(shiny)
+library(reshape2);library(sf);library(shiny);library(htmlwidgets)
 ################################################################################-
 
 server <- function(input, output, session) {
@@ -51,8 +51,8 @@ server <- function(input, output, session) {
     },
     content = function(file) {
       tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500)
+      htmlwidgets::saveWidget(plotly::as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 800)
     }
   )
   

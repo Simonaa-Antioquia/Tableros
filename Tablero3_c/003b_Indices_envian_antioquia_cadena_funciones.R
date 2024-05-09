@@ -11,7 +11,7 @@ rm(list=ls())
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
 library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(ggrepel);library(leaflet)
-library(sf)
+library(sf);library(plotly)
 options(scipen = 999)
 ################################################################################-
 # Cargar el shapefile
@@ -108,7 +108,7 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
   my_palette_sin_na <- colorNumeric(palette = c("#F2E203", "#1A4922"), domain = valores_sin_na)
   
   # Crear una paleta de colores personalizada
-  my_palette <- colorNumeric(palette = colorRampPalette(c("#F2E203", "#1A4922"))(length(unique(mapa$columna_porcentaje))), domain = c(min_val,max_val),  na.color = "#D5D5D5")
+  my_palette <- colorNumeric(palette = colorRampPalette(c("#F2E203", "#1A4922"))(length(unique(mapa$columna_porcentaje))), domain = c(min_val,max_val),  na.color = "#C5C7C6")
   
   # Crear el mapa interactivo
   p <- leaflet(mapa) %>%
@@ -121,10 +121,10 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
                                 "<br><strong>Diferencia del precio: </strong>", round(columna_porcentaje),"%"),
                 highlightOptions = highlightOptions(color = "white", 
                                                     weight = 2,
-                                                    bringToFront = TRUE)) %>%
+                                                    bringToFront = FALSE)) %>%
     addLegend(pal = my_palette_sin_na, values = ~valores_sin_na, opacity = 0.7, title = "Porcentaje")#, na.label = "")
   
-  porcentaje_max <- round(max(df$columna_porcentaje) * 100, 1)
+  porcentaje_max <- round(max(df$columna_porcentaje) * 100)
   dpto_max <- df$depto_origen[which.max(df$columna_porcentaje)]
   dpto_max <- tolower(dpto_max)
   words <- strsplit(dpto_max, " ")[[1]]

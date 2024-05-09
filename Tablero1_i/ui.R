@@ -9,7 +9,9 @@
 rm(list=ls())
 # Paquetes 
 ################################################################################-
-library(reshape2);library(sf);library(shiny)
+library(reshape2);library(sf);library(shiny);library(leaflet);library(htmlwidgets)
+library(webshot)
+
 ################################################################################-
 source("001h_precios_diferencias_mapa_funciones.R")
 
@@ -26,6 +28,9 @@ ui <- fluidPage(
       tags$title("Mapa comparación de precios"),  # Añade esta línea
       tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
+      .selectize-dropdown {
+      z-index: 10000 !important;
+    }
       body {
         overflow-x: hidden;
       }
@@ -61,7 +66,7 @@ ui <- fluidPage(
         column(4,
                selectInput("anio", "Año", c("Todos los años" = "todo", sort(as.character(unique(data$year)))))),
         column(4,
-               selectInput("mes", "Mes", c("Todos los meses" = "todo", 1:12), selected = "")),
+               selectInput("mes", "Mes", c("Todos los meses" = "todo", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, "Diciembre" = 12), selected="")),
         column(4,
                selectInput("producto", "Producto", c("Todos los productos" = "todo", sort(as.character(unique(productos_filtrados))))))
       )),
@@ -84,8 +89,8 @@ ui <- fluidPage(
                        style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
-                    tags$br(),"La información solo se muestra para los precios en el centro de acopio de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
+    tags$div(tags$p("La comparación es entre ciudades pero para facilidad visual se toman como todo el departamento.",
+                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
