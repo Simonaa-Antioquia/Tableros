@@ -41,8 +41,8 @@ server <- function(input, output, session) {
     updateSelectInput(session, "anio", selected = "todo")
   })
   
-  output$grafico <- renderPlotly({
-    plotly::ggplotly(resultado()$grafico)
+  output$grafico <- renderLeaflet({
+    resultado()$grafico
   })
   
   output$descargar <- downloadHandler(
@@ -52,7 +52,7 @@ server <- function(input, output, session) {
     content = function(file) {
       tempFile <- tempfile(fileext = ".html")
       htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
+      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500)
     }
   )
   

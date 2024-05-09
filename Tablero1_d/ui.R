@@ -20,7 +20,11 @@ ui <- fluidPage(
     style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
     tags$head(
       tags$title("Cantidades, precios y distancias recorridas por mes"),  # Añade esta línea
+      tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
+      body {
+        overflow-x: hidden;
+      }
       .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
@@ -44,12 +48,10 @@ ui <- fluidPage(
   ),
   div(class = "scrollable-content",
       fluidRow(
-        column(4,
+        column(6,
                selectInput("producto", "Seleccione producto:", c("Todos los productos" = "total", as.character(unique(complet$producto))))),
-        column(4,
-               selectInput("anio", "Seleccione un año:", c("Todos los años"="todos", sort(unique(complet$anio))))),
-        column(4,
-               actionButton("reset", "Restablecer filtros"))
+        column(6,
+               selectInput("anio", "Seleccione un año:", c("Todos los años"="todos", sort(unique(complet$anio)))))
       )),
   div(
     fluidRow(
@@ -57,7 +59,8 @@ ui <- fluidPage(
              plotlyOutput("grafico",height = "300px"),
              downloadButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
-             actionButton("github", "GitHub", icon = icon("github"))
+             actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("reset", "Restablecer", icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
       ),

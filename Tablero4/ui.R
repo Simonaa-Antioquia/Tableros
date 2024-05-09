@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 options(scipen = 999)
-source("004a_geograficos.R")
+source("004a_rutas_abastecimiento.R")
 ################################################################################-
 
 # Cargar los paquetes necesarios
@@ -42,11 +42,11 @@ ui <- fluidPage(
   div(class = "scrollable-content",
       fluidRow(
         column(4,
-               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(antioquia$anio)))))),
+               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_rutas$anio)))))),
         column(4,
-               selectInput("mes", "Mes", c("Todos los meses" = "", sort(as.numeric(unique(antioquia$mes)))))),
+               selectInput("mes", "Mes", c("Todos los meses" = "", sort(as.numeric(unique(abastecimiento_rutas$mes)))))),
         column(4,
-               selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(antioquia$producto)))))),
+               selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_rutas$producto)))))),
         column(4,
                selectInput("importancia","Importancia de los municipios",c("No incluir" = "","Incluir")))
       )),

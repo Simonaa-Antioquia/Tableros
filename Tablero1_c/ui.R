@@ -22,7 +22,11 @@ ui <- fluidPage(
     style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
     tags$head(
       tags$title("Comportamiento de los precios en el tiempo"),  # Añade esta línea
+      tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
+        body {
+          overflow-x: hidden;
+        }
         .main-header {
           font-family: 'Prompt', sans-serif;
           font-size: 40px;
@@ -46,14 +50,12 @@ ui <- fluidPage(
     ),
     div(class = "scrollable-content",
         fluidRow(
-          column(3,
+          column(4,
                  selectInput("producto", "Seleccione producto:", c("Todos los productos" = "todo", as.character(names(which(table(data$producto) > 12)))))),
-          column(3, 
+          column(4, 
                  selectInput("variable", "Seleccione la variable", c("Precio promedio" = "precio_prom", "Cambio porcentual" = "cambio_pct", "Cambio porcentual año anterior"="cambio_pct_anual"))),
-          column(3, 
-                 selectInput("anio", "Seleccione el año", c("Todos los años" = "todo", sort(unique(data$anio))))),
-          column(3,
-                 actionButton("reset", "Restablecer filtros"))
+          column(4, 
+                 selectInput("anio", "Seleccione el año", c("Todos los años" = "todo", sort(unique(data$anio)))))
         )),
     div(
       fluidRow(
@@ -61,7 +63,8 @@ ui <- fluidPage(
                plotlyOutput("grafico"),
                downloadButton("descargar", "Gráfica"),
                downloadButton("descargarDatos", "Datos"),
-               actionButton("github", "GitHub", icon = icon("github"))
+               actionButton("github", "GitHub", icon = icon("github")),
+               actionButton("reset", "Restablecer", icon = icon("refresh"))
         ),
         column(2, 
                wellPanel(textOutput("mensaje1"),

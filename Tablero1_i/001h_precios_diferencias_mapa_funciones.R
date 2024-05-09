@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readxl);library(reshape2);library(ggplot2);library(gganimate);library(dplyr);
-library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(plotly)
+library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(leaflet)
 ################################################################################-
 
 data <- readRDS("base_precios_vs_medellin.rds")%>%
@@ -21,66 +21,100 @@ data$departamento[data$departamento=="Bogotá, D.C."]<-"Bogotá"
 shapefile <- st_read("MGN_DPTO_POLITICO.shp")%>%
   janitor::clean_names()%>%filter(dpto_ccdgo!=88)%>%mutate(dpto_ccdgo=as.numeric(dpto_ccdgo))
 
-Anio=2014
-Mes=11
-Producto= "Aguacate papelillo"
+# Simplificar la geometría del shapefile
+shapefile_simplified <- st_simplify(shapefile, dTolerance = 0.01)
 
-mapa_dif <- function(Anio = NULL, Mes = NULL, Producto = NULL) {
-  df <- data
-  
-  # Determina qué columnas y condiciones de filtrado usar
-  cols <- c("cod_depto", "departamento")
-  cond <- list()
-  comp_col <- "comparacion"
-  if (!is.null(Anio)) {
-    cond$year <- Anio
-    comp_col <- "comparacion_anual"
+# Guardar el shapefile simplificado
+#st_write(shapefile_simplified, "MGN_DPTO_POLITICO_simplified.shp")
+
+Anio=2014
+#Mes=11
+#Producto= "Aguacate papelillo"
+
+mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
+  df<-data
+  if(!is.null(Anio) && !is.null(Mes) && !is.null(Producto)){
+    df<-df%>%filter(year==Anio& mes==Mes& producto==Producto)%>%
+      dplyr::rename(comp=comparacion_anual_mensual_producto)%>%
+      dplyr::select(cod_depto, departamento, comp)%>%
+      unique()
+  } else if(!is.null(Anio) && !is.null(Mes) && is.null(Producto)){
+    df<-df%>%filter(year==Anio& mes==Mes)%>%
+      dplyr::rename(comp=comparacion_anual_mensual)%>%
+      dplyr::select(cod_depto, departamento, comp)%>%
+      unique()
+  } else if(!is.null(Anio) && is.null(Mes) && is.null(Producto)){
+    df<-df%>%filter(year==Anio)%>%
+      dplyr::rename(comp=comparacion_anual)%>%
+      dplyr::select(cod_depto, departamento, comp)%>%
+      unique()
+  } else if(is.null(Anio) && is.null(Mes) && is.null(Producto)){
+    df<-df%>%#filter(year==Anio& mes==Mes& producto==Producto)%>%
+      dplyr::rename(comp=comparacion)%>%
+      dplyr::select(cod_depto, departamento, comp)%>%
+      unique()
+  } else if(is.null(Anio) && !is.null(Mes) && !is.null(Producto)){
+    df<-df%>%filter(mes==Mes& producto==Producto)%>%
+      dplyr::rename(comp=comparacion_mensual_producto)%>%
+      dplyr::select(cod_depto, departamento, comp)%>%
+      unique()
+  } else if(is.null(Anio) && is.null(Mes) && !is.null(Producto)){
+    df<-df%>%filter(producto==Producto)%>%
+      dplyr::rename(comp=comparacion_producto)%>%
+      dplyr::select(cod_depto, departamento, comp)%>%
+      unique()
+  } else if(is.null(Anio) && !is.null(Mes) && is.null(Producto)){
+    df<-df%>%filter(mes==Mes)%>%
+      dplyr::rename(comp=comparacion_mensual)%>%
+      dplyr::select(cod_depto, departamento, comp)%>%
+      unique()
+  } else {
+    df<-df%>%filter(year==Anio&producto==Producto)%>%
+      dplyr::rename(comp=comparacion_anual_producto)%>%
+      dplyr::select(cod_depto, departamento, comp)%>%
+      unique()
   }
-  if (!is.null(Mes)) {
-    cond$mes <- Mes
-    comp_col <- "comparacion_mensual"
-  }
-  if (!is.null(Producto)) {
-    cond$producto <- Producto
-    comp_col <- "comparacion_producto"
-  }
   
-  # Realiza la operación de filtrado y selección una sola vez
-  df <- df %>%
-    filter(!!!cond) %>%
-    rename(comp = all_of(comp_col)) %>%
-    select(cod_depto, departamento, comp) %>%
-    unique()
-  
-  
-  mapa<-shapefile%>%left_join(df, by = c("dpto_ccdgo"="cod_depto"))
+  mapa<-shapefile%>%dplyr::left_join(df, by = c("dpto_ccdgo"="cod_depto"))
   
   titulo <- paste("Precio con respecto a Medellín", ifelse(is.null(Anio), "", paste("en el año", Anio)),
                   ifelse(is.null(Mes), "", paste("para el mes", Mes)), 
                   ifelse(is.null(Producto), "", paste("-", Producto)))
   
   mapa$tooltip_text<-ifelse(is.na(mapa$departamento),"",paste("Departamento: ",mapa$departamento,
-                              "<br>Diferencia de precio: $", round(mapa$comp)))
+                                                              "<br>Diferencia de precio: $", round(mapa$comp)))
   
   if (nrow(df) == 0) {
     print("No hay datos disponibles")
   } else {
-    p <- ggplot() +
-    geom_sf(data = mapa, aes(fill = comp, text = tooltip_text)) +
-    scale_fill_gradient2(low = "#1A4922", mid = "white", high = "#F39F06", midpoint = 0, na.value = "#D5D5D5", name = "Diferencia\ndel precio") +
-    labs(title = "") +
-    theme_minimal() +
-    theme(
-      plot.background = element_blank(),  # Hace que el fondo sea transparente
-      panel.background = element_blank(),  # Hace que el fondo del panel sea transparente
-      panel.grid = element_blank(),  # Elimina las líneas de la cuadrícula
-      axis.line = element_blank(),
-      axis.text = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title = element_blank()
-    )
-    map<-plotly::ggplotly(p, tooltip = "text")
+    # Unir el dataframe con el shapefile
+    mapa <- shapefile %>% dplyr::left_join(df, by = c("dpto_ccdgo" = "cod_depto"))
+    
+    # Filtrar para eliminar las filas con valores NA en "comp"
+    mapa <- mapa %>% #filter(!is.na(comp))%>% 
+      arrange(comp)%>%mutate(comp2=comp*-1)
+    
+    min_val <- -max(abs(na.omit(mapa$comp)))
+    max_val <- max(abs(na.omit(mapa$comp)))
+    
+    # Crear una paleta de colores personalizada
+    my_palette <- colorNumeric(palette = colorRampPalette(c("#F39F06", "white", "#1A4922"))(length(unique(mapa$comp2))), domain = c(min_val,0,max_val))
+    
+    # Crear el mapa interactivo
+    p <- leaflet(mapa) %>%
+      addProviderTiles(providers$CartoDB.Positron) %>%
+      addPolygons(fillColor = ~my_palette(comp2),
+                  fillOpacity = 0.8, 
+                  color = "#D5D5D5", 
+                  weight = 1,
+                  popup = ~paste0("<strong>Departamento: </strong>", departamento, 
+                                  "<br><strong>Diferencia del precio: </strong>", round(comp)),
+                  highlightOptions = highlightOptions(color = "white", 
+                                                      weight = 2,
+                                                      bringToFront = TRUE)) %>%
+      addLegend(pal = my_palette, values = ~comp2, opacity = 0.7, title = "Diferencia del precio")
   }
+  
   
   
   precio_max <- ifelse(nrow(df) == 0,"",round(max(df$comp)))
@@ -88,7 +122,7 @@ mapa_dif <- function(Anio = NULL, Mes = NULL, Producto = NULL) {
   ciudad_max <- df$departamento[which.max(df$comp)]
   ciudad_min <- df$departamento[which.min(df$comp)]
   return(list(
-    grafico=map,
+    grafico=p,
     datos=df,
     precio_max=precio_max,
     precio_min=precio_min,
