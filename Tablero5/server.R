@@ -70,6 +70,11 @@ server <- function(input, output, session) {
     paste0("Hubo mayor diferencia de entrada y salida de alimentos el ", fecha_min, " ingresando ", min_ton, " mil toneladas más de las que salieron.")
   })
   
+  # Borrar filtros
+  observeEvent(input$reset, {
+    updateSelectInput(session, "tipo", selected = 1)
+  })
+  
   observeEvent(input$github, {
     browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
   })

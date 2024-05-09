@@ -17,7 +17,7 @@ productos <- unique(data_anual_producto$producto)
 
 ui <- fluidPage(
   tags$head(
-    tags$title("Diferencia de precios entre ciudades"),  
+    tags$title("netos"),  
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
     tags$style(HTML("
        .main-header {
@@ -73,8 +73,8 @@ ui <- fluidPage(
     column(8,
            div(
              plotly::plotlyOutput("grafico",height = "400px"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos"),
+             downloadButton("descargar", "Gráfica"),
+             downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
              #,
