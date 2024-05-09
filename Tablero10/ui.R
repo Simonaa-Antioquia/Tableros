@@ -20,8 +20,22 @@ library(ggplot2)
 
 # Definir la interfaz de usuario
 ui <- fluidPage(
-  tags$head(
-    tags$style(HTML("
+  tags$div(
+    style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
+    tags$head(
+      tags$title("Destino de la producción de alimentos de antioquia"),  # Añade esta línea
+      tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
+      tags$style(HTML("
+      #grafico {
+             display: block;
+             margin: auto;
+           }
+      .selectize-dropdown {
+      z-index: 10000 !important;
+    }
+      body {
+        overflow-x: hidden;
+      }
       .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
@@ -37,7 +51,7 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("Importancia de los municipios que abastece Antioquia", class = "main-header"),
+  tags$h1("Composición del destino de la producción de alimentos de antioquia", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -46,28 +60,40 @@ ui <- fluidPage(
   div(class = "scrollable-content",
       fluidRow(
         column(3,
-               selectInput("anio", "Año", c("Todos los años" = "", as.character(unique(proviene_antioquia$anio))))),
+               selectInput("anio", "Año", c("Todos los años" = "todo", as.character(unique(proviene_antioquia$anio))))),
         column(3,
-               selectInput("mes", "Mes", c("Todos los meses" = "", as.character(unique(proviene_antioquia$mes))))),
+               selectInput("mes", "Mes", c("Todos los meses" = "todo", as.character(unique(proviene_antioquia$mes))))),
         column(3,
-               numericInput("municipios", "Número de municipios", value = 10, min = 1, max = 50)),
+               numericInput("municipios", "Número de municipios", value = 10, min = 1, max = 18)),
         column(3,
-               selectInput("producto", "Producto",c("Todos los productos" = "", as.character(unique(proviene_antioquia$producto)))))
+               selectInput("producto", "Producto",c("Todos los productos" = "todo", as.character(unique(proviene_antioquia$producto)))))
       )),
   div(
     fluidRow(
-      column(12,
-             plotOutput("grafico",height = "300px"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
+      column(10,
+             plotlyOutput("grafico",height = "400px"),
+             downloadButton("descargar", "Gráfica"),
+             downloadButton("descargarDatos", "Datos"),
+             actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("reset", "Restablecer", icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
+      ),
+      column(2, 
+             wellPanel(textOutput("mensaje1"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje3"),
+                       style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
+    tags$div(tags$p("Este gráfico muestra la importancia que tiene cada municipio como destino de los prodoctos de origen antioqueño",
+                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
+    )
   ) 
 )

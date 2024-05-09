@@ -18,29 +18,35 @@ server <- function(input, output, session) {
   
   resultado<-reactive({
     # Comprobar si solo se ha seleccionado un producto
-    if (input$producto != "" && input$anio == "" && input$mes == "") {
+    if (input$producto != "todo" && input$anio == "todo" && input$mes == "todo") {
       importancia(Producto = input$producto)
-    } else if (input$mes != "" && input$anio == "") {
+    } else if (input$mes != "todo" && input$anio == "todo") {
       validate(
-        need(input$anio != "", "Debe seleccionar un año.")
+        need(input$anio != "todo", "Debe seleccionar un año.")
       )
-    } else if(input$anio == "" && input$producto == "" && input$mes == ""){
+    } else if(input$anio == "todo" && input$producto == "todo" && input$mes == "todo"){
       importancia(municipios = input$municipios)
-    } else if(input$producto == "" && input$mes == "" ){
+    } else if(input$producto == "todo" && input$mes == "todo" ){
       importancia(Año = input$anio, municipios = input$municipios)
-    } else if(input$producto == ""){
+    } else if(input$producto == "todo"){
       importancia(Año = input$anio, Mes = input$mes ,municipios = input$municipios)
-    } else if(input$mes == "" ){
+    } else if(input$mes == "todo" ){
       importancia(Año = input$anio, municipios = input$municipios, Producto = input$producto)
-    } else if(input$anio == "" && input$mes == ""){
+    } else if(input$anio == "todo" && input$mes == "todo"){
       importancia(Producto = input$producto)
     } else{
       importancia(Año = input$anio, Mes = input$mes ,municipios = input$municipios, Producto = input$producto)
     }
   })
-  output$grafico <- renderPlot({
-    resultado()$grafico
-  }, res = 100)
+  
+  output$grafico <- plotly::renderPlotly({
+    res <- resultado()
+    if (is.character(res) || length(res) == 0 || is.null(input$municipios) || input$municipios < 1) {
+      return("NULL")  # No hay gráfico para mostrar
+    } else {
+      res$grafico  # Devuelve el gráfico Plotly
+    }
+  })
   
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
@@ -50,14 +56,12 @@ server <- function(input, output, session) {
   
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_principales_municipios_reciben_", Sys.Date(), ".png", sep="")
+      paste("grafica-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Forzar la ejecución de la función reactiva
-      res <- resultado()
-      
-      # Usa ggsave para guardar el gráfico
-      ggplot2::ggsave(filename = file, plot = res$grafico, width = 13, height = 7, dpi = 200)
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
     }
   )
   
@@ -70,14 +74,49 @@ server <- function(input, output, session) {
     }
   )
   
-  # En el servidor
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
+  
+  observeEvent(input$reset, {
+    updateSelectInput(session, "municipios", selected = 10)
+    updateSelectInput(session, "anio", selected = "todo")
+    updateSelectInput(session, "mes", selected = "todo")
+    updateSelectInput(session, "producto", selected = "todo")
+  })
+  
   output$subtitulo <- renderText({
-    resultado <- resultado()
+    res <- resultado()
+    if (is.data.frame(res) || is.list(res)) {
+      if (nrow(res$datos) == 0) {
+      return("No hay datos disponibles")
+    } else {resultado <- resultado()
     lugar_max <- resultado$lugar_max
     porcentaje_max<-resultado$porcentaje_max
     #if(input$anio == ""){
     return(paste0("El principal municipio a donde va la comida de Antioquia es ", lugar_max, " con un ", porcentaje_max,"%"))
-    #}
+    }
+      } else {
+        return("No hay datos disponibles")
+    }
+  })
+  
+  output$mensaje1 <- renderText({
+    #resultado <- resultado()
+    #volatil<-resultado$producto_vol
+    return("Poner mensaje")
+  })
+  
+  output$mensaje2 <- renderText({
+    #resultado <- resultado()
+    #promedio_camb<-resultado$promedio_camb
+    return("Poner mensaje")
+  })
+  
+  output$mensaje3 <- renderText({
+    #resultado <- resultado()
+    #promedio_camb_an<-resultado$promedio_camb_an
+    return("Poner mensaje")
   })
 }
 
