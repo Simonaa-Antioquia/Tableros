@@ -99,11 +99,29 @@ server <- function(input, output, session) {
       ciudad_max <- res$ciudad_max
       ciudad_min <- res$ciudad_min
       
-      return(paste("El menor precio reportado para el periodo y producto seleccionado es", precio_min," pesos por debajo del precio de Medellin y se reporto en", ciudad_min,". El mayor precio reportado fue en", ciudad_max, "y fue de",precio_max,"pesos mas que el precio de Medellín")) 
+      return(paste("El menor precio reportado para el periodo y producto seleccionado es $", precio_min," por debajo del precio de Medellin y se reporto en", ciudad_min,". El mayor precio reportado fue en", ciudad_max, "y fue de $",precio_max,"pesos mas que el precio de Medellín")) 
     }, error = function(e) {
       # Si ocurre un error, ejecuta este código
       return("No hay datos disponibles.")
     })
+  })
+  
+  
+  server <- function(input, output, session) {
+    observeEvent(input$reset, {
+      updateSelectInput(session, "tipo", selected = 1)
+      updateSelectInput(session, "anio", selected = "")
+      updateSelectInput(session, "mes", selected = "")
+      updateSelectInput(session, "producto", selected = NULL)
+    })
+    
+  }
+  
+  observeEvent(input$reset, {
+    updateSelectInput(session, "tipo", selected = 1)
+    updateSelectInput(session, "anio", selected = "")
+    updateSelectInput(session, "mes", selected = "")
+    updateSelectInput(session, "producto", selected = NULL)
   })
   
   output$mensaje1 <- renderText({
@@ -125,9 +143,9 @@ server <- function(input, output, session) {
     tryCatch({
       # Intenta ejecutar este código
       if (input$tipo != 1) {
-        return(paste0("El lugar más costoso para comprar ", input$producto, " es ", resultado()$ciudad_max, ". Es ", resultado()$precio_max, " más costoso que comprarlo en Medellín."))
+        return(paste0("El lugar más costoso para comprar ", input$producto, " es ", resultado()$ciudad_max, ". Es $", resultado()$precio_max, " más costoso que comprarlo en Medellín."))
       } else {
-        return(paste0("El lugar más costoso para comprar alimentos es ", resultado()$ciudad_max, ". En promedio es ", resultado()$precio_max, " más costoso que comprarlos en Medellín."))
+        return(paste0("El lugar más costoso para comprar alimentos es ", resultado()$ciudad_max, ". En promedio es $", resultado()$precio_max, " más costoso que comprarlos en Medellín."))
       }
     }, error = function(e) {
       # Si ocurre un error, ejecuta este código
@@ -140,9 +158,9 @@ server <- function(input, output, session) {
     tryCatch({
       # Intenta ejecutar este código
       if (input$tipo != 1) {
-        return(paste0("El lugar más economico para comprar ", input$producto, " es ", resultado()$ciudad_min, ". Es ", resultado()$precio_min, " pesos más barato que comprarlo en Medellín."))
+        return(paste0("El lugar más economico para comprar ", input$producto, " es ", resultado()$ciudad_min, ". Es $", resultado()$precio_min, "más barato que comprarlo en Medellín."))
       } else {
-        return(paste0("El lugar más economico para comprar alimentos es ", resultado()$ciudad_min, ". En promedio es ", resultado()$precio_min, " más barato que comprarlos en Medellín."))
+        return(paste0("El lugar más economico para comprar alimentos es ", resultado()$ciudad_min, ". En promedio es $", resultado()$precio_min, " más barato que comprarlos en Medellín."))
       }
     }, error = function(e) {
       # Si ocurre un error, ejecuta este código

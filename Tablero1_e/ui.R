@@ -15,10 +15,13 @@ library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);l
 
 source("001f_precios_diferencias_municipios_funciones.R")
 
-
 ui <- fluidPage(
   tags$head(
     tags$style(HTML("
+    @font-face {
+        font-family: 'Prompt';
+        src: url('Prompt.ttf') format('truetype');
+      }
       .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
@@ -32,7 +35,6 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
       }
-      
       .sub-header3 {
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
@@ -41,21 +43,27 @@ ui <- fluidPage(
         display: flex;
         justify-content: center;
       }
+      .scrollable-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+      }
     "))
   ),
-  tags$h1("Diferencia de precios entre departamentos", class = "main-header"),
-  div(
-    textOutput("subtitulo"),
-    class = "sub-header2",
-    style = "margin-bottom: 20px;"
-  ),
-  div(class = "scrollable-content",
+  tags$div(
+    class = "scrollable-content",
+    tags$h1("Diferencia de precios entre departamentos", class = "main-header"),
+    div(
+      textOutput("subtitulo"),
+      class = "sub-header2",
+      style = "margin-bottom: 20px;"
+    ),
+    div(
       fluidRow(
         column(3,
                selectInput("tipo", "Función:", 
                            choices = list("General" = 1, 
-                                          "Producto" = 0 ))
-        ),
+                                          "Producto" = 0 ))),
         column(3,
                selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(data_comparacion_anual_producto$year)))))),
         column(3,
@@ -67,43 +75,42 @@ ui <- fluidPage(
                              choices = c(NULL, unique(data_comparacion_producto$producto)))
                )
         )
-        
-      ) 
-  ),
-  div(
-    fluidRow(
-      column(8,
-             plotly::plotlyOutput("plot", height = "300px"),
-             downloadButton("descargar", "Gráfica"),
-             downloadButton("descargarDatos", "Datos"),
-             actionButton("github", "GitHub", icon = icon("github"))
-      ),
-      
-      column(4, 
-             wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
       )
-    ), 
- 
+    ),
+    div(
+      fluidRow(
+        column(8,
+               plotly::plotlyOutput("plot", height = "400px"),
+               downloadButton("descargar", "Gráfica"),
+               downloadButton("descargarDatos", "Datos"),
+               actionButton("github", "GitHub", icon = icon("github")),
+               actionButton("reset", "Restrablecer",icon = icon("refresh"))
+        ),
+        column(4, 
+               wellPanel(textOutput("mensaje1"),
+                         style = "background-color: #0D8D38; color: #FFFFFF;"),
+               wellPanel(textOutput("mensaje2"),
+                         style = "background-color: #005A45; color: #FFFFFF;"),
+               wellPanel(textOutput("mensaje3"),
+                         style = "background-color: #094735; color: #FFFFFF;")
+        )
+      ), 
+      fluidRow(
+        column(12,
+               style = "margin-top: 2px;",
+               tags$div(
+                 tags$p("Este grafico muestra la diferencia de precios promedio entre las diferentes ciudades y Medellín", class = "sub-header3", style = "margin-top: 3px;"),
+                 tags$p("El tamaño de cada una de las bolas depende de la desviacion estandar del precio a nivel departamento", class = "sub-header3", style = "margin-top: 3px;"),
+               tags$p("Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header3", style = "margin-top: 3px;")
+                 )
+        )
+      )
+    ),
     fluidRow(
-      column(8,  # Ajusta el número de columnas aquí
-             style = "margin-top: 2px;",
-             tags$div(
-               tags$p("Este grafico muestra la diferencia de precios promedio entre las diferentes ciudades y Medellín", class = "sub-header3", style = "margin-top: 0px;"),
-               tags$p("El tamaño de cada una de las bolas depende de la desviacion estandar del precio a nivel departamento", class = "sub-header3", style = "margin-top: 0px;")
-             )
+      tags$div(
+        tags$img(src = 'logo.jpeg', style = "width: 100vw; margin: 0;"),
+        style = "width: 100%; margin:0;"  
       )
     )
-    
-  ),
-  fluidRow(
-  tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
-    style = "position: fixed; bottom: 0; width: 100%;"
-  ))
-  
+  )
 )
