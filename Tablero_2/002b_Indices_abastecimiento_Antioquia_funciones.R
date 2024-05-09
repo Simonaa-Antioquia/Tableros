@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(tools)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(tools);library(plotly)
 options(scipen = 999)
 ################################################################################-
 

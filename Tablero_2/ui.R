@@ -20,8 +20,8 @@ source("002b_Indices_abastecimiento_Antioquia_funciones.R")
 
 ui <- fluidPage(
   tags$head(
-    tags$title("Diferencia de precios entre ciudades"),  # Añade esta línea
-    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
+    tags$title("Diferencia de precios entre ciudades"),  
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"), 
     tags$style(HTML("
       .main-header {
         font-family: 'Prompt', sans-serif;

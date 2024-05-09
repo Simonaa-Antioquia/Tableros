@@ -15,9 +15,6 @@ options(scipen = 999)
 ################################################################################-
 # Definir la función de servidor
 server <- function(input, output, session) {
-  
-
-  
   resultado<-reactive({
     if (is.null(input$municipios) || is.na(input$municipios) || input$municipios == 0) {
       return(NULL)
@@ -55,24 +52,14 @@ server <- function(input, output, session) {
     }
   })
 
-  
-  
-  output$vistaTabla <- renderTable({
-    if (!is.null(resultado()$datos)) {
-      head(resultado()$datos, 5)
-    }
-  })
-  
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_principales_municipios_traen_", Sys.Date(), ".png", sep="")
+      paste("grafica-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Forzar la ejecución de la función reactiva
-      res <- resultado()
-      
-      # Usa ggsave para guardar el gráfico
-      ggplot2::ggsave(filename = file, plot = res$grafico, width = 13, height = 7, dpi = 200)
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2)
     }
   )
   
@@ -84,7 +71,6 @@ server <- function(input, output, session) {
       write.csv(resultado()$datos, file)
     }
   )
-  
   
   observeEvent(input$github, {
     browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
