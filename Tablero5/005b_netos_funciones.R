@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(scales)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(scales);library(plotly)
 library(sf)
 options(scipen = 999)
 ################################################################################-
@@ -22,10 +22,12 @@ data_mensual_producto<-read.csv("neto_mensual_producto.csv")%>%
   mutate(fecha = floor_date(as.Date(as.yearmon(fecha, "%Y-%m"), frac = 1), "month"))
 data_anual_producto<-read.csv("neto_anual_producto.csv")
 
+col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203", "#F1B709", "#F39F06", "#BE7E11",
+                 "#08384D", "#094B5C", "#00596C", "#006A75", "#007A71", "#00909C", "#0088BB", "#007CC3", "#456ABB")
+
 
 #####
 # FUNCION PARA VISUALIZAR LOS RESULTADOS 
-
 # FUNCION 2 
 # LINEA DE TIEMPO 
 neto_grafica <- function(tipo, productos_seleccionados = "") {
@@ -34,19 +36,19 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
   } else if (tipo == 2) {
     df <- data_anual_producto
     df <- df %>%
-      select("anio","producto", "total_importado")
+      select("anio","producto", "total_importado","sale_kg","ingresa_kg")
     if (length(productos_seleccionados) == 0){
       message("Para esta opcion debe escoger los productos que quiere graficar")
     }
   } else if (tipo == 3) {
     df <- data_mensual
     df <- df %>%
-      select("fecha","total_importado")
+      select("fecha","total_importado","sale_kg","ingresa_kg","mes")
     df <- rename(df, anio = fecha)
   } else if (tipo == 4) {
     df <- data_mensual_producto
     df <- df %>%
-      select("producto", "fecha","total_importado")
+      select("producto", "fecha","total_importado","sale_kg","ingresa_kg","mes")
     df <- rename(df, anio = fecha)
     if (length(productos_seleccionados) == 0){
       stop("Para esta opcion debe escoger los productos que quiere graficar")
@@ -55,35 +57,50 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
   # Filtrar los productos seleccionados solo para las opciones 2 y 4
   if (tipo %in% c(2)) {
     df <- df[df$producto %in% productos_seleccionados, ]
-    p<-ggplot(df, aes(x = anio, y = total_importado, color = producto)) +
+    df$tooltip_text <- paste("Año: ", df$anio , "<br> Kg exportan:" , df$sale_kg, "<br> Kg Importan",df$ingresa_kg, "<br> Neto",df$total_importado)
+    p <- ggplot(df, aes(x = anio, y = total_importado, color = producto)) +
       geom_line() +
+      geom_point(aes(text = tooltip_text),size = 1e-8) +
       labs(x = "Año", y = "Miles de toneladas") +
       scale_x_continuous(breaks = seq(min(df$anio), max(df$anio))) +
-      theme_minimal()  
+      scale_color_manual(values = col_palette) +  
+      theme_minimal()
+    
   } else if(tipo %in% c(4)) {
     df <- df[df$producto %in% productos_seleccionados, ]
+    df$tooltip_text <- paste("Año: ", df$anio , "<br>Mes:",df$mes, "<br> Kg exportan:" , df$sale_kg, "<br> Kg Importan",df$ingresa_kg, "<br> Neto",df$total_importado)
     p<-ggplot(df, aes(x = anio, y = total_importado, color = producto)) +
       geom_line() +
+      geom_point(aes(text = tooltip_text),size = 1e-8) +
       labs(x = "Año", y = "Miles de toneladas") +
       #scale_x_continuous(breaks = seq(min(df$anio), max(df$anio))) +
+      scale_color_manual(values = col_palette) +  
       theme_minimal()  
   }else if(tipo %in% c(3)){
+    df$tooltip_text <- paste("Año: ", df$anio , "<br>Mes:",df$mes, "<br> Kg exportan:" , df$sale_kg, "<br> Kg Importan",df$ingresa_kg, "<br> Neto",df$total_importado)
     p<-ggplot(df, aes(x = anio, y = total_importado)) +
       geom_line() +
+      geom_point(aes(text = tooltip_text),size = 1e-8) +
       labs(x = "Año", y = "Miles de toneladas") +
       #scale_x_continuous(breaks = seq(min(df$anio), max(df$anio))) +
+      scale_color_manual(values = col_palette) +  
       theme_minimal()  
   }else {
+    df$tooltip_text <- paste("Año: ", df$anio , "<br> Kg exportan:" , df$sale_kg, "<br> Kg Importan",df$ingresa_kg, "<br> Neto",df$total_importado)
     p<-ggplot(df, aes(x = anio, y = total_importado)) +
       geom_line() +
+      geom_point(aes(text = tooltip_text),size = 1e-8) +
       labs(x = "Año", y = "Miles de toneladas") +
       scale_x_continuous(breaks = seq(min(df$anio), max(df$anio))) +
+      scale_color_manual(values = col_palette) +  
       theme_minimal()  
   }
   
   min_ton<-round(min(df$total_importado)*-1)
   fecha_min <- df$anio[which.min(df$total_importado)]
   
+  
+  p <- plotly::ggplotly(p, tooltip = "text")
   return(list(
     grafico = p,
     datos = df,
@@ -92,6 +109,7 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
   ))
   
 }
+
 
 
 # OPCIONES

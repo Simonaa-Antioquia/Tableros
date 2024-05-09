@@ -14,11 +14,13 @@ rm(list = ls())
 source("005b_netos_funciones.R")
 productos <- unique(data_anual_producto$producto)
 
-# Definir la interfaz de usuario
+
 ui <- fluidPage(
   tags$head(
+    tags$title("Diferencia de precios entre ciudades"),  
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
     tags$style(HTML("
-      .main-header {
+       .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
         color: #0D8D38;
@@ -31,15 +33,29 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
       }
+      .sub-header3 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 15px;
+      }
+      .center {
+        display: flex;
+        justify-content: center;
+      }
+      .scrollable-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+      }
+      
     "))
   ),
-  tags$h1("Netos", class = "main-header"),
+  tags$h1("Disponibilidad Neta de alimentos en Antioquia", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
     style = "margin-bottom: 20px;"
   ),  
-  div(class = "scrollable-content",
+  div(
       fluidRow(
         column(4,
                selectInput("tipo", "Seleccione el tipo de funcion:", 
@@ -53,18 +69,44 @@ ui <- fluidPage(
                  selectInput("producto_seleccionado", "Producto seleccionado:", choices = c(productos,  Ninguno =""), multiple = TRUE)
                ))
       )),
-  div(
+  fluidRow(
+    column(8,
+           div(
+             plotly::plotlyOutput("grafico",height = "400px"),
+             downloadButton("descargar", "Descargar gráfica"),
+             downloadButton("descargarDatos", "Descargar datos"),
+             actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("reset", "Restrablecer",icon = icon("refresh"))
+             #,
+             #tableOutput("vistaTabla") 
+           )),
+    
+    column(4, 
+           div(
+             wellPanel(textOutput("mensaje1"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje3"),
+                       style = "background-color: #094735; color: #FFFFFF;")
+           ))
+  ),
+    
     fluidRow(
       column(12,
-             plotOutput("tiempo1",height = "300px"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
+             style = "margin-top: 2px;",
+             tags$div(
+               tags$p("Este gráfico muestra los valores netos de los alimentos disponibles en los principales centros de acopio de Medellín.", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Se definen valores netos como: Productos que se producen en cualquiera de los municipios de Antioquia -  los productos que llegan a Medellín pero no se producen en Antiouia", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
+             )
       )
     ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
-  ),
-  tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
-    style = "position: absolute; bottom: 0; width: 100%;"
-  ) 
+
+  fluidRow(
+    tags$div(
+      tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+      style = "width: 100%; margin:0;"  
+    )
+  )
 )

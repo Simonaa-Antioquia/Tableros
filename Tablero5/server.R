@@ -13,6 +13,7 @@ options(scipen = 999)
 ################################################################################
 
 server <- function(input, output, session) {
+  
   resultado <- reactive({
     tipo <- input$tipo
     producto_seleccionado <- input$producto_seleccionado
@@ -30,26 +31,34 @@ server <- function(input, output, session) {
     neto_grafica(tipo, producto_seleccionado)
   })
   
-  output$tiempo1 <- renderPlot({
-    resultado()
-  }, res = 150)  # Aumenta la resolución a 96 ppp
+  output$grafico <- plotly::renderPlotly({
+    res <- resultado()
+      res$grafico  # Devuelve el gráfico Plotly
+  }) 
   
+# Descargar grafica 
+
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_netos_", Sys.Date(), ".png", sep="")
+      paste("grafica_netos", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Usa ggsave para guardar el gráfico
-      ggplot2::ggsave(filename = file, plot = resultado(), width = 13, height = 7, dpi = 200)
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2)
     }
-  )
+  )  
+  
+
+  
+# Datos
   
   output$descargarDatos <- downloadHandler(
     filename = function() {
-      paste("datos-", Sys.Date(), ".csv", sep="")
+      paste("datos_netos", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
-      write.csv(resultado(), file)
+      write.csv(resultado()$datos, file)
     }
   )
   
@@ -60,4 +69,24 @@ server <- function(input, output, session) {
     min_ton <- resultado$min_ton
     paste0("Hubo mayor diferencia de entrada y salida de alimentos el ", fecha_min, " ingresando ", min_ton, " mil toneladas más de las que salieron.")
   })
+  
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
+  
+  output$mensaje1 <- renderText({
+      return("Neto es igual a la cantidad de kilogramos que salen me Antioquia menos los que Ingresan")
+  })
+  
+  #output$mensaje2 <- renderText({
+  #    if (input$tipo != 1) {
+  #      return(paste0("El lugar más costoso para comprar ", input$producto, " es ", resultado()$ciudad_max, ". Es $", resultado()$precio_max, " más costoso que comprarlo en Medellín."))
+  #    } else {
+  #      return(paste0("El lugar más costoso para comprar alimentos es ", resultado()$ciudad_max, ". En promedio es $", resultado()$precio_max, " más costoso que comprarlos en Medellín."))
+  #    }
+  #  
+  #  })
+  
+  
+  
 }
