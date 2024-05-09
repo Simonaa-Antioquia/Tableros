@@ -8,7 +8,7 @@
 # Paquetes 
 ################################################################################
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(extrafont);
+library(glue);library(tidyverse);library(extrafont);library(plotly);
 options(scipen = 999)
 ################################################################################
 rm(list = ls())

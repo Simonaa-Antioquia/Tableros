@@ -26,6 +26,7 @@ server <- function(input, output, session) {
     resultado()$plot
   })
   
+  
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$data)) {
       head(resultado()$data, 5)
