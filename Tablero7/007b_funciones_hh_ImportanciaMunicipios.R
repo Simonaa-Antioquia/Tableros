@@ -8,7 +8,7 @@
 ################################################################################
 # Paquetes 
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(haven); library(DT);library(extrafont);
+library(glue);library(tidyverse);library(haven); library(DT);library(extrafont);library(plotly);
 options(scipen = 999)
 ################################################################################
 rm(list = ls())
@@ -37,10 +37,12 @@ col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203
 grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccionados = "") {
   if (tipo == 1 ) {
     df <- IHH_anual_total
+    df$IHH <- df$IHH * 100
     df <- df %>%
       select("year", "IHH")
   } else if (tipo == 2) {
     df <- IHH_anual_producto
+    df$IHH <- df$IHH * 100
     df <- df %>%
       select("year","producto", "IHH")
     if (length(productos_seleccionados) == 0){
@@ -48,6 +50,7 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
     }
   } else if (tipo == 3) {
     df <- IHH_mensual_total
+    df$IHH <- df$IHH * 100
     df <- df %>%
       select("mes_y_ano","year","month","IHH")
     if (anio_seleccionado != ""){
@@ -56,6 +59,7 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
     }
   } else if (tipo == 4) {
     df <- IHH_mensual_producto
+    df$IHH <- df$IHH * 100
     df <- df %>%
       select("year","month","mes_y_ano","producto", "IHH")
     if (anio_seleccionado != ""){
@@ -64,33 +68,53 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
     }
   }
   if (tipo == 2) {
-    df <- rename(df, fecha = year) 
-  }else if (tipo == 4){
-    df <- rename(df, fecha = mes_y_ano)
-  }
-  
-  # Filtrar los productos seleccionados solo para las opciones 2 y 4
-  if (tipo %in% c(2, 4)) {
+    df <- rename(df, fecha = year)
+    df$tooltip_text <- paste("Año: ", df$fecha , "<br> Producto:",df$producto, "<br> IHH:" , round(df$IHH,3))
     df <- df[df$producto %in% productos_seleccionados, ]
     p <- ggplot(df, aes(x = fecha, y = IHH, color = producto)) +
       geom_line() +
+      geom_point(aes(text = tooltip_text), size = 1e-8) +
+      labs(x = "Fecha", y = "Municipios en el abastecimiento") +
+      theme_minimal() +
+      scale_color_manual(values = col_palette) +
+      theme(text = element_text(family = "Prompt", size = 16)) +
+      scale_x_continuous(breaks = unique(df$fecha))
+}else if (tipo == 4){
+    df <- rename(df, fecha = mes_y_ano)
+    df <- df[df$producto %in% productos_seleccionados, ]
+    df$tooltip_text <- paste("Año: ", df$year ,"<br> Mes:",df$month, "<br> Producto:",df$producto, "<br> IHH:" , round(df$IHH,3))
+    p <- ggplot(df, aes(x = fecha, y = IHH, color = producto)) +
+      geom_line() +
+      geom_point(aes(text = tooltip_text),size = 1e-8) +
       labs(x = "Fecha", y = "Municipios en el abastecimiento") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
       theme(text = element_text(family = "Prompt", size = 16)) 
-  } else {
-    if (tipo == 1) {
-      df <- rename(df, fecha = year) 
+  } else if (tipo == 1)  {
+       df <- rename(df, fecha = year) 
+       df$tooltip_text <- paste("Año: ", df$fecha , "<br> IHH:" , round(df$IHH,3))
+       p <- ggplot(df, aes(x = fecha, y = IHH)) +
+         geom_line() +
+         geom_point(aes(text = tooltip_text),size = 1e-8) +
+         labs(x = "Fecha", y = "Municipios en el abastecimiento") +
+         theme_minimal() +
+         theme(text = element_text(family = "Prompt", size = 16)) +
+         scale_x_continuous(breaks = unique(df$fecha))
+       
     }else if (tipo == 3){
       df <- rename(df, fecha = mes_y_ano)
+      df$tooltip_text <- paste("Año:", df$year ,"<br> Mes:",df$month, "<br> IHH:" , round(df$IHH,3))
+      p<- ggplot(df, aes(x = fecha, y = IHH)) +
+        geom_line() +
+        geom_point(aes(text = tooltip_text),size = 1e-8) +
+        labs(x = "Fecha", y = "Municipios en el abastecimiento") +
+        theme_minimal()  +
+        scale_color_manual(values = col_palette) +
+        theme(text = element_text(family = "Prompt", size = 16)) 
     }
-    p<- ggplot(df, aes(x = fecha, y = IHH)) +
-      geom_line() +
-      labs(x = "Fecha", y = "Municipios en el abastecimiento") +
-      theme_minimal()  +
-      scale_color_manual(values = col_palette) +
-      theme(text = element_text(family = "Prompt", size = 16)) 
-  }
+    
+  
+  p <- plotly::ggplotly(p, tooltip = "text")
   
   # Calcular el valor máximo del índice de vulnerabilidad
   indice_max_ihh <- which.max(df$IHH)

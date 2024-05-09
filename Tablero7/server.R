@@ -9,7 +9,7 @@
 # Paquetes 
 ################################################################################
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes)
+library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes);library(plotly);
 options(scipen = 999)
 ################################################################################
 server <- function(input, output, session) {
@@ -49,9 +49,13 @@ server <- function(input, output, session) {
     }
   })
   
-  output$grafico <- renderPlot({
+  
+  
+  output$grafico <- plotly::renderPlotly({
     resultado()$grafico
-  }, res = 96)
+  })
+  
+  
   
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
@@ -59,16 +63,19 @@ server <- function(input, output, session) {
     }
   })
   
+  # Descargar grafica 
+  
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_indice_importancia_mpios", Sys.Date(), ".png", sep="")
+      paste("grafica_indice_municipios", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      png(file,width = 10, height = 7, units = "in", res = 300)
-      print(resultado()$grafico)
-      dev.off()
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2)
     }
-  )
+  )  
+  
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos_importancia_mpios", Sys.Date(), ".csv", sep="")
@@ -101,4 +108,22 @@ server <- function(input, output, session) {
       return(paste("El año con mayor indice de vulnerabilidad fue",fecha_max_vulnerabilidad, "y fue de",max_IHH))
     }
   })
+
+observeEvent(input$github, {
+  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+})  
+
+# Borrar filtros
+observeEvent(input$reset, {
+  updateSelectInput(session, "tipo", selected = 1)
+})
+
+output$mensaje1 <- renderText({
+  return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los alimentos en Antioquia, un mayor índice indica menos variedad de alimentos")
+})
+
+output$mensaje2 <- renderUI({
+  withMathJax(paste0("La fórmula es: $$IHH = \\sum_{i=1}^{n} s_i^2$$ donde s es la participación del producto i en el total de alimentos y n es el número total de alimentos."))
+})
+  
 }

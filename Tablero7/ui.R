@@ -8,7 +8,7 @@
 # Paquetes 
 ################################################################################
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes)
+library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes);library(plotly);
 options(scipen = 999)
 ################################################################################
 rm(list = ls())
@@ -19,8 +19,10 @@ productos <- unique(IHH_anual_producto$producto)
 ui <- fluidPage(
   #theme = shinythemes::shinytheme("default"),
   tags$head(
+    tags$title("Indice concentración del origen de los alimentos - Indice"),
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
     tags$style(HTML("
-      .main-header {
+        .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
         color: #0D8D38;
@@ -33,15 +35,28 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
       }
+      .sub-header3 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 15px;
+      }
+      .center {
+        display: flex;
+        justify-content: center;
+      }
+      .scrollable-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+      }
     "))
   ),
-  tags$h1("Importancia de los municipios en el abastecimiento de Antioquia - Indice", class = "main-header"),
+  tags$h1("Indice: concentración del origen de los alimentos - Indice", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
     style = "margin-bottom: 20px;"
   ),
-  div(class = "scrollable-content",
+  div(
       fluidRow(
         column(4,
                selectInput("tipo", "Seleccione el tipo:", 
@@ -66,20 +81,45 @@ ui <- fluidPage(
         )
       )
   ),
-  div(
+  
+    fluidRow(
+      column(8,
+             div(
+               plotly::plotlyOutput("grafico",height = "400px"),
+               downloadButton("descargar", "Gráfica"),
+               downloadButton("descargarDatos", "Datos"),
+               actionButton("github", "GitHub", icon = icon("github")),
+               actionButton("reset", "Restrablecer",icon = icon("refresh"))
+               #,
+               #tableOutput("vistaTabla") 
+             )),
+      
+      column(4, 
+             div(
+               wellPanel(textOutput("mensaje1"),
+                         style = "background-color: #0D8D38; color: #FFFFFF;"),
+               wellPanel(uiOutput("mensaje2"),
+                         style = "background-color: #005A45; color: #FFFFFF;"),
+               wellPanel(textOutput("mensaje3"),
+                         style = "background-color: #094735; color: #FFFFFF;")
+             ))
+    ),
+    
     fluidRow(
       column(12,
-             plotOutput("grafico",height = "300px"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
-             #,
-             #tableOutput("vistaTabla") 
+             style = "margin-top: 2px;",
+             tags$div(
+               tags$p("Este gráfico se calcula en base al índice de Herfindahl-Hirschman", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Un mayor índice indica que menos municipios se encargan de abastecer a Medellin, por lo tanto implica mayor vulnerabilidad", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
+             )
       )
     ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
-  ),
-  tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
-    style = "position: absolute; bottom: 0; width: 100%;"
-  ) 
+    
+    fluidRow(
+      tags$div(
+        tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+        style = "width: 100%; margin:0;"  
+      )
+    ) 
 )
