@@ -22,8 +22,7 @@ server <- function(input, output, session) {
     plot_data(tipo, anio)
   })
   
-  output$grafico1 <- renderPlot({
-    # Devuelve el gráfico
+  output$grafico1 <- plotly::renderPlotly({
     resultado()$plot
   })
   
@@ -32,17 +31,21 @@ server <- function(input, output, session) {
       head(resultado()$data, 5)
     }
   })
+  
+  
+  # Descargar grafica 
+  
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_indice_variedad_abastecimeinto_", Sys.Date(), ".png", sep="")
+      paste("grafica_netos", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Ajusta el tamaño de la imagen y la resolución para que coincidan con la proporción de aspecto del gráfico
-      png(file, width = 10, height = 7, units = "in", res = 300)
-      print(resultado()$plot)
-      dev.off()
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$plot), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2)
     }
-  )
+  )  
+  
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
@@ -61,11 +64,29 @@ server <- function(input, output, session) {
     mes_max_IHH <- data_resultado$mes_max_IHH
     anio_max_IHH <- data_resultado$anio_max_IHH
     
+    
     if (tipo == 1) {
-      return(paste("El mayor indice anual es", max_IHH , "en el año", anio_max_IHH))
+      return(paste("La menor variedad de alimentos registrada fue en el año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH ,"%"))
     } else if (tipo == 0) {
-      return(paste("El mayor indice mensual es", max_IHH, "en el mes", mes_max_IHH, "del año", anio_max_IHH))
+      return(paste("La menor variedad de alimentos registrada fue en el mes", mes_max_IHH,"del año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH,"%"))
     }
+    
+  })
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
+  
+  # Borrar filtros
+  observeEvent(input$reset, {
+    updateSelectInput(session, "tipo", selected = 1)
+  })
+  
+  output$mensaje1 <- renderText({
+    return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los alimentos en Antioquia, un mayor índice indica menos variedad de alimentos")
+  })
+  
+  output$mensaje2 <- renderUI({
+    withMathJax(paste0("La fórmula es: $$IHH = \\sum_{i=1}^{n} s_i^2$$ donde s es la participación del producto i en el total de alimentos y n es el número total de alimentos."))
   })
   
 }
