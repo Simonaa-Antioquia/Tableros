@@ -97,8 +97,11 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
     min_val <- -max(abs(na.omit(mapa$comp)))
     max_val <- max(abs(na.omit(mapa$comp)))
     
+    valores_sin_na <- na.omit(mapa$comp2)
+    my_palette_sin_na <- colorNumeric(palette = c("#F39F06", "white", "#1A4922"), domain = valores_sin_na)
+    
     # Crear una paleta de colores personalizada
-    my_palette <- colorNumeric(palette = colorRampPalette(c("#F39F06", "white", "#1A4922"))(length(unique(mapa$comp2))), domain = c(min_val,0,max_val))
+    my_palette <- colorNumeric(palette = colorRampPalette(c("#F39F06", "white", "#1A4922"))(length(unique(mapa$comp2))), domain = c(min_val,max_val),  na.color = "#C5C7C6")
     
     # Crear el mapa interactivo
     p <- leaflet(mapa) %>%
@@ -112,7 +115,7 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
                   highlightOptions = highlightOptions(color = "white", 
                                                       weight = 2,
                                                       bringToFront = TRUE)) %>%
-      addLegend(pal = my_palette, values = ~comp2, opacity = 0.7, title = "Diferencia del precio")
+      addLegend(pal = my_palette_sin_na, values = ~valores_sin_na, opacity = 0.7, title = "Diferencia del precio")
   }
   
   

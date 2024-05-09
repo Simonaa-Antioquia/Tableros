@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(ggrepel);library(leaflet)
 library(sf)
 options(scipen = 999)
 ################################################################################-
@@ -88,28 +88,42 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
     df <- df %>% rename( columna_porcentaje = porcentaje_dpto)
     
   }
-  df<-df%>%filter(depto_origen !="ANTIOQUIA")
-  mapa<-shapefile%>%left_join(df, by = c("dpto_cnmbr"="depto_origen"))
+  df<-df#%>%filter(depto_origen !="ANTIOQUIA")
+  mapa<-shapefile%>%dplyr::left_join(df, by = c("dpto_cnmbr"="depto_origen"))%>%
+    mutate(columna_porcentaje=columna_porcentaje*100)
   
   # Crear un título dinámico
   #titulo <- paste("Porcentaje que se envía a Antioquia", ifelse(is.null(Año), "", paste("en el año", Año)),
   #                ifelse(is.null(Mes), "", paste("para el mes", Mes)), 
   #                ifelse(is.null(Producto), "", paste("-", Producto)))
   
-  p <-ggplot() +
-    geom_sf(data = mapa, aes(fill = columna_porcentaje*100)) +
-    scale_fill_gradient(low = "#0D8D38", high = "#F2E203", na.value = "white", name = "Porcentaje") +
-    labs(title = " ") +
-    theme_minimal() +
-    theme(
-      plot.background = element_blank(),  # Hace que el fondo sea transparente
-      panel.background = element_blank(),  # Hace que el fondo del panel sea transparente
-      panel.grid = element_blank(),  # Elimina las líneas de la cuadrícula
-      axis.line = element_blank(),
-      axis.text = element_blank(),
-      axis.ticks = element_blank(),
-      axis.title = element_blank()
-    )
+  # Filtrar para eliminar las filas con valores NA en "comp"
+  mapa <- mapa %>% #filter(!is.na(columna_porcentaje))%>% 
+    arrange(columna_porcentaje)%>%mutate(columna_porcentaje2=columna_porcentaje*-1)
+  
+  min_val <- min(abs(na.omit(mapa$columna_porcentaje)))
+  max_val <- max(abs(na.omit(mapa$columna_porcentaje)))
+  
+  valores_sin_na <- na.omit(mapa$columna_porcentaje)
+  my_palette_sin_na <- colorNumeric(palette = c("#F2E203", "#1A4922"), domain = valores_sin_na)
+  
+  # Crear una paleta de colores personalizada
+  my_palette <- colorNumeric(palette = colorRampPalette(c("#F2E203", "#1A4922"))(length(unique(mapa$columna_porcentaje))), domain = c(min_val,max_val),  na.color = "#D5D5D5")
+  
+  # Crear el mapa interactivo
+  p <- leaflet(mapa) %>%
+    addProviderTiles(providers$CartoDB.Positron) %>%
+    addPolygons(fillColor = ~my_palette(columna_porcentaje),
+                fillOpacity = 0.8, 
+                color = "#D5D5D5", 
+                weight = 1,
+                popup = ~paste0("<strong>Departamento: </strong>", dpto_cnmbr, 
+                                "<br><strong>Diferencia del precio: </strong>", round(columna_porcentaje),"%"),
+                highlightOptions = highlightOptions(color = "white", 
+                                                    weight = 2,
+                                                    bringToFront = TRUE)) %>%
+    addLegend(pal = my_palette_sin_na, values = ~valores_sin_na, opacity = 0.7, title = "Porcentaje")#, na.label = "")
+  
   porcentaje_max <- round(max(df$columna_porcentaje) * 100, 1)
   dpto_max <- df$depto_origen[which.max(df$columna_porcentaje)]
   dpto_max <- tolower(dpto_max)
