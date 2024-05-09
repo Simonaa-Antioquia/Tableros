@@ -60,13 +60,15 @@ ui <- fluidPage(
   div(class = "scrollable-content",
       fluidRow(
         column(3,
-               selectInput("anio", "Año", c("Todos los años" = "todo", as.character(unique(proviene_antioquia$anio))))),
+               selectInput("anio", "Año", c("Todos los años" = "todo", sort(as.character(unique(proviene_antioquia$anio)))))),
         column(3,
-               selectInput("mes", "Mes", c("Todos los meses" = "todo", as.character(unique(proviene_antioquia$mes))))),
+               selectInput("mes", "Mes", c("Todos los meses" = "todo", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5,
+                                           "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11,
+                                           "Diciembre" = 12), selected="")),
         column(3,
                numericInput("municipios", "Número de municipios", value = 10, min = 1, max = 18)),
         column(3,
-               selectInput("producto", "Producto",c("Todos los productos" = "todo", as.character(unique(proviene_antioquia$producto)))))
+               selectInput("producto", "Producto",c("Todos los productos" = "todo", sort(as.character(unique(proviene_antioquia$producto))))))
       )),
   div(
     fluidRow(

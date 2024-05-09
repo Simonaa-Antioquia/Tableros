@@ -19,7 +19,7 @@ server <- function(input, output, session) {
   resultado<-reactive({
     # Comprobar si solo se ha seleccionado un producto
     if (input$producto != "todo" && input$anio == "todo" && input$mes == "todo") {
-      importancia(Producto = input$producto)
+      importancia(Producto = input$producto,municipios = input$municipios)
     } else if (input$mes != "todo" && input$anio == "todo") {
       validate(
         need(input$anio != "todo", "Debe seleccionar un año.")
@@ -33,7 +33,7 @@ server <- function(input, output, session) {
     } else if(input$mes == "todo" ){
       importancia(Año = input$anio, municipios = input$municipios, Producto = input$producto)
     } else if(input$anio == "todo" && input$mes == "todo"){
-      importancia(Producto = input$producto)
+      importancia(Producto = input$producto,municipios = input$municipios)
     } else{
       importancia(Año = input$anio, Mes = input$mes ,municipios = input$municipios, Producto = input$producto)
     }

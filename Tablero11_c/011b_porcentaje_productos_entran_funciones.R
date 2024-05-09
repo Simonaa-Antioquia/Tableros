@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(treemapify)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(treemapify);library(highcharter)
 options(scipen = 999)
 ################################################################################-
 
@@ -76,20 +76,17 @@ entran_prod<-function(año = NULL, Mes = NULL, depto = NULL){
                    ifelse(is.null(Mes),"",paste0(" en el mes ", Mes)), ifelse(is.null(depto),"",paste0(" provenientes de ", depto)))
   
   #col_palette <- c("#1A4922", "#0088BB", "#007CC3", "#456ABB")
+  
   low_color <- "#2E7730"
+  
   high_color <- "#007CC3"
   
-  p<-ggplot(df, aes(area = columna_porcentaje, fill = columna_porcentaje,
-                    label = producto,subgroup = grupo_alimento)) +
-    geom_treemap() +
-    geom_treemap_subgroup_border(colour = "white", size = 5) +
-    geom_treemap_subgroup_text(place = "topleft", grow = FALSE,
-                               alpha = 0.3, colour = "black",
-                               fontface = "italic", size = 15) +
-    geom_treemap_text(colour = "white", place = "centre",
-                      size = 15, grow = FALSE)+
-    scale_fill_gradient(low = low_color, high = high_color) +  # Usa un gradiente de colores
-    labs(title = titulo, fill = "Porcentaje")
+  #df$color <- colorRampPalette(c(low_color, high_color))(nrow(df))
+  
+  p <- hchart(df, "treemap", hcaes(x = producto, value = round(columna_porcentaje*100), color = round(columna_porcentaje*100))) %>%
+    hc_title(text = "") %>%
+    hc_colorAxis(minColor = low_color, maxColor = high_color)
+  
   porcentaje_max<-round(max(df$columna_porcentaje)*100,1)
   producto_max<-df$producto[which.max(df$columna_porcentaje)]
   
