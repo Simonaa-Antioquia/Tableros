@@ -38,10 +38,12 @@ col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203
 grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados = "") {
   if (tipo == 1 ) {
     df <- indice_v_anual
+    df$indice_vulnerabilidad <- df$indice_vulnerabilidad * 100
     df <- df %>%
       select("anio", "indice_vulnerabilidad")
   } else if (tipo == 2) {
     df <- indice_v_anual_producto
+    df$indice_vulnerabilidad <- df$indice_vulnerabilidad *100
     df <- df %>%
       select("anio","producto", "indice_vulnerabilidad")
     if (length(productos_seleccionados) == 0){
@@ -53,6 +55,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
     
   } else if (tipo == 3) {
     df <- indice_v_mensual
+    df$indice_vulnerabilidad <- df$indice_vulnerabilidad *100
     df <- df %>%
       select("mes_y_ano","anio","mes","indice_vulnerabilidad")
     if (anio_seleccionado != ""){
@@ -61,46 +64,67 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
     }
   } else if (tipo == 4) {
     df <- indice_v_mensual_producto 
+    df$indice_vulnerabilidad <- df$indice_vulnerabilidad *100
     df <- df %>%
       select("anio","mes","mes_y_ano","producto", "indice_vulnerabilidad")
     if (anio_seleccionado != ""){
       df <- df %>%
-        filter(anio_seleccionado == anio)
-    }
+        filter(anio_seleccionado == anio)}
   }
   if (tipo == 2) {
     df <- rename(df, fecha = anio) 
-  }else if (tipo == 4){
-    df <- rename(df, fecha = mes_y_ano)
-  }
-  # Filtrar los productos seleccionados solo para las opciones 2 y 4
-  if (tipo %in% c(2, 4)) {
     df <- df[df$producto %in% productos_seleccionados, ]
+    df$tooltip_text <- paste("Año: ", df$fecha , "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
     p <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
       geom_line() +
+      geom_point(aes(text = tooltip_text), size = 1e-8) +
+      labs(x = "Año", y = "Indice de Vulnerabilidad") +
+      theme_minimal() +
+      scale_color_manual(values = col_palette) + 
+      theme(text = element_text(family = "Prompt", size = 16))+
+      scale_x_continuous(breaks = unique(df$fecha))
+
+  }else if (tipo == 4){
+    df <- rename(df, fecha = mes_y_ano)
+    df <- df[df$producto %in% productos_seleccionados, ]
+    df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
+    p <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
+      geom_line() +
+      geom_point(aes(text = tooltip_text), size = 1e-8) +
       labs(x = "Año", y = "Indice de Vulnerabilidad") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
       theme(text = element_text(family = "Prompt", size = 16)) 
-  } else {
-    if (tipo == 1) {
+  } else if (tipo == 1) {
       df <- rename(df, fecha = anio) 
+      df$tooltip_text <- paste("Año: ", df$fecha ,  "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
+      p<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
+        geom_line() +
+        geom_point(aes(text = tooltip_text), size = 1e-8) +
+        labs(x = "Año", y = "Indice de Vulnerabilidad") +
+        theme_minimal()  +
+        scale_color_manual(values = col_palette) +
+        theme(text = element_text(family = "Prompt", size = 16))+
+        scale_x_continuous(breaks = unique(df$fecha))
+      
     }else if (tipo == 3){
       df <- rename(df, fecha = mes_y_ano)
-    }
-    p<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
-      geom_line() +
-      labs(x = "Año", y = "Indice de Vulnerabilidad") +
-      theme_minimal()  +
-      scale_color_manual(values = col_palette) +
-      theme(text = element_text(family = "Prompt", size = 16)) 
-  }
-
+      df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
+      p<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
+        geom_line() +
+        geom_point(aes(text = tooltip_text), size = 1e-8) +
+        labs(x = "Año", y = "Indice de Vulnerabilidad") +
+        theme_minimal()  +
+        scale_color_manual(values = col_palette) 
+        
+      }
   # Calcular el valor máximo del índice de vulnerabilidad
   indice_max_vulnerabilidad <- which.max(df$indice_vulnerabilidad)
   max_vulnerabilidad <- round(df$indice_vulnerabilidad[indice_max_vulnerabilidad], 3)
   fecha_max_vulnerabilidad <- df$fecha[indice_max_vulnerabilidad]
   producto_max_vulnerabilidad <- ifelse("producto" %in% names(df), df$producto[indice_max_vulnerabilidad], NA)
+  
+  p <- plotly::ggplotly(p, tooltip = "text")
   
   # Devolver el gráfico, los datos y los valores máximos
   return(list(
@@ -112,7 +136,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   ))
 }
 
-
+#grafica_indice(1)
 #grafica_indice(2,"",c("CEBOLLA JUNCA","ARROZ"))
 #grafica_indice(3)
 #grafica_indice(3,2015)

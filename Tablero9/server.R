@@ -51,9 +51,10 @@ server <- function(input, output, session) {
     }
   })
   
-  output$grafico <- renderPlot({
+  
+  output$grafico <- plotly::renderPlotly({
     resultado()$grafico
-  }, res = 96)
+  })
   
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
@@ -102,6 +103,23 @@ server <- function(input, output, session) {
     }
   })
   
+  # Conectar al git 
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })  
+  
+  # Borrar filtros
+  observeEvent(input$reset, {
+    updateSelectInput(session, "tipo", selected = 1)
+  })
+  
+  output$mensaje1 <- renderText({
+    return("El índice de vulnerabilidad combina la concentración en la producción de alimentos (índice de Herfindahl-Hirschman) y la distancia a Medellín.")
+  })
+  
+  output$mensaje2 <- renderUI({
+    withMathJax(paste0("La fórmula es: $$ V_{it} =  \\frac{D_i + H_{ti}}{2}$$"))
+  })
   
   
 }
