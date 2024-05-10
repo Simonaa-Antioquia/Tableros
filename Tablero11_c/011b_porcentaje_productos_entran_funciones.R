@@ -87,7 +87,7 @@ entran_prod<-function(año = NULL, Mes = NULL, depto = NULL){
     hc_title(text = "") %>%
     hc_colorAxis(minColor = low_color, maxColor = high_color)
   
-  porcentaje_max<-round(max(df$columna_porcentaje)*100,1)
+  porcentaje_max<-round(max(df$columna_porcentaje)*100)
   producto_max<-df$producto[which.max(df$columna_porcentaje)]
   
   return(

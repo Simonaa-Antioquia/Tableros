@@ -37,7 +37,15 @@ server <- function(input, output, session) {
   })
   
   output$grafico <- renderHighchart({
-    resultado()$grafico
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      validate(
+        ("Debe seleccionar un año.")
+      )
+    }else{
+      res$grafico
+    }
+    
   })
   
   output$vistaTabla <- renderTable({

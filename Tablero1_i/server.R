@@ -42,7 +42,12 @@ server <- function(input, output, session) {
   })
   
   output$grafico <- renderLeaflet({
-    resultado()$grafico
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      validate("No hay datos disponibles")
+    }else{
+      res$grafico
+    }
   })
   
   output$descargar <- downloadHandler(
@@ -72,13 +77,17 @@ server <- function(input, output, session) {
   # En el servidor
   output$subtitulo <- renderText({
     resultado <- resultado()
+    if(nrow(resultado$datos)==0){
+      validate("No hay datos disponibles")
+    }else{
     precio_max <- resultado$precio_max
     precio_min <- resultado$precio_min
     ciudad_max <- resultado$ciudad_max
     ciudad_min <- resultado$ciudad_min
     
     return(paste0(ciudad_max," es $", precio_max, " costosa que Medellín, mientras que ", ciudad_min," es $", precio_min," más barata."))
-  })
+    }
+    })
   
   output$mensaje1 <- renderText({
     #resultado <- resultado()

@@ -98,7 +98,10 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
     max_val <- max(abs(na.omit(mapa$comp)))
     
     valores_sin_na <- na.omit(mapa$comp2)
-    my_palette_sin_na <- colorNumeric(palette = c("#F39F06", "white", "#1A4922"), domain = valores_sin_na)
+    min_val_sin_na <- -max(abs(na.omit(valores_sin_na)))
+    max_val_sin_na <- max(abs(na.omit(valores_sin_na)))
+    
+    my_palette_sin_na <- colorNumeric(palette = c("#F39F06", "white", "#1A4922"), domain = c(min_val_sin_na,max_val_sin_na))
     
     # Crear una paleta de colores personalizada
     my_palette <- colorNumeric(palette = colorRampPalette(c("#F39F06", "white", "#1A4922"))(length(unique(mapa$comp2))), domain = c(min_val,max_val),  na.color = "#C5C7C6")

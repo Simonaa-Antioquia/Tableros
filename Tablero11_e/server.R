@@ -14,31 +14,40 @@ library(shiny)
 server <- function(input, output, session) {
   
   resultado<-reactive({
-    if(input$año==""&&input$mes==""&&input$depto==""){
+    if(input$año=="todo"&&input$mes=="todo"&&input$depto=="todo"){
       salen_prod()
-    }else if(input$año==""&&input$mes==""){
+    }else if(input$año=="todo"&&input$mes=="todo"){
       salen_prod(depto = input$depto)
-    }else if(input$año==""){
+    }else if(input$año=="todo"){
       validate(
-        need(input$año != "", "Debe seleccionar un año.")
+        need(input$año != "todo", "Debe seleccionar un año.")
       )
-    }else if(input$año==""&&input$depto==""){
+    }else if(input$año=="todo"&&input$depto=="todo"){
       validate(
-        need(input$año != "", "Debe seleccionar un año.")
+        need(input$año != "todo", "Debe seleccionar un año.")
       )
-    }else if(input$mes==""&&input$depto==""){
+    }else if(input$mes=="todo"&&input$depto=="todo"){
       salen_prod(año = input$año)
-    }else if(input$depto==""){
+    }else if(input$depto=="todo"){
       salen_prod(año = input$año, Mes = input$mes)
-    }else if(input$mes==""){
+    }else if(input$mes=="todo"){
       salen_prod(año = input$año, depto = input$depto)
     }else {
       salen_prod(año = input$año, Mes = input$mes, depto = input$depto) 
     }
   })
-  output$grafico <- renderPlot({
-    resultado()$grafico
-  }, res = 100)
+  
+  output$grafico <- renderHighchart({
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      validate(
+        ("No hay datos disponibles")
+      )
+    }else{
+      res$grafico
+    }
+    
+  })
   
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
@@ -48,16 +57,27 @@ server <- function(input, output, session) {
   
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_productos_salen_", Sys.Date(), ".png", sep="")
+      paste("grafico-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Forzar la ejecución de la función reactiva
-      res <- resultado()
+      # Guardar el gráfico en un archivo temporal HTML
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(resultado()$grafico, file = tempFile, selfcontained = FALSE)
       
-      # Usa ggsave para guardar el gráfico
-      ggplot2::ggsave(filename = file, plot = res$grafico, width = 13, height = 7, dpi = 200)
+      # Usar webshot en el archivo HTML
+      webshot::webshot(url = tempFile, file = file, delay = 3)
     }
   )
+  
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
+  
+  observeEvent(input$reset, {
+    updateSelectInput(session, "año", selected = "todo")
+    updateSelectInput(session, "mes", selected = "todo")
+    updateSelectInput(session, "depto", selected = "todo")
+  })
   
   output$descargarDatos <- downloadHandler(
     filename = function() {
@@ -70,13 +90,34 @@ server <- function(input, output, session) {
   
   # En el servidor
   output$subtitulo <- renderText({
+      res<-resultado()
+      if(nrow(res$datos)==0){
+        validate(
+          ("No hay datos disponibles.")
+        )
+      }else{
     resultado <- resultado()
     producto_max <- resultado$producto_max
     porcentaje_max<-resultado$porcentaje_max
     #if(input$anio == ""){
     return(paste0("El producto que más sale de Antioquia es ", producto_max, " con un ", porcentaje_max,"%."))
-    #}
+    }
+  })
+  output$mensaje1 <- renderText({
+    #resultado <- resultado()
+    #volatil<-resultado$producto_vol
+    return("Poner mensaje")
+  })
+  
+  output$mensaje2 <- renderText({
+    #resultado <- resultado()
+    #promedio_camb<-resultado$promedio_camb
+    return("Poner mensaje")
+  })
+  
+  output$mensaje3 <- renderText({
+    #resultado <- resultado()
+    #promedio_camb_an<-resultado$promedio_camb_an
+    return("Poner mensaje")
   })
 }
-
-

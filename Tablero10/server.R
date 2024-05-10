@@ -41,10 +41,12 @@ server <- function(input, output, session) {
   
   output$grafico <- plotly::renderPlotly({
     res <- resultado()
-    if (is.character(res) || length(res) == 0 || is.null(input$municipios) || input$municipios < 1) {
-      return("NULL")  # No hay gráfico para mostrar
+    if (nrow(res$datos)==0) {
+      validate(
+        ("No hay datos disponibles")
+      )
     } else {
-      res$grafico  # Devuelve el gráfico Plotly
+      res$grafico
     }
   })
   
@@ -86,18 +88,14 @@ server <- function(input, output, session) {
   })
   
   output$subtitulo <- renderText({
-    res <- resultado()
-    if (is.data.frame(res) || is.list(res)) {
-      if (nrow(res$datos) == 0) {
-      return("No hay datos disponibles")
-    } else {resultado <- resultado()
+    resultado <- resultado()
+    if (nrow(resultado$datos) == 0) {
+      validate("No hay datos disponibles")
+    } else {
     lugar_max <- resultado$lugar_max
     porcentaje_max<-resultado$porcentaje_max
     #if(input$anio == ""){
     return(paste0("El principal municipio a donde va la comida de Antioquia es ", lugar_max, " con un ", porcentaje_max,"%"))
-    }
-      } else {
-        return("No hay datos disponibles")
     }
   })
   
