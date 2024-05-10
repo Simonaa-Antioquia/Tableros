@@ -75,8 +75,8 @@ ui <- fluidPage(
                          style = "background-color: #094735; color: #FFFFFF;")
         )
       ),
-      tags$div(tags$p("Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
-                      tags$br(),"La información solo se muestra para los precios en el centro de acopio de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
+      tags$div(tags$p("La información solo se muestra para los precios en el centro de acopio de Medellín.",
+                      tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
     ),
     tags$div(
       tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
