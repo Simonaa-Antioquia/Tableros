@@ -43,11 +43,11 @@ ui <- fluidPage(
   div(class = "scrollable-content",
       fluidRow(
         column(4,
-               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_rutas$anio)))))),
+               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_medellin$anio)))))),
         column(4,
-               selectInput("mes", "Mes", c("Todos los meses" = "", sort(as.numeric(unique(abastecimiento_rutas$mes)))))),
+               selectInput("mes", "Mes", c("Todos los meses" = "", sort(as.numeric(unique(abastecimiento_medellin$mes)))))),
         column(4,
-               selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_rutas$producto)))))),
+               selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
         column(4,
                selectInput("importancia","Importancia de los municipios",c("No incluir" = "","Incluir")))
       )),
