@@ -52,6 +52,7 @@ ui <- fluidPage(
                selectInput("importancia","Importancia de los municipios",c("No incluir" = "","Incluir")))
       )),
   div(
+    mainPanel(
     fluidRow(
       column(12,  
              leafletOutput("grafico", width = "75%", height = "500px"),
@@ -60,7 +61,8 @@ ui <- fluidPage(
              #,
              #tableOutput("vistaTabla") 
       )
-    ),
+    )
+      ),
     tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
