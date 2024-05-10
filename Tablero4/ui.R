@@ -17,6 +17,7 @@ source("004a_rutas_abastecimiento.R")
 library(shiny)
 library(dplyr)
 library(ggplot2)
+library(leaflet)
 
 # Definir la interfaz de usuario
 
