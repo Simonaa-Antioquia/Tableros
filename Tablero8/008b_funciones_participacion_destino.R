@@ -8,7 +8,8 @@
   ################################################################################
   # Paquetes 
   library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-  library(glue);library(tidyverse); library(knitr); library(kableExtra);library(DT)
+  library(glue);library(tidyverse); library(knitr); library(kableExtra);library(DT);library(tools)
+  library(plotly)
   options(scipen = 999)
   ################################################################################
   rm(list = ls())
@@ -16,9 +17,11 @@
   # Cargamos las bases de datos generadas en 008a_HHINDEX_participacion_destino
   IHH_anual_total <- readRDS("base_indice_anual_total_destino.rds")
   IHH_anual_total$year <-as.numeric(IHH_anual_total$year)
-  IHH_anual_producto <- readRDS("base_indice_anual_producto_desti.rds")
+  IHH_anual_producto <- readRDS("base_indice_anual_producto_desti.rds")%>%
+    mutate(producto=tools::toTitleCase(tolower(producto)))
   IHH_anual_producto$year <- as.numeric(IHH_anual_producto$year)
-  IHH_mensual_producto <- readRDS("base_indice_mensual_producto_destino.rds")
+  IHH_mensual_producto <- readRDS("base_indice_mensual_producto_destino.rds")%>%
+    mutate(producto=tools::toTitleCase(tolower(producto)))
   IHH_mensual_total <- readRDS("base_indice_mensual_total_destino.rds")
   
 # Funcion 
@@ -60,7 +63,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
     df <- rename(df, fecha = mes_y_ano)
     df$fecha <-  as.Date(df$fecha)
   }
-  
+  df<-df%>%mutate(IHH=round(IHH*100))
   # Filtrar los productos seleccionados solo para las opciones 2 y 4
   if (tipo %in% c(1)) {
     # Comprueba si df$fecha está vacío o contiene valores no numéricos
@@ -68,11 +71,13 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
         geom_line() +
         labs(x = "Año", y = "Importancia Municipios destino") +
         scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha))) +
+        scale_color_manual(values = col_palette) +
         theme_minimal()  
   }else if (tipo %in% c(2)){
     df <- df[df$producto %in% productos_seleccionados, ]
     p<-ggplot(df, aes(x = fecha, y = IHH, color = producto)) +
       geom_line() +
+      scale_color_manual(values = col_palette) +
       labs(x = "Año", y = "Importancia Municipios destino") +
       scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha))) +
       theme_minimal() 
@@ -101,6 +106,8 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   fecha_max_vulnerabilidad <- df$fecha[indice_max_vulnerabilidad]
   producto_max_vulnerabilidad <- ifelse("producto" %in% names(df), df$producto[indice_max_vulnerabilidad], NA)
   
+  p<-plotly::ggplotly(p)
+  
   # Devolver el gráfico, los datos y los valores máximos
   return(list(
     grafico = p,
@@ -112,11 +119,11 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
 } 
 
 
-grafica_indice(1)
-grafica_indice(2,"",c("ARROZ","CARNE DE CERDO"))
-grafica_indice(3,2013)
-grafica_indice(4,"",c("ARROZ", "CARNE DE CERDO"))
-grafica_indice(4,"2015",c("ARROZ", "CARNE DE CERDO"))
+#grafica_indice(1)
+#grafica_indice(2,"",c("Arroz","Carne De Cerdo"))
+#grafica_indice(3,2013)
+#grafica_indice(4,"",c("Arroz","Carne De Cerdo"))
+#grafica_indice(4,"2015",c("Arroz","Carne De Cerdo"))
 
 
 

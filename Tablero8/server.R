@@ -22,7 +22,7 @@ server <- function(input, output, session) {
     
     if ((tipo == 2 || tipo == 4) && is.null(productos_seleccionados)) {
       validate(
-        need(FALSE, "Debe seleccionar un producto.")
+        ("Debe seleccionar un producto.")
       )
     }
     
@@ -51,11 +51,14 @@ server <- function(input, output, session) {
     }
   })
   
-  
-  
-  output$grafico <- renderPlot({
-    resultado()$grafico
-  }, res = 96)
+  observeEvent(input$reset, {
+    updateSelectInput(session, "tipo", selected = 1)
+    updateSelectInput(session, "producto", selected = "")
+    updateSelectInput(session, "anio", selected = "")
+  })
+  output$grafico <- renderPlotly({
+    plotly::ggplotly(resultado()$grafico)
+  })
   
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
@@ -68,11 +71,12 @@ server <- function(input, output, session) {
       paste("grafica-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      png(file)
-      print(resultado()$grafico)
-      dev.off()
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
     }
   )
+  
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
@@ -81,6 +85,10 @@ server <- function(input, output, session) {
       write.csv(resultado()$datos, file)
     }
   )
+  
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
   
   output$subtitulo <- renderText({
     if ((input$tipo == 2 || input$tipo == 4) && is.null(input$producto)) {
@@ -105,6 +113,23 @@ server <- function(input, output, session) {
   })
   
   
+  output$mensaje1 <- renderText({
+    #resultado <- resultado()
+    #volatil<-resultado$producto_vol
+    return("Poner mensaje")
+  })
+  
+  output$mensaje2 <- renderText({
+    #resultado <- resultado()
+    #promedio_camb<-resultado$promedio_camb
+    return("Poner mensaje")
+  })
+  
+  output$mensaje3 <- renderText({
+    #resultado <- resultado()
+    #promedio_camb_an<-resultado$promedio_camb_an
+    return("Poner mensaje")
+  })
   
 }
 

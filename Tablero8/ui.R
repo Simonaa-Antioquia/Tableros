@@ -16,12 +16,17 @@ rm(list = ls())
 source("008b_funciones_participacion_destino.R")
 productos <- unique(IHH_anual_producto$producto)
 
-
 ui <- fluidPage(
-  #theme = shinythemes::shinytheme("default"),
-  tags$head(
-    tags$style(HTML("
-      .main-header {
+  tags$div(
+    style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
+    tags$head(
+      tags$title("Índice concentración de los destinos de los alimentos"),  # Añade esta línea
+      tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
+      tags$style(HTML("
+        body {
+          overflow-x: hidden;
+        }
+        .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
         color: #0D8D38;
@@ -36,7 +41,7 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("Numero de destinos - Indice", class = "main-header"),
+  tags$h1("Índice concentración de los destinos de los alimentos (lugares a los que \"exporta\" Antioquia)", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -69,19 +74,29 @@ ui <- fluidPage(
   ),
   div(
     fluidRow(
-      column(12,
-             plotOutput("grafico",height = "300px"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
-             #,
-             #tableOutput("vistaTabla") 
-      )
+        column(10,
+               plotlyOutput("grafico"),
+               downloadButton("descargar", "Gráfica"),
+               downloadButton("descargarDatos", "Datos"),
+               actionButton("github", "GitHub", icon = icon("github")),
+               actionButton("reset", "Restablecer", icon = icon("refresh"))
+        ),
+        column(2, 
+               wellPanel(textOutput("mensaje1"),
+                         style = "background-color: #0D8D38; color: #FFFFFF;"),
+               wellPanel(textOutput("mensaje2"),
+                         style = "background-color: #005A45; color: #FFFFFF;"),
+               wellPanel(textOutput("mensaje3"),
+                         style = "background-color: #094735; color: #FFFFFF;")
+        )
     ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;"),
-    
-  ),
-  tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
-    style = "position: absolute; bottom: 0; width: 100%;"
-  ) 
-)
+    tags$div(tags$p("El índice de concentración de destinos de alimento busca ver qué tan variados son los destinos a los que los alimentos de origen 
+                    antioqueño van, es decir que un índice cercano a 100 es que van a sólo un destino y cercano a 0 es que van a múltiples destinos.",
+                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
+    ),
+    tags$div(
+      tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+      style = "position: absolute; bottom: 0; width: 100%;"
+      )
+    )
+  )
