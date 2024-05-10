@@ -53,11 +53,10 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(12,
-             box( width = NULL, status = "success", solidHeader = TRUE,
-             leafletOutput("grafico", width = "75%", height = "500px")),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
+      column(12,  
+             leafletOutput("grafico", width = "75%", height = "500px"),
+             #downloadButton("descargar", "Descargar gráfica"),
+             #downloadButton("descargarDatos", "Descargar datos")
              #,
              #tableOutput("vistaTabla") 
       )
