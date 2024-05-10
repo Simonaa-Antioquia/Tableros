@@ -15,7 +15,7 @@ options(scipen = 999)
 
 ## Cargamos la base de datos de origen destino 
 
-abastecimiento_rutas <- readRDS("rutas_abastecimiendo_medellin.rds")
+abastecimiento_medellin <- readRDS("rutas_abastecimiendo_medellin.rds")
 
 ruta <- function(Año = NULL,Mes = NULL,Producto = NULL) {
   df <- abastecimiento_medellin
