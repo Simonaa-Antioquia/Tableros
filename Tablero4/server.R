@@ -50,7 +50,7 @@ server <- function(input, output, session) {
   
   output$plot <- renderLeaflet({
     resultado()$grafico
-  }, res = 100)
+  }
   
   output$descargar <- downloadHandler(
     filename = function() {
