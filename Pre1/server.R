@@ -10,10 +10,13 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot); library(shiny)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot); library(shiny);library(htmlwidgets)
 options(scipen = 999)
 ################################################################################
 server <- function(input, output, session) {
+  
+  ## The element vals will store all plots and tables
+  vals <- reactiveValues(plt1=NULL)  
   
   resultado<-reactive({
     if(input$anio == "todo" && input$producto == "todo"){
@@ -25,6 +28,10 @@ server <- function(input, output, session) {
     } else{
       graficar_variable(data,variable=input$variable, input$producto, input$anio)
     }
+  })
+  
+  observe({
+    vals$plt1 <- plotly::ggplotly(resultado()$grafico)
   })
   
   observeEvent(input$reset, {
@@ -43,18 +50,8 @@ server <- function(input, output, session) {
     }
   })
   
-  output$descargar <- downloadHandler(
-    filename = function() {
-      paste("grafica-", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
-    }
-  )
-  
-  output$descargarDatos <- downloadHandler(
+
+output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
     },
@@ -95,4 +92,15 @@ server <- function(input, output, session) {
     promedio_camb_an<-resultado$promedio_camb_an
     return(promedio_camb_an)
   })
+  
+# dw  plot  
+  output$export = downloadHandler(
+    filename = function() {"plot.png"},
+    content = function(file) {
+      temp_file <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(vals$plt1, file = temp_file, selfcontained = FALSE)
+      webshot::webshot(url = temp_file, file = file)
+    }
+  )
 }
+  
