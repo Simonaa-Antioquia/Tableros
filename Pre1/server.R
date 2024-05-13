@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot); library(shiny);library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot); library(shiny);library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot);library(webshot2)
 options(scipen = 999)
 ################################################################################
 server <- function(input, output, session) {
@@ -95,18 +95,28 @@ output$descargarDatos <- downloadHandler(
     return(promedio_camb_an)
   })
   
+  # Aqui tomamos screen 
   observeEvent(input$go, {
     screenshot()
   })
   
-  output$export = downloadHandler(
-    filename = function() {"plot.png"},
+  # Para descargar la imagen
+  
+  output$export <- downloadHandler(
+    filename = function() {
+      paste("plot-", Sys.Date(), ".png", sep="")
+    },
     content = function(file) {
-      temp_file <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(vals$plt1, file = temp_file, selfcontained = FALSE)
-      webshot::webshot(url = temp_file, file = file)
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(vals$plt1, tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file)
     }
   )
+  
+  observeEvent(input$export, {
+    shinyscreenshot::screenshot(id = "grafico", filename = "plot_image")
+  })
+
   
 }
   
