@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot); library(shiny);library(htmlwidgets)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot); library(shiny);library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot)
 options(scipen = 999)
 ################################################################################
 server <- function(input, output, session) {
@@ -30,6 +30,7 @@ server <- function(input, output, session) {
     }
   })
   
+  #Cambiar la imagen cada que cambian los filtros
   observe({
     vals$plt1 <- plotly::ggplotly(resultado()$grafico)
   })
@@ -39,6 +40,7 @@ server <- function(input, output, session) {
     updateSelectInput(session, "variable", selected = "precio_prom")
     updateSelectInput(session, "anio", selected = "todo")
   })
+  
   
   output$grafico <- renderPlotly({
     plotly::ggplotly(resultado()$grafico)
@@ -93,14 +95,9 @@ output$descargarDatos <- downloadHandler(
     return(promedio_camb_an)
   })
   
-# dw  plot  
-  output$export = downloadHandler(
-    filename = function() {"plot.png"},
-    content = function(file) {
-      temp_file <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(vals$plt1, file = temp_file, selfcontained = FALSE)
-      webshot::webshot(url = temp_file, file = file)
-    }
-  )
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
 }
   

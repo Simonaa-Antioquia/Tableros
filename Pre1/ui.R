@@ -64,6 +64,7 @@ ui <- fluidPage(
                downloadButton("export", "Gráfica"),
                downloadButton("descargarDatos", "Datos"),
                actionButton("github", "GitHub", icon = icon("github")),
+               actionButton("go", "Reporte"),
                actionButton("reset", "Restablecer", icon = icon("refresh"))
         ),
         column(2, 
