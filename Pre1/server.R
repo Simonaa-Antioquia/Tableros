@@ -99,5 +99,14 @@ output$descargarDatos <- downloadHandler(
     screenshot()
   })
   
+  output$export = downloadHandler(
+    filename = function() {"plot.png"},
+    content = function(file) {
+      temp_file <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(vals$plt1, file = temp_file, selfcontained = FALSE)
+      webshot::webshot(url = temp_file, file = file)
+    }
+  )
+  
 }
   
