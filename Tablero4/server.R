@@ -2,6 +2,10 @@
 server <- function(input, output, session) {
   
   resultado<-reactive({
+    ruta()
+  })
+  
+  resultado<-reactive({
     #Revisar si se incluye importancia o no
     if (input$importancia == ""){
       # Comprobar si solo se ha seleccionado un producto
@@ -49,6 +53,12 @@ server <- function(input, output, session) {
   })
   
   output$plot <- renderLeaflet({
+    #df <- abastecimiento_medellin
+    #df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
+    
+    #ruta()$grafico
+    
+    #ruta()$grafico
     resultado()$grafico
   })
   
