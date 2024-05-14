@@ -171,5 +171,9 @@ server <- function(input, output, session) {
   observeEvent(input$go, {
     screenshot()
   })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
+  })
 
 }

@@ -9,7 +9,7 @@
 rm(list=ls())
 # Paquetes 
 ################################################################################-
-library(reshape2);library(sf);library(shiny);library(htmlwidgets)
+library(reshape2);library(sf);library(shiny);library(htmlwidgets);library(mapview);library(shinyscreenshot);
 ################################################################################-
 
 server <- function(input, output, session) {
@@ -50,17 +50,8 @@ server <- function(input, output, session) {
     }
   })
   
-  output$descargar <- downloadHandler(
-    filename = function() {
-      paste("grafica-", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(plotly::as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 800)
-    }
-  )
-  
+
+
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
@@ -105,5 +96,14 @@ server <- function(input, output, session) {
     #resultado <- resultado()
     #promedio_camb_an<-resultado$promedio_camb_an
     return("Poner mensaje")
+  })
+  
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
   })
 }

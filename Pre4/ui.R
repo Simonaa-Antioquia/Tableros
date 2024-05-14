@@ -9,8 +9,8 @@
 rm(list=ls())
 # Paquetes 
 ################################################################################-
-library(reshape2);library(sf);library(shiny);library(leaflet);library(htmlwidgets)
-library(webshot)
+library(reshape2);library(sf);library(shiny);library(leaflet);library(htmlwidgets);library(shinyscreenshot);
+library(webshot);library(mapview)
 
 ################################################################################-
 source("001h_precios_diferencias_mapa_funciones.R")
@@ -25,7 +25,7 @@ ui <- fluidPage(
   tags$div(
     style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
     tags$head(
-      tags$title("Mapa comparación de precios"),  # Añade esta línea
+      tags$title("Mapa comparación de precios"),  
       tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
       .selectize-dropdown {
@@ -74,9 +74,10 @@ ui <- fluidPage(
     fluidRow(
       column(10,
              leafletOutput("grafico"),
-             downloadButton("descargar", "Gráfica"),
+             actionButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte"),
              actionButton("reset", "Restablecer", icon = icon("refresh"))#,
              #tableOutput("vistaTabla") 
       ),

@@ -94,6 +94,10 @@ output$descargarDatos <- downloadHandler(
   observeEvent(input$go, {
     screenshot()
   })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
+  })
 
 }
   
