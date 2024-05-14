@@ -16,13 +16,18 @@ source("006b_HHindex_abastecimiento_funciones.R")
 
 ui <- fluidPage(
   tags$head(
-    tags$title("Variedad de oferta de alimentos de antioquia - indice"),
+    tags$title("índice de concentración alimentaria"),
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
     tags$style(HTML("
     
        .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
+        color: #0D8D38;
+       }
+       .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
         color: #0D8D38;
       }
       .sub-header {
@@ -49,7 +54,8 @@ ui <- fluidPage(
     ")),
     tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
-  tags$h1("Variedad de oferta de alimentos de Antioquia - indice", class = "main-header"),
+  tags$h1("índice de concentración alimentaria", class = "main-header"),
+  tags$h1("Análisis de diversidad de alimentos que ingresan a las pricipales centrales de abasto de Antioquia.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -72,25 +78,26 @@ ui <- fluidPage(
   ),
   
   fluidRow(
-    column(8,
+    column(9,
            div(
              plotly::plotlyOutput("grafico1",height = "400px"),
-             downloadButton("descargar", "Gráfica"),
+             actionButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte"),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
            )),
     
-    column(4, 
+    column(3, 
            div(
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(uiOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #005A45; color: #FFFFFF;")#,
+             #wellPanel(textOutput("mensaje3"),
+            #           style = "background-color: #094735; color: #FFFFFF;")
            ))
   ),
   
@@ -100,8 +107,14 @@ ui <- fluidPage(
            tags$div(
              tags$p("Este gráfico se calcula en base al índice de Herfindahl-Hirschman", class = "sub-header2", style = "margin-top: 3px;"),
              tags$p("Un mayor índice indica menor variedad de alimentos disponibles en los principales centros de abastecimiento", class = "sub-header2", style = "margin-top: 3px;"),
-             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
-           )
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$div(style = "text-align: left;", 
+                      tags$p("La fórmula del índice de Herfindahl-Hirschman es:", class = "sub-header2", style = "margin-top: 3px;"),
+                      tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),
+                      tags$div(id = "mathjax-output", HTML("$$IHH = \\sum_{i=1}^{n} s_i^2$$"))
+             ),
+             tags$p("Donde S es la participacion que tiene cada producto en el volumen total de alimentos que ingresan a las principales centrales de abasto de Antioquia", class = "sub-header2", style = "margin-top: 3px;"),
+           ) 
     )
   ),
   

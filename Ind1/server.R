@@ -87,7 +87,16 @@ server <- function(input, output, session) {
   })
   
   output$mensaje2 <- renderUI({
-    withMathJax(paste0("La fórmula es: $$IHH = \\sum_{i=1}^{n} s_i^2$$ donde s es la participación del producto i en el total de alimentos y n es el número total de alimentos."))
+    return("Este índice puede aumentar si aumenta la participación de un producto o disminuye el número de productos que ingresan.")
+  })
+  
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
   })
   
 }

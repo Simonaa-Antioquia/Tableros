@@ -50,8 +50,8 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
   # Añade las otras líneas con tooltips personalizadas
   graf <- graf %>%
     add_trace(y = ~precio_prom / max(datos_producto$precio_prom) * max(datos_producto$cantidad), name = "Precio/Kg", text = ~paste("Precio: $", formatC(precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)),
-              hoverinfo = "text", line = list(color = "#00596C")) %>%
-    add_trace(y = ~distancia / max(datos_producto$distancia) * max(datos_producto$cantidad), name = "Distancia - Km", text = ~paste("Distancia: ", round(distancia),"Km"), hoverinfo = "text", line = list(color = "#F1B709"))
+              hoverinfo = "text", line = list(color = "#00596C")) #%>%
+    #add_trace(y = ~distancia / max(datos_producto$distancia) * max(datos_producto$cantidad), name = "Distancia - Km", text = ~paste("Distancia: ", round(distancia),"Km"), hoverinfo = "text", line = list(color = "#F1B709"))
   
   p<-graf
 #  p <- plotly::ggplotly(graf, tooltip = "text")
