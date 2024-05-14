@@ -112,7 +112,7 @@ ui <- fluidPage(
       column(12,
              style = "margin-top: 2px;",
              tags$div(
-               tags$p("Este gráfico se calcula en base al índice de Herfindahl-Hirschman", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Este gráfico se calcula con base en índice de Herfindahl-Hirschman", class = "sub-header2", style = "margin-top: 3px;"),
                tags$p("Un mayor índice indica menor número de destinos de los cuales provienen los alimentos (municipios)", class = "sub-header2", style = "margin-top: 3px;"),
                tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
                tags$div(style = "text-align: left;", 
@@ -120,7 +120,7 @@ ui <- fluidPage(
                         tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),
                         tags$div(id = "mathjax-output", HTML("$$IHH = \\sum_{i=1}^{n} s_i^2$$"))
                ),
-               tags$p("Donde S es la participacion que tiene cada municipio (origen) en el total de volumen de aliementos que ingresan.", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Donde Si es la participación que tiene cada municipio (origen) en el total de volumen de aliementos que ingresan.", class = "sub-header2", style = "margin-top: 3px;"),
              ))
     ),
     

@@ -105,7 +105,7 @@ ui <- fluidPage(
     column(12,
            style = "margin-top: 2px;",
            tags$div(
-             tags$p("Este gráfico se calcula en base al índice de Herfindahl-Hirschman", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Este gráfico se calcula con base en el índice de Herfindahl-Hirschman", class = "sub-header2", style = "margin-top: 3px;"),
              tags$p("Un mayor índice indica menor variedad de alimentos disponibles en los principales centros de abastecimiento", class = "sub-header2", style = "margin-top: 3px;"),
              tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
              tags$div(style = "text-align: left;", 
@@ -113,7 +113,7 @@ ui <- fluidPage(
                       tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),
                       tags$div(id = "mathjax-output", HTML("$$IHH = \\sum_{i=1}^{n} s_i^2$$"))
              ),
-             tags$p("Donde S es la participacion que tiene cada producto en el volumen total de alimentos que ingresan a las principales centrales de abasto de Antioquia", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Donde Si es la participación que tiene cada producto en el volumen total de alimentos que ingresan a las principales centrales de abasto de Antioquia", class = "sub-header2", style = "margin-top: 3px;"),
            ) 
     )
   ),
