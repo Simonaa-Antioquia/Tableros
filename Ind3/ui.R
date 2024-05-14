@@ -8,7 +8,7 @@
 # Paquetes 
 ################################################################################
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes);library(shiny)
+library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes);
 options(scipen = 999)
 ################################################################################
 rm(list = ls())
@@ -17,18 +17,19 @@ source("008b_funciones_participacion_destino.R")
 productos <- unique(IHH_anual_producto$producto)
 
 ui <- fluidPage(
-  tags$div(
-    style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
-    tags$head(
-      tags$title("Índice concentración de los destinos de los alimentos"),  # Añade esta línea
-      tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
-      tags$style(HTML("
-        body {
-          overflow-x: hidden;
-        }
+  #theme = shinythemes::shinytheme("default"),
+  tags$head(
+    tags$title("Indice concentración del origen de los alimentos - Indice"),
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
+    tags$style(HTML("
         .main-header {
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
+        color: #0D8D38;
+       }
+       .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
         color: #0D8D38;
       }
       .sub-header {
@@ -39,15 +40,30 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
       }
-    "))
+      .sub-header3 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 15px;
+      }
+      .center {
+        display: flex;
+        justify-content: center;
+      }
+      .scrollable-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+      }
+    ")),
+    tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
-  tags$h1("Índice concentración de los destinos de los alimentos (lugares a los que \"exporta\" Antioquia)", class = "main-header"),
+  tags$h1("índice de diversidad de destino de los alimentos", class = "main-header"),
+  tags$h1("Análisis de la variedad de territorios conectados por el flujo de alimentos desde Antioquia hacia otras plazas en SIPSA", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
     style = "margin-bottom: 20px;"
   ),
-  div(class = "scrollable-content",
+  div(
       fluidRow(
         column(4,
                selectInput("tipo", "Seleccione el tipo:", 
@@ -72,31 +88,48 @@ ui <- fluidPage(
         )
       )
   ),
-  div(
+ 
     fluidRow(
-        column(10,
+        column(9,
                plotlyOutput("grafico"),
-               downloadButton("descargar", "Gráfica"),
+               actionButton("descargar", "Gráfica"),
                downloadButton("descargarDatos", "Datos"),
                actionButton("github", "GitHub", icon = icon("github")),
+               actionButton("go", "Reporte"),
                actionButton("reset", "Restablecer", icon = icon("refresh"))
         ),
-        column(2, 
-               wellPanel(textOutput("mensaje1"),
-                         style = "background-color: #0D8D38; color: #FFFFFF;"),
-               wellPanel(textOutput("mensaje2"),
-                         style = "background-color: #005A45; color: #FFFFFF;"),
-               wellPanel(textOutput("mensaje3"),
-                         style = "background-color: #094735; color: #FFFFFF;")
-        )
+        column(3, 
+               div(
+                 wellPanel(textOutput("mensaje1"),
+                           style = "background-color: #0D8D38; color: #FFFFFF;"),
+                 wellPanel(uiOutput("mensaje2"),
+                           style = "background-color: #005A45; color: #FFFFFF;")#,
+                 # wellPanel(textOutput("mensaje3"),
+                 #style = "background-color: #094735; color: #FFFFFF;")
+               ))
     ),
-    tags$div(tags$p("El índice de concentración de destinos de alimento busca ver qué tan variados son los destinos a los que los alimentos de origen 
-                    antioqueño van, es decir que un índice cercano a 100 es que van a sólo un destino y cercano a 0 es que van a múltiples destinos.",
-                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
+    fluidRow(
+      column(12,
+             style = "margin-top: 2px;",
+             tags$div(
+               tags$p("Este gráfico se calcula en base al índice de Herfindahl-Hirschman", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Un mayor índice indica menor número de destinos de los cuales provienen los alimentos (municipios)", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$div(style = "text-align: left;", 
+                        tags$p("La fórmula del índice de Herfindahl-Hirschman es:", class = "sub-header2", style = "margin-top: 3px;"),
+                        tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),
+                        tags$div(id = "mathjax-output", HTML("$$IHH = \\sum_{i=1}^{n} s_i^2$$"))
+               ),
+               tags$p("Donde S es la participacion que tiene cada municipio (origen) en el total de volumen de aliementos que ingresan.", class = "sub-header2", style = "margin-top: 3px;"),
+             ))
     ),
-    tags$div(
-      tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
-      style = "position: absolute; bottom: 0; width: 100%;"
+    
+    fluidRow(
+      tags$div(
+        tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+        style = "width: 100%; margin:0;"  
       )
-    )
+    ) 
+    
   )
+

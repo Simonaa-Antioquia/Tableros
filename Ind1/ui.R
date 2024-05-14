@@ -54,8 +54,8 @@ ui <- fluidPage(
     ")),
     tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
-  tags$h1("índice de concentración alimentaria", class = "main-header"),
-  tags$h1("Análisis de diversidad de alimentos que ingresan a las pricipales centrales de abasto de Antioquia.", class = "main-header_2"),
+  tags$h1("Índice de diversidad de alimentos", class = "main-header"),
+  tags$h1("Análisis de varidad de los alimentos que ingresan a las pricipales centrales de abasto de Antioquia.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",

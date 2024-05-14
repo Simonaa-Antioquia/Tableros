@@ -9,7 +9,7 @@
 # Paquetes 
 ################################################################################
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes);library(shiny)
+library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes);library(shiny);library(shinyscreenshot);
 options(scipen = 999)
 ################################################################################
 rm(list = ls())
@@ -66,18 +66,8 @@ server <- function(input, output, session) {
     }
   })
   
-  output$descargar <- downloadHandler(
-    filename = function() {
-      paste("grafica-", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
-    }
-  )
-  
-  output$descargarDatos <- downloadHandler(
+
+    output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
     },
@@ -102,33 +92,33 @@ server <- function(input, output, session) {
     producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
     
     if (tipo == 2) {
-      return(paste("La maxima vulnerabilidad anual se encuentra en el año", fecha_max_vulnerabilidad, "para el producto", producto_max_vulnerabilidad, "y es de", max_vulnerabilidad))
+      return(paste("La maxima vulnerabilidad anual se encuentra en el año", fecha_max_vulnerabilidad, "para el producto", producto_max_vulnerabilidad, "y es de", max_vulnerabilidad,"%"))
     } else if (tipo == 3) {
-      return(paste("La maxima vulnerabilidad mensual, fue en", fecha_max_vulnerabilidad, "y es de", max_vulnerabilidad))
+      return(paste("La maxima vulnerabilidad mensual, fue en", fecha_max_vulnerabilidad, "y es de", max_vulnerabilidad,"%"))
     } else if (tipo == 4) {
-      return(paste("La mayor vulnerabilidad fue en",fecha_max_vulnerabilidad, "para el prodcuto",producto_max_vulnerabilidad,"y fue de",max_vulnerabilidad))
+      return(paste("La mayor vulnerabilidad fue en",fecha_max_vulnerabilidad, "para el prodcuto",producto_max_vulnerabilidad,"y fue de",max_vulnerabilidad,"%"))
     } else {
-      return(paste("El año con mayor indice de vulnerabilidad fue",fecha_max_vulnerabilidad, "y fue de",max_vulnerabilidad))
+      return(paste("El año con mayor indice de vulnerabilidad fue",fecha_max_vulnerabilidad, "y fue de",max_vulnerabilidad,"%"))
     }
   })
   
   
   output$mensaje1 <- renderText({
-    #resultado <- resultado()
-    #volatil<-resultado$producto_vol
-    return("Poner mensaje")
+    return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los destinos de alimentos en Antioquia, un mayor índice indica menos municipios de destino para los alimentos cuyo origen esta en Antioquia")
   })
   
-  output$mensaje2 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb<-resultado$promedio_camb
-    return("Poner mensaje")
+  output$mensaje2 <- renderUI({
+    return("Este índice puede aumentar si aumenta la participación de un municipio o disminuye el número de municipios de destino")
   })
   
-  output$mensaje3 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb_an<-resultado$promedio_camb_an
-    return("Poner mensaje")
+  
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
   })
   
 }

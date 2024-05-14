@@ -8,7 +8,7 @@
   ################################################################################
   # Paquetes 
   library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-  library(glue);library(tidyverse); library(knitr); library(kableExtra);library(DT);library(tools)
+  library(glue);library(tidyverse);library(DT);library(tools)
   library(plotly)
   options(scipen = 999)
   ################################################################################

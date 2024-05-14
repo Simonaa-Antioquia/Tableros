@@ -9,7 +9,7 @@
 # Paquetes 
 ################################################################################
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes);library(plotly);
+library(glue);library(tidyverse); library(shiny); library(lubridate);library(shinythemes);library(plotly);library(shinyscreenshot);
 options(scipen = 999)
 ################################################################################
 server <- function(input, output, session) {
@@ -119,11 +119,22 @@ observeEvent(input$reset, {
 })
 
 output$mensaje1 <- renderText({
-  return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los alimentos en Antioquia, un mayor índice indica menos variedad de alimentos")
+  return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los origenes de alimentos en Antioquia, un mayor índice indica menos municipios de origen")
 })
 
 output$mensaje2 <- renderUI({
-  withMathJax(paste0("La fórmula es: $$IHH = \\sum_{i=1}^{n} s_i^2$$ donde s es la participación del producto i en el total de alimentos y n es el número total de alimentos."))
+  return("Este índice puede aumentar si aumenta la participación de un municipio o disminuye el número de municipios de origen")
 })
+
+
+# Aqui tomamos screen 
+observeEvent(input$go, {
+  screenshot()
+})
+
+observeEvent(input$descargar, {
+  screenshot("#grafico", scale = 5)
+})
+
   
 }
