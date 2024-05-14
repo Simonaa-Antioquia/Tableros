@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
-library(glue);library(tidyverse);library(gridExtra);library(corrplot); library(shiny)
+library(glue);library(tidyverse);library(gridExtra);library(corrplot); library(shiny);library(shinyscreenshot);
 options(scipen = 999)
 source("001b_indices_precios_funciones.R")
 ################################################################################-

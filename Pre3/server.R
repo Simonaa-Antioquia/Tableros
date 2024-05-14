@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readxl);library(reshape2);library(ggplot2);library(gganimate);library(dplyr);
-library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(stringr);
+library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(stringr);library(shinyscreenshot);
 library(shiny); library(plotly)
 ################################################################################-
 server <- function(input, output, session) {
@@ -167,5 +167,9 @@ server <- function(input, output, session) {
     })
   })  
   
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
 
 }

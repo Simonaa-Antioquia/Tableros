@@ -57,7 +57,8 @@ ui <- fluidPage(
     fluidRow(
       column(10,
              plotlyOutput("grafico",height = "300px"),
-             downloadButton("descargar", "Gráfica"),
+             #downloadButton("descargar", "Gráfica"),
+             actionButton("go", "Reporte"),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
              actionButton("reset", "Restablecer", icon = icon("refresh"))

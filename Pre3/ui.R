@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(readxl);library(reshape2);library(ggplot2);library(gganimate);library(dplyr);
-library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(stringr)
+library(readr);library(lubridate);library(zoo);library(stringr);library(tidyr);library(ggrepel);library(stringr);library(shinyscreenshot);
 ################################################################################-
 
 source("001f_precios_diferencias_municipios_funciones.R")
@@ -79,9 +79,10 @@ ui <- fluidPage(
       fluidRow(
         column(8,
                plotly::plotlyOutput("plot", height = "400px"),
-               downloadButton("descargar", "Gráfica"),
+               #downloadButton("descargar", "Gráfica"),
                downloadButton("descargarDatos", "Datos"),
                actionButton("github", "GitHub", icon = icon("github")),
+               actionButton("go", "Reporte"),
                actionButton("reset", "Restrablecer",icon = icon("refresh"))
         ),
         column(4, 
