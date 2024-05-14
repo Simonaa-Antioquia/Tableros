@@ -49,7 +49,7 @@ ui <- fluidPage(
         column(4,
                selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
         column(4,
-                heckboxGroupInput("ruta", "Rutas a cerrar:",
+                checkboxGroupInput("ruta", "Rutas a cerrar:",
                                  c("Ruta 1" = "r1",
                                    "Ruta 2" = "r2",
                                    "Ruta 3" = "r3",
