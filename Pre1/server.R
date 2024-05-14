@@ -16,9 +16,8 @@ options(scipen = 999)
 server <- function(input, output, session) {
   
   ## The element vals will store all plots and tables
-  vals <- reactiveValues(plt1=NULL)  
   
-  resultado<-reactive({
+    resultado<-reactive({
     if(input$anio == "todo" && input$producto == "todo"){
       graficar_variable(data, variable=input$variable)
     } else if(input$producto == "todo"){
@@ -30,11 +29,7 @@ server <- function(input, output, session) {
     }
   })
   
-  #Cambiar la imagen cada que cambian los filtros
-  observe({
-    vals$plt1 <- plotly::ggplotly(resultado()$grafico)
-  })
-  
+
   observeEvent(input$reset, {
     updateSelectInput(session, "producto", selected = "todo")
     updateSelectInput(session, "variable", selected = "precio_prom")
