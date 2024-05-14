@@ -7,7 +7,7 @@ sudo mkdir /srv/shiny-server/Tablero4
 sudo chown -R shiny:shiny /srv/shiny-server/Tablero4
 
 ### Update files
-sudo rsync -a --recursive  /home/rstudio/Tableros/Tablero4/ /srv/shiny-server/Tablero4 --delete
+sudo rsync -a --recursive  /home/rstudio/Tableros/Tablero4_b/ /srv/shiny-server/Tablero4_b --delete
 
 ## Change Permission in folder
 sudo chown -R shiny:shiny /srv/shiny-server/Tablero4
