@@ -1,9 +1,9 @@
 # Definir la función de servidor
 server <- function(input, output, session) {
   
-  resultado<-reactive({
-    ruta()
-  })
+  #resultado<-reactive({
+  #  ruta()
+  #})
   
   resultado<-reactive({
     #Revisar si se incluye importancia o no
