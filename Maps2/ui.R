@@ -39,7 +39,7 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("¿Qué rutas toman los alimentos que llegan a Antioquia?", class = "main-header"),
+  tags$h1("¿Cómo afecta cerrar una ruta de ingreso a Antioquia?", class = "main-header"),
   div(class = "scrollable-content",
       fluidRow(
         column(4,
@@ -49,7 +49,7 @@ ui <- fluidPage(
         column(4,
                selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
         column(4,
-               selectInput("importancia","Importancia de los municipios",c("No incluir" = "","Incluir")))
+               checkboxInput("ruta", "Ruta 1", "Ruta 2", "Ruta 3", "Ruta 4", "Ruta 5", "Ruta 6", FALSE),
       )),
   div(
     fluidRow(
