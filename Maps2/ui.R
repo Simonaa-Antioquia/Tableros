@@ -49,7 +49,13 @@ ui <- fluidPage(
         column(4,
                selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
         column(4,
-               checkboxInput("ruta", "Ruta 1", "Ruta 2", "Ruta 3", "Ruta 4", "Ruta 5", "Ruta 6", FALSE))
+                heckboxGroupInput("ruta", "Rutas a cerrar:",
+                                 c("Ruta 1" = "r1",
+                                   "Ruta 2" = "r2",
+                                   "Ruta 3" = "r3",
+                                   "Ruta 4" = "r4",
+                                   "Ruta 5" = "r5",
+                                   "Ruta 6" = "r6"))
       )),
   div(
     fluidRow(
