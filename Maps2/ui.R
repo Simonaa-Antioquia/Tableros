@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 options(scipen = 999)
-source("004a_rutas_abastecimiento.R")
+#source("004a_rutas_abastecimiento.R")
 ################################################################################-
 
 # Cargar los paquetes necesarios
