@@ -18,7 +18,7 @@ library(shiny)
 library(dplyr)
 library(ggplot2)
 
-# Definir la interfaz de usuario
+
 # Definir la interfaz de usuario
 
 ui <- fluidPage(

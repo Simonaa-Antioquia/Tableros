@@ -99,24 +99,6 @@ output$descargarDatos <- downloadHandler(
   observeEvent(input$go, {
     screenshot()
   })
-  
-  # Para descargar la imagen
-  
-  output$export <- downloadHandler(
-    filename = function() {
-      paste("plot-", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(vals$plt1, tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file)
-    }
-  )
-  
-  observeEvent(input$export, {
-    shinyscreenshot::screenshot(id = "grafico", filename = "plot_image")
-  })
 
-  
 }
   
