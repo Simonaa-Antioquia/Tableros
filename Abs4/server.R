@@ -102,19 +102,29 @@ server <- function(input, output, session) {
   output$mensaje1 <- renderText({
     #resultado <- resultado()
     #volatil<-resultado$producto_vol
-    return("Poner mensaje")
+    return("La mayoría de los productos procedentes de municipios de Antioquia terminan en los centros de acopio de Medellín.")
   })
   
   output$mensaje2 <- renderText({
     #resultado <- resultado()
     #promedio_camb<-resultado$promedio_camb
-    return("Poner mensaje")
+    return("En los últimos años, se ha observado un incremento en las exportaciones hacia otros departamentos de Colombia.")
   })
   
-  output$mensaje3 <- renderText({
+  #output$mensaje3 <- renderText({
     #resultado <- resultado()
     #promedio_camb_an<-resultado$promedio_camb_an
-    return("Poner mensaje")
+    #return("Poner mensaje")
+  #})
+  
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
   })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
+  })
+  
 }
 

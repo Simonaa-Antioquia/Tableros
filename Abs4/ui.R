@@ -74,9 +74,10 @@ ui <- fluidPage(
     fluidRow(
       column(10,
              plotlyOutput("grafico",height = "400px"),
-             downloadButton("descargar", "Gráfica"),
+             actionButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte"),
              actionButton("reset", "Restablecer", icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
@@ -85,9 +86,9 @@ ui <- fluidPage(
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #005A45; color: #FFFFFF;")#,
+             #wellPanel(textOutput("mensaje3"),
+              #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
     tags$div(tags$p("Este gráfico muestra la importancia que tiene cada municipio como destino de los prodoctos de origen antioqueño",

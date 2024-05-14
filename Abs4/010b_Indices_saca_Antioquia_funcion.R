@@ -210,7 +210,7 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
   if(nrow(df)==0){
     p <- print("No hay datos disponibles")
   }else{
-    df$tooltip_text <- paste("Ciudad de origen: ", df$mpio_destino, "<br>Porcentaje: ", round(df$columna_porcentaje*100),"%")
+    df$tooltip_text <- paste("Ciudad de origen: ", df$mpio_destino, "<br>Porcentaje: ", round(df$columna_porcentaje*100,digits = 2),"%")
     
     # Ahora puedes usar col_palette en tu gráfico
     p<-ggplot(df, aes(x = forcats::fct_reorder(mpio_destino, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill = mpio_destino,text = tooltip_text)) +
@@ -226,7 +226,7 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
     p <- plotly::ggplotly(p, tooltip = "text")
   }
   
-  porcentaje_max<-ifelse(nrow(df)==0,"",round(max(df$columna_porcentaje)*100,1))
+  porcentaje_max <- ifelse(nrow(df)==0, "", round(max(df$columna_porcentaje)*100, digits = 2))
   lugar_max<-ifelse(nrow(df)==0,"",df$mpio_destino[which.max(df$columna_porcentaje)])
   
   return(
