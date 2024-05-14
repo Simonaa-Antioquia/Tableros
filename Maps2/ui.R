@@ -55,7 +55,7 @@ ui <- fluidPage(
                                    "Ruta 3" = "r3",
                                    "Ruta 4" = "r4",
                                    "Ruta 5" = "r5",
-                                   "Ruta 6" = "r6"))
+                                   "Ruta 6" = "r6")))
       )),
   div(
     fluidRow(
