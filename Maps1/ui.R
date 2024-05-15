@@ -46,9 +46,9 @@ ui <- fluidPage(
                selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_medellin$anio)))))),
         column(2,
                selectInput("mes", "Mes", c("Todos los meses" = "", sort(as.numeric(unique(abastecimiento_medellin$mes)))))),
-        column(2,
-               selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
         column(3,
+               selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
+        column(4,
                selectInput("importancia","Importancia de los municipios",c("No incluir" = "","Incluir")))
       )),
   div(
