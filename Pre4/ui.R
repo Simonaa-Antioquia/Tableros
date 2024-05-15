@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(reshape2);library(sf);library(shiny);library(leaflet);library(htmlwidgets);library(shinyscreenshot);
-library(webshot);library(mapview)
+library(webshot)
 
 ################################################################################-
 source("001h_precios_diferencias_mapa_funciones.R")

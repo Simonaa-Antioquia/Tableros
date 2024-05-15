@@ -9,7 +9,7 @@
 rm(list=ls())
 # Paquetes 
 ################################################################################-
-library(reshape2);library(sf);library(shiny);library(htmlwidgets);library(mapview);library(shinyscreenshot)
+library(reshape2);library(sf);library(shiny);library(htmlwidgets);library(shinyscreenshot)
 library(webshot);library(magick);library(webshot2)
 ################################################################################-
 
