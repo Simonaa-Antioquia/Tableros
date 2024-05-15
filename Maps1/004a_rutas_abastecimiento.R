@@ -49,7 +49,7 @@ if (!is.null(Año) & !is.null(Mes)) {
     if(!is.null(Producto)) {
       var <- 39
     } else {
-      var <- 34
+      var <- 36
     }
   } else if (!is.null(Año)) {
     if(!is.null(Producto)) {
@@ -92,7 +92,7 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
     if(!is.null(Producto)) {
       var <- 39
     } else {
-      var <- 34
+      var <- 36
     }
   } else if (!is.null(Año)) {
     df <- df %>% filter(anio == Año)
