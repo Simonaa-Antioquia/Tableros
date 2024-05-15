@@ -53,7 +53,7 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("¿Cómo afecta cerrar una ruta de ingreso a Antioquia?", class = "main-header"),
-  div(class = "scrollable-content",
+  div(
       fluidRow(
         column(4,
                selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_medellin$anio)))))),
