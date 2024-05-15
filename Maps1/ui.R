@@ -54,7 +54,7 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(9,  
+      column(7,  
              leafletOutput("plot", width = "60%", height = "250px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
@@ -62,7 +62,7 @@ ui <- fluidPage(
              actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
       ),
-      column(3, 
+      column(5, 
            div(
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;")#,
