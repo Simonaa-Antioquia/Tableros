@@ -22,6 +22,7 @@ library(leaflet)
 # Definir la interfaz de usuario
 
 ui <- fluidPage(
+  tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
   tags$head(
     tags$style(HTML("
       .main-header {
