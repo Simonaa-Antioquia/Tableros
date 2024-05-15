@@ -51,7 +51,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL) {
 ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
   df <- abastecimiento_medellin
   
-  if (Año != "" & Mes != "") {
+  if (!is.null(Año) & !is.null(Mes)) {
     df <- df %>% filter(anio == Año & mes == Mes)
     
     if(!is.null(Producto)) {
@@ -59,7 +59,7 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
     } else {
       var <- 34
     }
-  } else if (Año != "") {
+  } else if (!is.null(Año)) {
     df <- df %>% filter(anio == Año)
     
     if(!is.null(Producto)) {
@@ -67,7 +67,7 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
     } else {
       var <- 37
     }
-  } else if (Mes != "") {
+  } else if (!is.null(Mes)) {
     df <- df %>% filter(mes == Mes)
     
     if(!is.null(Producto)) {
