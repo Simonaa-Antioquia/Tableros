@@ -70,7 +70,6 @@ ui <- fluidPage(
                                    "Ruta 5" = 5,
                                    "Ruta 6" = 6), inline = TRUE))
       )),
-  div(
     fluidRow(
       column(7,  
              leafletOutput("plot", width = "60%", height = "250px"),
