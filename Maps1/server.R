@@ -112,11 +112,7 @@ server <- function(input, output, session) {
     })
  
  output$mensaje1 <- renderText({
-    if (is.na(input$municipios)) {
-       return("")
-     } else   {
-       return(paste0("Los alimentos recorren en promedio ", resultado()$av_km, " kilómetros, con un máximo de ", resultado()$max_km, " kilómetros."))
-     }
+    return(paste0("Los alimentos recorren en promedio ", resultado()$av_km, " kilómetros, con un máximo de ", resultado()$max_km, " kilómetros."))
  })
  
  # Aqui tomamos screen 
