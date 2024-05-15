@@ -63,7 +63,7 @@ ui <- fluidPage(
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
       )
     ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
+    tags$div(tags$p("Este mapa permite identificar las rutas de donde vienen los alimentos que abastecen la central mayorista y minorista de Medellín, permitiendo identificar la importancia de cada una para el abastecimiento total.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
