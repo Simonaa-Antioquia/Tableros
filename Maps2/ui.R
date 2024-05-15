@@ -74,8 +74,8 @@ ui <- fluidPage(
     fluidRow(
       column(12,  
              leafletOutput("plot", width = "60%", height = "250px"),
-             #downloadButton("descargar", "Descargar gráfica"),
-             #downloadButton("descargarDatos", "Descargar datos")
+             downloadButton("descargar", "Descargar gráfica"),
+             downloadButton("descargarDatos", "Descargar datos")
              #,
              #tableOutput("vistaTabla") 
       )
