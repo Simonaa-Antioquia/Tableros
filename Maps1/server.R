@@ -115,7 +115,7 @@ server <- function(input, output, session) {
     if (is.na(input$municipios)) {
        return("")
      } else   {
-       return(paste0("El municipio mas importante en el abastecimiento es: ", resultado()$lugar_max))
+       return(paste0("Los alimentos recorren en promedio ", resultado()$av_km, " kilómetros, con un máximo de ", resultado()$max_km, " kilómetros."))
      }
  })
  
