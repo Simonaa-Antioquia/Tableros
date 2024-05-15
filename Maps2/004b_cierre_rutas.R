@@ -35,6 +35,13 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
 
   ton_original <- sum(df$suma_kg)
+
+  df <- df %>% group_by(id_ruta_externa) %>% mutate(ton_ruta = sum(suma_kg))
+
+  ruta_imp <- df$id_ruta_externa[which.max(df$ton_ruta)]
+  max_ton_ruta <- max(df$ton_ruta)
+
+  por_ruta = round(((ton_original - max_ton_ruta)/ton_original)*100, digits = 2)
   
   if (!is.null(Rutas)) {
     for(i in 1:length(Rutas)){
@@ -60,6 +67,8 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     grafico=map,
     datos=df,
     por_perdido = por_perdido,
-    ton_perdido = ton_perdido
+    ton_perdido = ton_perdido,
+    ruta_imp = ruta_imp,
+    por_ruta = por_ruta
   ))
 }
