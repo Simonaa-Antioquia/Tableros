@@ -9,7 +9,8 @@
 rm(list=ls())
 # Paquetes 
 ################################################################################-
-library(reshape2);library(sf);library(shiny);library(htmlwidgets);library(mapview);library(shinyscreenshot);
+library(reshape2);library(sf);library(shiny);library(htmlwidgets);library(mapview);library(shinyscreenshot)
+library(webshot);library(magick);library(webshot2)
 ################################################################################-
 
 server <- function(input, output, session) {
@@ -83,7 +84,7 @@ server <- function(input, output, session) {
   output$mensaje1 <- renderText({
     #resultado <- resultado()
     #volatil<-resultado$producto_vol
-    return("Poner mensaje")
+    return("La comparación se realiza entre ciudades, pero para una mejor comprensión visual se considera todo el departamento.")
   })
   
   output$mensaje2 <- renderText({
@@ -104,6 +105,6 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
+    screenshot("#grafico", scale = 10)
   })
 }

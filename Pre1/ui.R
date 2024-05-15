@@ -21,7 +21,7 @@ ui <- fluidPage(
   tags$div(
     style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
     tags$head(
-      tags$title("Comportamiento de los precios en el tiempo"),  # Añade esta línea
+      tags$title("Precios en el tiempo"),  # Añade esta línea
       tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
         body {
@@ -59,15 +59,15 @@ ui <- fluidPage(
         )),
     div(
       fluidRow(
-        column(10,
+        column(9,
                plotlyOutput("grafico"),
-               actionButton("descargar", "Gráfica"),
+               actionButton("descargar", "Gráfica", icon = icon("download")),
                downloadButton("descargarDatos", "Datos"),
                actionButton("github", "GitHub", icon = icon("github")),
-               actionButton("go", "Reporte"),
+               actionButton("go", "Reporte", icon = icon("file-alt")),
                actionButton("reset", "Restablecer", icon = icon("refresh"))
         ),
-        column(2, 
+        column(3, 
                wellPanel(textOutput("mensaje1"),
                          style = "background-color: #0D8D38; color: #FFFFFF;"),
                wellPanel(textOutput("mensaje2"),

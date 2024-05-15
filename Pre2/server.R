@@ -11,6 +11,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(corrplot); library(shiny)
+library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot);library(webshot2)
 options(scipen = 999)
 ################################################################################-
 
@@ -42,16 +43,16 @@ server <- function(input, output, session) {
     }
   })
   
-  output$descargar <- downloadHandler(
-    filename = function() {
-      paste("grafica-", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
-    }
-  )
+  #output$descargar <- downloadHandler(
+    #filename = function() {
+     # paste("grafica-", Sys.Date(), ".png", sep="")
+    #},
+    #content = function(file) {
+      #tempFile <- tempfile(fileext = ".html")
+     # htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+    #  webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
+   # }
+  #)
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
@@ -76,7 +77,7 @@ server <- function(input, output, session) {
     output$mensaje1 <- renderText({
       #resultado <- resultado()
       #volatil<-resultado$producto_vol
-      return("Poner mensaje")
+      return("Promedio de precios y cantidades de productos en Medellín para cada mes del año")
     })
     
     output$mensaje2 <- renderText({
@@ -97,6 +98,10 @@ server <- function(input, output, session) {
   # Aqui tomamos screen 
   observeEvent(input$go, {
     screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
   })
   
 }

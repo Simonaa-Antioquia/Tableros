@@ -38,7 +38,7 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
   
   # Crea el gráfico base con la primera línea de datos
   graf <- plot_ly(datos_producto, x = ~mes, y = ~cantidad, type = "scatter", mode = "lines",
-                  name = "Cantidad", text = ~paste("Cantidades: ", round(cantidad),"Kg"), hoverinfo = "text", 
+                  name = "Cantidad", text = ~paste("Cantidades: ", round(cantidad)," mil toneladas"), hoverinfo = "text", 
                   line = list(color = "#0D8D38")) %>%
     layout(title = "",#paste("Cantidad, precio mensual y distancia de", alimento, ifelse(is.null(fecha), "", paste("en", fecha))),
            xaxis = list(title = "Mes", tickvals = seq(1, 12, 1), ticktext = c("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"), showgrid = FALSE),

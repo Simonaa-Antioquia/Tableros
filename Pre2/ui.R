@@ -19,7 +19,7 @@ ui <- fluidPage(
   tags$div(
     style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
     tags$head(
-      tags$title("Cantidades, precios y distancias recorridas por mes"),  # Añade esta línea
+      tags$title("Cantidades y precios por mes"),  # Añade esta línea
       tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
       body {
@@ -40,7 +40,7 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("Relación entre volúmenes, distancias recorridas y precios de los alimentos", class = "main-header"),
+  tags$h1("Relación entre volúmenes y precios de los alimentos", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -55,27 +55,27 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(10,
+      column(9,
              plotlyOutput("grafico",height = "300px"),
-             #downloadButton("descargar", "Gráfica"),
-             actionButton("go", "Reporte"),
+             actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restablecer", icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
       ),
-      column(2, 
+      column(3, 
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
+             #wellPanel(textOutput("mensaje2"),
+              #         style = "background-color: #005A45; color: #FFFFFF;"),
+             #wellPanel(textOutput("mensaje3"),
+              #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
-                    tags$br(),"La información solo se muestra para los precios en el centro de acopio de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
+    tags$div(tags$p("La información solo se muestra precios promedio en el centro de acopio de Medellín.",
+                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),

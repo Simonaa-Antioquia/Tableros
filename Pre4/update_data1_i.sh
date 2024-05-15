@@ -1,16 +1,16 @@
 ## Change Permission in folder
-sudo rm -rf  /srv/shiny-server/Tablero1_i
-sudo mkdir /srv/shiny-server/Tablero1_i
+sudo rm -rf  /srv/shiny-server/Pre4
+sudo mkdir /srv/shiny-server/Pre4
 
 
 ## Change Permission in folder
-sudo chown -R shiny:shiny /srv/shiny-server/Tablero1_i
+sudo chown -R shiny:shiny /srv/shiny-server/Pre4
 
 ### Update files
-sudo rsync -a --recursive  /home/rstudio/Tableros/Tablero1_i/ /srv/shiny-server/Tablero1_i --delete
+sudo rsync -a --recursive  /home/rstudio/Tableros/Pre4/ /srv/shiny-server/Pre4 --delete
 
 ## Change Permission in folder
-sudo chown -R shiny:shiny /srv/shiny-server/Tablero1_i
+sudo chown -R shiny:shiny /srv/shiny-server/Pre4
 
 ### refresh shiny-server
 sudo systemctl stop shiny-server
