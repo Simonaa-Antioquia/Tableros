@@ -53,7 +53,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     map <- map %>% addPolylines(data = dir, color = df$color[i], stroke = 0.05, opacity = 0.8)
   }
 
-  por_perdido = ((ton_original -  ton_sin_rutas)/ton_original)*100
+  por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)
   ton_perdido = ton_original -  ton_sin_rutas
   
   return(list(
