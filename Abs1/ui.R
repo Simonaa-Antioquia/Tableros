@@ -62,7 +62,7 @@ ui <- fluidPage(
       fluidRow(
         column(3,
                selectInput("variable", "Seleccione la variable:", c("Total"=1,
-                                                                    "Interno"=2,
+                                                                    "Local"=2,
                                                                     "Externo"=3))),
         column(2,
                selectInput("anio", "Año:", c("Todos los años" = "todo", sort(as.character(unique(abastecimiento_medellin$anio)))))),
