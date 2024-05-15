@@ -118,14 +118,14 @@ server <- function(input, output, session) {
       updateSelectInput(session, "mes", selected = "")
       updateSelectInput(session, "producto", selected = NULL)
     })
- 
- output$mensaje1 <- renderText({
-    return(paste0("Si se cierran las rutas seleccionadas se pierde un ", resultado()$por_perdido, "% del abastecimiento, unas ", resultado()$ton_perdido, " toneladas de alimentos"))
- })
 
- output$mensaje2 <- renderText({
+output$mensaje1 <- renderText({
     return(paste0("El municipio más importante para el abastecimiento de Antioquia es ", resultado()$mpio_import))
- })       
+ })
+        
+ output$mensaje2 <- renderText({
+    return(paste0("La ruta más importante para el abastecimiento de Antioquia es la ruta ", resultado()$ruta_imp, ", con un ", resultado()$por_ruta," % del abastecimiento de Antioquia"))
+ })
  
  # Aqui tomamos screen 
  observeEvent(input$go, {
