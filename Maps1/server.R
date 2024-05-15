@@ -112,11 +112,11 @@ server <- function(input, output, session) {
     })
  
  output$mensaje1 <- renderText({
-    return(paste0("Los alimentos recorren en promedio ", resultado()$av_km, " kilómetros, con un máximo de ", resultado()$max_km, " kilómetros."))
+    return(paste0("Los alimentos recorren en promedio ", resultado()$av_km, " kilómetros, con un máximo de ", resultado()$max_km, " kilómetros"))
  })
 
  output$mensaje2 <- renderText({
-    return(paste0("Los alimentos recorren en promedio ", resultado()$av_km, " kilómetros, con un máximo de ", resultado()$max_km, " kilómetros."))
+    return(paste0("El municipio más importante para el abastecimiento de Antioquia es ", resultado()$mpio_import))
  })       
  
  # Aqui tomamos screen 
