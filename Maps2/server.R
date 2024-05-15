@@ -29,13 +29,34 @@ server <- function(input, output, session) {
         ruta(Año = input$anio, Mes = input$mes,Producto = input$producto)
       }
     } else {
-        r1 <- "r1" %in% input$ruta
-        r2 <- "r2" %in% input$ruta
-        r3 <- "r3" %in% input$ruta
-        r4 <- "r4" %in% input$ruta
-        r5 <- "r5" %in% input$ruta
+        #r1 <- "r1" %in% input$ruta
+        #r2 <- "r2" %in% input$ruta
+        #r3 <- "r3" %in% input$ruta
+        #r4 <- "r4" %in% input$ruta
+        #r5 <- "r5" %in% input$ruta
 
-        rutas <- c
+        rutas <- unname(unlist(mget(input$varchoices, inherits = TRUE)))
+
+        # Comprobar si solo se ha seleccionado un producto
+        if (input$producto != "" && input$anio == "" && input$mes == "") {
+          ruta(Producto = input$producto, Rutas = input$ruta)
+        } else if (input$mes != "" && input$anio == "") {
+          validate(
+            need(input$anio != "", "Debe seleccionar un año.")
+          )
+        } else if(input$anio == "" && input$producto == "" && input$mes == ""){
+          ruta(Rutas = input$ruta)
+        } else if(input$producto == "" && input$mes == "" ){
+          ruta(Año = input$anio, Rutas = input$ruta)
+        } else if(input$producto == ""){
+          ruta(Año = input$anio, Mes = input$mes, Rutas = input$ruta)
+        } else if(input$mes == "" ){
+          ruta(Año = input$anio, Producto = input$producto, Rutas = input$ruta)
+        } else if(input$anio == "" && input$mes == ""){
+          ruta(Producto = input$producto, Rutas = input$ruta)
+        } else{
+          ruta(Año = input$anio, Mes = input$mes,Producto = input$producto, Rutas = input$ruta)
+        }        
     }
   })
   
