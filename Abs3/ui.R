@@ -17,7 +17,7 @@ source("003e_Indices_recibe_de_antioquia_cadena_funcion.R")
 library(shiny)
 library(dplyr)
 library(ggplot2)
-
+library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot);library(webshot2)
 
 # Definir la interfaz de usuario
 
@@ -70,26 +70,28 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(10,
+      column(9,
              leafletOutput("grafico", width = "500px", height = "500px"),
-             downloadButton("descargar", "Gráfica"),
+             actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restablecer", icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
       ),
-      column(2, 
+      column(3, 
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
+             #wellPanel(textOutput("mensaje2"),
+              #         style = "background-color: #005A45; color: #FFFFFF;"),
+             #wellPanel(textOutput("mensaje3"),
+              #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Cada porcentaje es lo que cada departamento recibe de Antioquia del total de productos que ingresan a este.",
-                    tags$br(),"Para facilidad visual se usa el departamento aunque los datos son solo a nivel de ciudades principales.",
+    tags$div(tags$p(#"Cada porcentaje es lo que cada departamento recibe de Antioquia del total de productos que ingresan a este.",
+                    #tags$br(),
+                    "Para facilidad visual se usa el departamento aunque los datos son solo a nivel de ciudades principales.",
                     tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(

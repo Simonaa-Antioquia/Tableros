@@ -17,7 +17,7 @@ productos <- unique(data_anual_producto$producto)
 
 ui <- fluidPage(
   tags$head(
-    tags$title("netos"),  
+    tags$title("Netos"),  
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
     tags$style(HTML("
        .main-header {
@@ -70,25 +70,26 @@ ui <- fluidPage(
                ))
       )),
   fluidRow(
-    column(8,
+    column(9,
            div(
              plotly::plotlyOutput("grafico",height = "400px"),
-             downloadButton("descargar", "Gráfica"),
+             actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
            )),
     
-    column(4, 
+    column(3, 
            div(
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
+            # wellPanel(textOutput("mensaje2"),
+             #          style = "background-color: #005A45; color: #FFFFFF;"),
+             #wellPanel(textOutput("mensaje3"),
+              #         style = "background-color: #094735; color: #FFFFFF;")
            ))
   ),
     

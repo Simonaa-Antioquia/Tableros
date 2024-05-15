@@ -54,16 +54,16 @@ server <- function(input, output, session) {
     }
   })
   
-  output$descargar <- downloadHandler(
-    filename = function() {
-      paste("grafica-", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(plotly::as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 800)
-    }
-  )
+  #output$descargar <- downloadHandler(
+   # filename = function() {
+    #  paste("grafica-", Sys.Date(), ".png", sep="")
+    #},
+    #content = function(file) {
+     # tempFile <- tempfile(fileext = ".html")
+      #htmlwidgets::saveWidget(plotly::as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      #webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 800)
+    #}
+  #)
   
   output$descargarDatos <- downloadHandler(
     filename = function() {
@@ -97,7 +97,7 @@ server <- function(input, output, session) {
   output$mensaje1 <- renderText({
     #resultado <- resultado()
     #volatil<-resultado$producto_vol
-    return("Poner mensaje")
+    return("Cada porcentaje es lo que cada departamento recibe de Antioquia del total de productos que ingresan a este.")
   })
   
   output$mensaje2 <- renderText({
@@ -111,5 +111,15 @@ server <- function(input, output, session) {
     #promedio_camb_an<-resultado$promedio_camb_an
     return("Poner mensaje")
   })
+  
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
+  })
+  
 }
 

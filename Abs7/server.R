@@ -9,6 +9,7 @@
 # Paquetes 
 ################################################################################
 library(shiny); library(lubridate);library(shinythemes);library(shinyWidgets)
+library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot);library(webshot2)
 options(scipen = 999)
 ################################################################################
 
@@ -38,16 +39,16 @@ server <- function(input, output, session) {
   
 # Descargar grafica 
 
-  output$descargar <- downloadHandler(
-    filename = function() {
-      paste("grafica_netos", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2)
-    }
-  )  
+#  output$descargar <- downloadHandler(
+ #   filename = function() {
+  #    paste("grafica_netos", Sys.Date(), ".png", sep="")
+   # },
+    #content = function(file) {
+     # tempFile <- tempfile(fileext = ".html")
+      #htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      #webshot::webshot(tempFile, file = file, delay = 2)
+    #}
+  #)  
   
 
   
@@ -80,7 +81,7 @@ server <- function(input, output, session) {
   })
   
   output$mensaje1 <- renderText({
-      return("Neto es igual a la cantidad de kilogramos que salen me Antioquia menos los que Ingresan")
+      return("El 'Neto' se calcula como la diferencia entre la cantidad de kilogramos que salen de Antioquia y los que ingresan.")
   })
   
   #output$mensaje2 <- renderText({
@@ -92,6 +93,14 @@ server <- function(input, output, session) {
   #  
   #  })
   
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
+  })
   
   
 }
