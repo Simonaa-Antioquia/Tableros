@@ -51,7 +51,7 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("Composición del destino de la producción de alimentos de antioquia", class = "main-header"),
+  tags$h1("Destino de la producción de alimentos de origen antioqueño", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
