@@ -119,12 +119,12 @@ server <- function(input, output, session) {
       updateSelectInput(session, "producto", selected = NULL)
     })
 
-output$mensaje1 <- renderText({
-    return(paste0("El municipio más importante para el abastecimiento de Antioquia es ", resultado()$mpio_import))
- })
-        
- output$mensaje2 <- renderText({
+ output$mensaje1 <- renderText({
     return(paste0("La ruta más importante para el abastecimiento de Antioquia es la ruta ", resultado()$ruta_imp, ", con un ", resultado()$por_ruta," % del abastecimiento de Antioquia"))
+ })
+ 
+output$mensaje2 <- renderText({
+    return(paste0("Un cierre de las rutas seleccionadas llevaría a una disminución en el ", resultado()$por_perdido,"% del abastecimiento, perdiendo ",resultado()$ton_perdido," toneladas de alimentos"))
  })
  
  # Aqui tomamos screen 
