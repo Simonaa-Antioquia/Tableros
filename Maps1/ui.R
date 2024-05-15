@@ -42,13 +42,13 @@ ui <- fluidPage(
   tags$h1("¿Qué rutas toman los alimentos que llegan a Antioquia?", class = "main-header"),
   div(class = "scrollable-content",
       fluidRow(
-        column(4,
+        column(2,
                selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_medellin$anio)))))),
-        column(4,
+        column(2,
                selectInput("mes", "Mes", c("Todos los meses" = "", sort(as.numeric(unique(abastecimiento_medellin$mes)))))),
-        column(4,
+        column(2,
                selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
-        column(4,
+        column(3,
                selectInput("importancia","Importancia de los municipios",c("No incluir" = "","Incluir")))
       )),
   div(
