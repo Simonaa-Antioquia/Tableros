@@ -33,6 +33,8 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   }
   
   df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
+
+  ton_original <- sum(df$suma_kg)
   
   if (!is.null(Rutas)) {
     for(i in 1:length(Rutas)){
@@ -40,6 +42,8 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
       #df <- df %>% dplyr::filter(!id_ruta_externa %in% Rutas)
     }
   }
+
+  ton_sin_rutas <- sum(df$suma_kg)
   
   map <- leaflet() %>%
     addTiles()
@@ -48,9 +52,14 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     dir <- matrix(unlist(df[i,18][[1]]), ncol = 2)
     map <- map %>% addPolylines(data = dir, color = df$color[i], stroke = 0.05, opacity = 0.8)
   }
+
+  por_perdido = ((ton_original -  ton_sin_rutas)/ton_original)*100
+  ton_perdido = ton_original -  ton_sin_rutas
   
   return(list(
     grafico=map,
-    datos=df
+    datos=df,
+    por_perdido = por_perdido,
+    ton_perdido = ton_perdido
   ))
 }
