@@ -35,7 +35,7 @@ server <- function(input, output, session) {
         #r4 <- "r4" %in% input$ruta
         #r5 <- "r5" %in% input$ruta
 
-        rutas <- unname(unlist(mget(input$varchoices, inherits = TRUE)))
+        #rutas <- unname(unlist(mget(input$varchoices, inherits = TRUE)))
 
         # Comprobar si solo se ha seleccionado un producto
         if (input$producto != "" && input$anio == "" && input$mes == "") {
