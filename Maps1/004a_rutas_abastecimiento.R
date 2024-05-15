@@ -120,10 +120,15 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
     dir <- matrix(unlist(df[i,19][[1]]), ncol = 2)
     map <- map %>% addPolylines(data = dir, color = df$colour[i], stroke = 0.05, opacity = 0.8)
   }
+
+  av_km <- mean(df$distance)
+  max_km <- max(df$distance)
   
   return(list(
     grafico=map,
-    datos=df
+    datos=df,
+    av_km = av_km,
+    max_km = max_km 
   ))
 }
 
