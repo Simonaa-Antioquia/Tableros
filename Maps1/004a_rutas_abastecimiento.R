@@ -42,9 +42,14 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL) {
     map <- map %>% addPolylines(data = dir, color = "#0D8D38", stroke = 0.05, opacity = 0.8)
   }
   
+  av_km <- round(mean(df$distance), digits = 3)
+  max_km <- round(max(df$distance), digits = 3)
+  
   return(list(
     grafico=map,
-    datos=df
+    datos=df,
+    av_km = av_km,
+    max_km = max_km 
   ))
 }
 
@@ -121,8 +126,8 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
     map <- map %>% addPolylines(data = dir, color = df$colour[i], stroke = 0.05, opacity = 0.8)
   }
 
-  av_km <- mean(df$distance)
-  max_km <- max(df$distance)
+  av_km <- round(mean(df$distance), digits = 3)
+  max_km <- round(max(df$distance), digits = 3)
   
   return(list(
     grafico=map,
