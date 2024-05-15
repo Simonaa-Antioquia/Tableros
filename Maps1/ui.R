@@ -55,10 +55,11 @@ ui <- fluidPage(
     fluidRow(
       column(12,  
              leafletOutput("plot", width = "60%", height = "250px"),
-             #downloadButton("descargar", "Descargar gráfica"),
-             #downloadButton("descargarDatos", "Descargar datos")
-             #,
-             #tableOutput("vistaTabla") 
+             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargarDatos", "Datos"),
+             actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte", icon = icon("file-alt")),
+             actionButton("reset", "Restrablecer",icon = icon("refresh"))
       )
     ),
     tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
