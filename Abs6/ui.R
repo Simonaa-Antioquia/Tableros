@@ -68,23 +68,24 @@ ui <- fluidPage(
     fluidRow(
       column(10,
              highchartOutput("grafico",height = "300px"),
-             downloadButton("descargar", "Gráfica"),
+             actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restablecer", icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
       ),
       column(2, 
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #0D8D38; color: #FFFFFF;")#,
+             #wellPanel(textOutput("mensaje2"),
+              #         style = "background-color: #005A45; color: #FFFFFF;"),
+             #wellPanel(textOutput("mensaje3"),
+              #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Este gráfico muestra la importancia que tiene cada alimento en los alimentos de origen antioqueño",
+    tags$div(tags$p(" ",
                     tags$br(),"Solo se muestran los producto que tienen al menos un 1% de la composición.",
                     tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),

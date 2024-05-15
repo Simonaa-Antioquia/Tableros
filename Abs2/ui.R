@@ -56,11 +56,11 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("¿Qué tan importante es Antioquia para lo que envian otros departamento?", class = "main-header"),
-  div(
-    textOutput("subtitulo"),
-    class = "sub-header2",
-    style = "margin-bottom: 20px;"
-  ),
+  #div(
+    #textOutput("subtitulo"),
+    #class = "sub-header2",
+    #style = "margin-bottom: 20px;"
+  #),
   div(class = "scrollable-content",
       fluidRow(
         column(4,
@@ -74,20 +74,21 @@ ui <- fluidPage(
     fluidRow(
       column(10,
              leafletOutput("grafico", width = "500px", height = "500px"),
-             downloadButton("descargar", "Gráfica"),
+             actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restablecer", icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
       ),
       column(2, 
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #0D8D38; color: #FFFFFF;")#,
+             #wellPanel(textOutput("mensaje2"),
+              #         style = "background-color: #005A45; color: #FFFFFF;"),
+             #wellPanel(textOutput("mensaje3"),
+              #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
     tags$div(tags$p("Cada porcentaje es lo que cada departamento envía a Antioquia, incluido lo que se queda en Antioquia.",

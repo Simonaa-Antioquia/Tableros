@@ -92,26 +92,26 @@ server <- function(input, output, session) {
   })
   
   # En el servidor
-  output$subtitulo <- renderText({
-    res <- resultado()
-    if (is.data.frame(res) || is.list(res)) {
-      if(nrow(res$datos) == 0) {
-        return("No hay datos disponibles")
-      }else{
-        porcentaje_max <- res$porcentaje_max
-        dpto_max <- res$dpto_max
-        
-        return(paste0(dpto_max," envía el ", porcentaje_max, "% de lo que saca, siendo Antioquia su principal socio comercial"))
-      }
-    } else {
-      return("No hay datos disponibles")
-    }
-    })
+  #output$subtitulo <- renderText({
+  #  res <- resultado()
+  #  if (is.data.frame(res) || is.list(res)) {
+  #    if(nrow(res$datos) == 0) {
+  #      return("No hay datos disponibles")
+  #    }else{
+  #      porcentaje_max <- res$porcentaje_max
+  #      dpto_max <- res$dpto_max
+  #      
+  #      return(paste0(dpto_max," envía el ", porcentaje_max, "% de lo que saca, siendo Antioquia su principal socio comercial"))
+  #    }
+  #  } else {
+  #    return("No hay datos disponibles")
+  # }
+  #  })
   
   output$mensaje1 <- renderText({
     #resultado <- resultado()
     #volatil<-resultado$producto_vol
-    return("Poner mensaje")
+    return("Este tablero muestra el porcentaje de productos enviados por cada departamento a Antioquia.")
   })
   
   output$mensaje2 <- renderText({
@@ -125,4 +125,14 @@ server <- function(input, output, session) {
     #promedio_camb_an<-resultado$promedio_camb_an
     return("Poner mensaje")
   })
+  
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
+  })
+  
 }

@@ -100,7 +100,7 @@ server <- function(input, output, session) {
   output$mensaje1 <- renderText({
     #resultado <- resultado()
     #volatil<-resultado$producto_vol
-    return("Poner mensaje")
+    return("Este gráfico muestra la importancia que tiene cada alimento en los alimentos que ingresan a los centros de acopio de Medellín.")
   })
   
   output$mensaje2 <- renderText({
@@ -113,5 +113,14 @@ server <- function(input, output, session) {
     #resultado <- resultado()
     #promedio_camb_an<-resultado$promedio_camb_an
     return("Poner mensaje")
+  })
+  
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
   })
 }
