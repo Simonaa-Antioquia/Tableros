@@ -7,24 +7,24 @@ server <- function(input, output, session) {
   
   resultado<-reactive({
       # Comprobar si solo se ha seleccionado un producto
-      if (input$producto != "" && input$anio == "" && input$mes == "" && input$ruta) {
+      if (input$producto != "" && input$anio == "" && input$mes == "" && input$ruta == "") {
         ruta(Producto = input$producto)
       } else if (input$mes != "" && input$anio == "") {
         validate(
           need(input$anio != "", "Debe seleccionar un año.")
         )
-      } else if(input$anio == "" && input$producto == "" && input$mes == ""){
+      } else if(input$anio == "" && input$producto == "" && input$mes == "" && input$ruta == ""){
         ruta()
       } else if(input$producto == "" && input$mes == "" ){
-        ruta(Año = input$anio)
+        ruta(Año = input$anio, Rutas = input$ruta)
       } else if(input$producto == ""){
-        ruta(Año = input$anio, Mes = input$mes)
+        ruta(Año = input$anio, Mes = input$mes, Rutas = input$ruta)
       } else if(input$mes == "" ){
-        ruta(Año = input$anio, Producto = input$producto)
+        ruta(Año = input$anio, Producto = input$producto, Rutas = input$ruta)
       } else if(input$anio == "" && input$mes == ""){
-        ruta(Producto = input$producto)
+        ruta(Producto = input$producto, Rutas = input$ruta)
       } else{
-        ruta(Año = input$anio, Mes = input$mes,Producto = input$producto)
+        ruta(Año = input$anio, Mes = input$mes,Producto = input$producto, Rutas = input$ruta)
       }
   })
   
