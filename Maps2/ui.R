@@ -55,13 +55,13 @@ ui <- fluidPage(
   tags$h1("¿Cómo afecta cerrar una ruta de ingreso a Antioquia?", class = "main-header"),
   div(
       fluidRow(
-        column(4,
+        column(2,
                selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_medellin$anio)))))),
-        column(4,
+        column(2,
                selectInput("mes", "Mes", c("Todos los meses" = "", sort(as.numeric(unique(abastecimiento_medellin$mes)))))),
-        column(4,
+        column(2,
                selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
-        column(3,
+        column(4,
                 checkboxGroupInput("ruta", "Rutas a cerrar:",
                                  c("Ruta 1" = 1,
                                    "Ruta 2" = 2,
