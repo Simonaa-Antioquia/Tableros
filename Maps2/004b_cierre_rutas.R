@@ -46,5 +46,8 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     map <- map %>% addPolylines(data = dir, color = df$color[i], stroke = 0.05, opacity = 0.8)
   }
   
-  map
+  return(list(
+    grafico=map,
+    datos=df
+  ))
 }
