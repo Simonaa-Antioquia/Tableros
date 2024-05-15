@@ -61,36 +61,40 @@ ui <- fluidPage(
   div(
       fluidRow(
         column(3,
-               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_medellin$anio)))))),
-        column(3,
-               selectInput("mes", "Mes", c("Todos los meses" = "", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, 
+               selectInput("variable", "Seleccione la variable:", c("Total"=1,
+                                                                    "Interno"=2,
+                                                                    "Externo"=3))),
+        column(2,
+               selectInput("anio", "Año:", c("Todos los años" = "todo", sort(as.character(unique(abastecimiento_medellin$anio)))))),
+        column(2,
+               selectInput("mes", "Mes:", c("Todos los meses" = "todo", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, 
                                            "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, 
                                            "Diciembre" = 12), selected = "")),
+        column(2,
+               numericInput("municipios", "Número de municipios:", value = 10, min = 1, max = 18)),
         column(3,
-               numericInput("municipios", "Número de municipios", value = 10, min = 1, max = 18)),
-        column(3,
-               selectInput("producto", "Producto",c("Todos los productos" = "", as.character(unique(abastecimiento_medellin$producto)))))
+               selectInput("producto", "Producto:",c("Todos los productos" = "todo", as.character(sort(unique(abastecimiento_medellin$producto))))))
       )),
   fluidRow(
-    column(8,
+    column(9,
            div(
              plotly::plotlyOutput("grafico",height = "400px"),
-             actionButton("descargar", "Gráfica"),
-             downloadButton("descargarDatos", "Descargar datos"),
+             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
-             actionButton("go", "Reporte"),
+             actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
            )),
-    column(4, 
+    column(3, 
            div(
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #0D8D38; color: #FFFFFF;")#,
+             #wellPanel(textOutput("mensaje2"),
+              #         style = "background-color: #005A45; color: #FFFFFF;"),
+             #wellPanel(textOutput("mensaje3"),
+              #         style = "background-color: #094735; color: #FFFFFF;")
            ))
   ),
   fluidRow(

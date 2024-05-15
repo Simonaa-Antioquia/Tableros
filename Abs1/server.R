@@ -11,6 +11,7 @@ rm(list=ls())
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
 library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(shiny); library(shinydashboard)
+library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot);library(webshot2)
 options(scipen = 999)
 ################################################################################-
 # Definir la función de servidor
@@ -20,24 +21,24 @@ server <- function(input, output, session) {
       return(NULL)
     }
     # Comprobar si solo se ha seleccionado un producto
-    if (input$producto != "" && input$anio == "" && input$mes == "") {
-      importancia(Producto = input$producto)
-    } else if (input$mes != "" && input$anio == "") {
+    if (input$producto != "todo" && input$anio == "todo" && input$mes == "todo") {
+      importancia(tipo = input$variable, Producto = input$producto)
+    } else if (input$mes != "todo" && input$anio == "todo") {
       validate(
-        need(input$anio != "", "Debe seleccionar un año.")
+        need(input$anio != "todo", "Debe seleccionar un año.")
       )
-    } else if(input$anio == "" && input$producto == "" && input$mes == ""){
-      importancia(municipios = input$municipios)
-    } else if(input$producto == "" && input$mes == "" ){
-      importancia(Año = input$anio, municipios = input$municipios)
-    } else if(input$producto == ""){
-      importancia(Año = input$anio, Mes = input$mes ,municipios = input$municipios)
-    } else if(input$mes == "" ){
-      importancia(Año = input$anio, municipios = input$municipios, Producto = input$producto)
-    } else if(input$anio == "" && input$mes == ""){
-      importancia(Producto = input$producto)
+    } else if(input$anio == "todo" && input$producto == "todo" && input$mes == "todo"){
+      importancia(tipo = input$variable, municipios = input$municipios)
+    } else if(input$producto == "todo" && input$mes == "todo" ){
+      importancia(tipo = input$variable, Año = input$anio, municipios = input$municipios)
+    } else if(input$producto == "todo"){
+      importancia(tipo = input$variable, Año = input$anio, Mes = input$mes ,municipios = input$municipios)
+    } else if(input$mes == "todo" ){
+      importancia(tipo = input$variable, Año = input$anio, municipios = input$municipios, Producto = input$producto)
+    } else if(input$anio == "todo" && input$mes == "todo"){
+      importancia(tipo = input$variable, Producto = input$producto)
     } else{
-      importancia(Año = input$anio, Mes = input$mes ,municipios = input$municipios, Producto = input$producto)
+      importancia(tipo = input$variable, Año = input$anio, Mes = input$mes ,municipios = input$municipios, Producto = input$producto)
     }
   })
   
@@ -78,7 +79,11 @@ server <- function(input, output, session) {
   
   # En el servidor
   output$subtitulo <- renderText({
-    resultado <- resultado()
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      return("No hay datos disponibles")
+    }else{
+      resultado <- resultado()
     lugar_max <- resultado$lugar_max
     porcentaje_max<-resultado$porcentaje_max
    
@@ -86,7 +91,7 @@ server <- function(input, output, session) {
       return("Por favor ingrese el numero de municipios que quiere graficar")
     } else {
       return(paste0(lugar_max, "es el municipio con mayor importancia en el abastecimeinto de Antioquia, aporta ",porcentaje_max,"%"))
-    }
+    }}
   })
   
  
@@ -105,7 +110,14 @@ server <- function(input, output, session) {
      }
  })
  
-  
+ # Aqui tomamos screen 
+ observeEvent(input$go, {
+   screenshot()
+ })
+ 
+ observeEvent(input$descargar, {
+   screenshot("#grafico", scale = 5)
+ }) 
 }
 
 

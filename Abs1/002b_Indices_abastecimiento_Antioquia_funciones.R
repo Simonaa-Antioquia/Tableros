@@ -14,109 +14,27 @@ library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(to
 options(scipen = 999)
 ################################################################################-
 
-abastecimiento_medellin<-read.csv("base_indices_abastecimiento.csv")%>%
+abastecimiento_medellin<-readRDS("base_indices_abastecimiento.rds")%>%
   mutate(mes_y_ano = floor_date(as.Date(as.yearmon(mes_y_ano, "%Y-%m"), frac = 1), "month"))
 
+abastecimiento_medellin_interno<-readRDS("base_indices_abastecimiento_interno.rds")%>%
+  mutate(mes_y_ano = floor_date(as.Date(as.yearmon(mes_y_ano, "%Y-%m"), frac = 1), "month"))
 
-tiempo <- function(opcion1, opcion2 = NULL, opcion3 = NULL, opcion4 = NULL) {
-  df <- abastecimiento_medellin
-  
-  # Si opcion4 no es NULL, filtrar por año
-  if (!is.null(opcion4)) {
-    df <- df %>% filter(anio == opcion4)
-  }
-  
-  if (opcion1 == "total") {
-    df <- df %>%
-      distinct(anio, mes, .keep_all = TRUE) %>%
-      select(anio, mes, mes_y_ano, total_kilogramos_mes)
-    
-    ggplot(df, aes(x = mes_y_ano, y = total_kilogramos_mes)) +
-      geom_line() +
-      labs(title = "Total de toneladas que ingresan a Medellín por mes") +
-      ylab("Total de toneladas que ingresan a Medellín por mes") +
-      xlab("Información por meses") +
-      theme_minimal() +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())  
-    
-  } else if (opcion1 == "mpio_origen") {
-    if (is.null(opcion2)) {
-      stop("Debe proporcionar un municipio cuando opcion1 es 'mpio_origen'")
-    }
-    
-    df <- df %>%
-      distinct(anio, mes, mpio_origen, .keep_all = TRUE) %>%
-      select(anio, mes, mes_y_ano, total_kilogramos_año_mes_municipio, mpio_origen) %>%
-      filter(mpio_origen == opcion2)
-    
-    ggplot(df, aes(x = mes_y_ano, y = total_kilogramos_año_mes_municipio)) +
-      geom_line() +
-      labs(title = "Total de toneladas por municipio por mes") +
-      ylab("Total de toneladas que ingresan a Medellín por mes") +
-      xlab("Información por meses") +
-      theme_minimal() +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-    
-  } else if (opcion1 == "producto") {
-    df <- df %>%
-      distinct(anio, mes, producto, .keep_all = TRUE) %>%
-      select(anio, mes, mes_y_ano, total_kilogramos_mes_producto, producto)
-    
-    if (!is.null(opcion3)) {
-      df <- df %>%
-        filter(producto == opcion3)
-    }
-    
-    ggplot(df, aes(x = mes_y_ano, y = total_kilogramos_mes_producto, color = producto)) +
-      geom_line() +
-      labs(title = paste("Total de toneladas de", opcion3, "por mes")) +
-      ylab("Total de toneladas") +
-      xlab("Información Mensual") +
-      theme_minimal() +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())  # Elimina la cuadrícula
-    
-  } else if (opcion1 == "mpio_origen_producto") {
-    if (is.null(opcion2) || is.null(opcion3)) {
-      stop("Debe proporcionar un municipio y un producto cuando opcion1 es 'mpio_origen_producto'")
-    }
-    
-    df <- df %>%
-      distinct(anio, mes, mpio_origen, producto, mes_y_ano, .keep_all = TRUE) %>%
-      select(anio, mes, mes_y_ano, total_kilogramos_año_mes_municipio_producto, mpio_origen, producto) %>%
-      filter(mpio_origen == opcion2, producto == opcion3)
-    
-    ggplot(df, aes(x = mes_y_ano, y = total_kilogramos_año_mes_municipio_producto, color = producto)) +
-      geom_line() +
-      labs(title = paste("Total de toneladas de" , opcion3 , "que provienen del municipio de ", opcion2)) +
-      ylab("Total toneladas") +
-      xlab("Información Mensual") +
-      theme_classic()  
-  }
-}
-
-# Para obtener el total de toneladas que ingresan a Medellín por mes
-#tiempo("total")
-# Para obtener el total de toneladas que ingresan a Medellín por mes de un municipio específico
-#tiempo("mpio_origen", "MEDELLÍN")
-# Para obtener el total de toneladas de un producto específico que ingresan a Medellín por mes
-#tiempo("producto", "", "arroz")
-# Para obtener el total de toneladas de un producto específico que ingresan a Medellín por mes de un municipio específico
-#tiempo("mpio_origen_producto", "MEDELLÍN", "arroz")
-# Para obtener el total de toneladas que ingresan a Medellín por mes en un año específico
-#tiempo("total", "" , "", 2021)
-# Para obtener el total de toneladas que ingresan a Medellín por mes de un municipio específico en un año específico
-#tiempo("mpio_origen", "MEDELLÍN", "", 2021)
-# Para obtener el total de toneladas de un producto específico que ingresan a Medellín por mes en un año específico
-#tiempo("producto", "", "arroz", 2018)
-# Para obtener el total de toneladas de un producto específico que ingresan a Medellín por mes de un municipio específico en un año específico
-#tiempo("mpio_origen_producto", "MEDELLÍN", "arroz", 2021)
-
+abastecimiento_medellin_externo<-readRDS("base_indices_abastecimiento_externo.rds")%>%
+  mutate(mes_y_ano = floor_date(as.Date(as.yearmon(mes_y_ano, "%Y-%m"), frac = 1), "month"))
 
 
 # Funcion Numero 2
 
-importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NULL) {
-  df <- abastecimiento_medellin
+importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto = NULL) {
+  if(tipo==1){
+    df <- abastecimiento_medellin
+  }else if(tipo==2){
+    df <- abastecimiento_medellin_interno
+  }else {
+    df <- abastecimiento_medellin_externo 
+  }
+  
   
   if (is.null(municipios) || length(municipios) == 0) {
     return(NULL)
@@ -215,21 +133,21 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
   col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203", "#F1B709", "#F39F06", "#BE7E11",
                    "#08384D", "#094B5C", "#00596C", "#006A75", "#007A71", "#00909C", "#0088BB", "#007CC3", "#456ABB")
   
-  df$tooltip_text <- paste("Ciudad de origen: ", df$mpio_origen, "<br>Porcentaje: ", round(df$columna_porcentaje, 3))
+  df$tooltip_text <- paste0("Ciudad de origen: ", df$mpio_origen, "<br>Porcentaje: ", round(df$columna_porcentaje*100),"%")
   
   p <- ggplot(df, aes(x =  forcats::fct_reorder(mpio_origen, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill =  mpio_origen, text = tooltip_text)) +
     geom_bar(stat = "identity") +
-    geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 0.01)), hjust = -0.1) +
+    geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 1)), hjust = 0.1) +
     coord_flip() +
     labs(x = " ", y = "Porcentaje", title = " ") +
     scale_fill_manual(values = col_palette) +  # Agregar la paleta de colores
     theme_minimal() +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none") 
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")#,axis.text.x = element_blank())
   
   p <- plotly::ggplotly(p, tooltip = "text")
   
   
-  porcentaje_max<-round(max(df$columna_porcentaje)*100,1)
+  porcentaje_max<-round(max(df$columna_porcentaje)*100)
   lugar_max<-df$mpio_origen[which.max(df$columna_porcentaje)]
   
   return(
@@ -243,11 +161,11 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
 }
 
 
-#importancia(2023)
-#importancia(2023,1)
-#importancia(2023,1,15,"lechuga batavia")
-#importancia(Año = 2023, Producto = "lechuga batavia")
-#importancia(municipios = 8,Producto = "carne de cerdo")
-#importancia()
+#importancia(1,2023)
+#importancia(2,2023,1)
+#importancia(3,2023,1,15,"lechuga batavia")
+#importancia(1,Año = 2023, Producto = "lechuga batavia")
+#importancia(2,municipios = 8,Producto = "carne de cerdo")
+#importancia(3)
 
 
