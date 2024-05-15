@@ -35,7 +35,10 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
   
   if (!is.null(Rutas)) {
-    df <- df %>% dplyr::filter(!id_ruta_externa %in% Rutas)
+    for(i in 1:length(Rutas)){
+      df <-df[df$id_ruta_externa != Rutas[i],]
+      #df <- df %>% dplyr::filter(!id_ruta_externa %in% Rutas)
+    }
   }
   
   map <- leaflet() %>%
