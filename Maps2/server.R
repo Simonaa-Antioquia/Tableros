@@ -69,17 +69,15 @@ server <- function(input, output, session) {
     #ruta()$grafico
     resultado()$grafico
   })
-  
+
   output$descargar <- downloadHandler(
     filename = function() {
-      paste("grafica_cierre_rutas", Sys.Date(), ".png", sep="")
+      paste("grafica-", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      # Forzar la ejecución de la función reactiva
-      res <- resultado()
-      
-      # Usa ggsave para guardar el gráfico
-      ggplot2::ggsave(filename = file, plot = res$grafico, width = 7, height = 7, dpi = 400)
+      tempFile <- tempfile(fileext = ".html")
+      htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
+      webshot::webshot(tempFile, file = file, delay = 2)
     }
   )
   
@@ -91,5 +89,50 @@ server <- function(input, output, session) {
       write.csv(resultado()$datos, file)
     }
   )
-}
+  
+  observeEvent(input$github, {
+    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  })
+  
+  # En el servidor
+  output$subtitulo <- renderText({
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      return("No hay datos disponibles")
+    }else{
+      resultado <- resultado()
+    lugar_max <- resultado$lugar_max
+    porcentaje_max<-resultado$porcentaje_max
+   
+    if (is.na(input$municipios) || is.null(input$municipios )){
+      return("Por favor ingrese el numero de municipios que quiere graficar")
+    } else {
+      return(paste0(lugar_max, "es el municipio con mayor importancia en el abastecimeinto de Antioquia, aporta ",porcentaje_max,"%"))
+    }}
+  })
+  
+ 
+ observeEvent(input$reset, {
+      updateSelectInput(session, "municipios", selected = 10)
+      updateSelectInput(session, "anio", selected = "")
+      updateSelectInput(session, "mes", selected = "")
+      updateSelectInput(session, "producto", selected = NULL)
+    })
+ 
+ output$mensaje1 <- renderText({
+    return(paste0("Los alimentos recorren en promedio ", resultado()$av_km, " kilómetros, con un máximo de ", resultado()$max_km, " kilómetros"))
+ })
 
+ output$mensaje2 <- renderText({
+    return(paste0("El municipio más importante para el abastecimiento de Antioquia es ", resultado()$mpio_import))
+ })       
+ 
+ # Aqui tomamos screen 
+ observeEvent(input$go, {
+   screenshot()
+ })
+ 
+ observeEvent(input$descargar, {
+   screenshot("#grafico", scale = 5)
+ }) 
+}
