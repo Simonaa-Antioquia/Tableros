@@ -37,6 +37,19 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
       }
+      .sub-header3 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 15px;
+      }
+      .center {
+        display: flex;
+        justify-content: center;
+      }
+      .scrollable-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: auto;
+      }
     "))
   ),
   tags$h1("¿Cómo afecta cerrar una ruta de ingreso a Antioquia?", class = "main-header"),
