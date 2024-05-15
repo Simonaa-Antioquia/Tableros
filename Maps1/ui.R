@@ -41,7 +41,7 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("¿Qué rutas toman los alimentos que llegan a Antioquia?", class = "main-header"),
-  div(class = "scrollable-content",
+  div(
       fluidRow(
         column(2,
                selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_medellin$anio)))))),
@@ -52,7 +52,6 @@ ui <- fluidPage(
         column(4,
                selectInput("importancia","Importancia de los municipios",c("No incluir" = "","Incluir")))
       )),
-  div(
     fluidRow(
       column(7,  
              leafletOutput("plot", width = "100%", height = "250px"),
