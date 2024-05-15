@@ -173,7 +173,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
+    screenshot("#plot", scale = 5)
   })
 
 }

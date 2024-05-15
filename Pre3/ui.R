@@ -79,10 +79,10 @@ ui <- fluidPage(
       fluidRow(
         column(8,
                plotly::plotlyOutput("plot", height = "400px"),
-               #downloadButton("descargar", "Gráfica"),
+               actionButton("descargar", "Gráfica", icon = icon("download")),
                downloadButton("descargarDatos", "Datos"),
                actionButton("github", "GitHub", icon = icon("github")),
-               actionButton("go", "Reporte"),
+               actionButton("go", "Reporte", icon = icon("file-alt")),
                actionButton("reset", "Restrablecer",icon = icon("refresh"))
         ),
         column(4, 

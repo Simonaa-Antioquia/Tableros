@@ -114,12 +114,20 @@ server <- function(input, output, session) {
   })
   
   output$mensaje1 <- renderText({
-    return("El índice de vulnerabilidad combina la concentración en la producción de alimentos (índice de Herfindahl-Hirschman) y la distancia a Medellín.")
+    return("El índice de vulnerabilidad se calcula mediante la combinación del índice de Herfindahl-Hirschman y la distancia desde el municipio de origen hasta Medellín.")
   })
   
   output$mensaje2 <- renderUI({
     withMathJax(paste0("La fórmula es: $$ V_{it} =  \\frac{D_i + H_{ti}}{2}$$"))
   })
   
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
+  })
   
 }
