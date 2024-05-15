@@ -120,7 +120,7 @@ server <- function(input, output, session) {
     })
  
  output$mensaje1 <- renderText({
-    return(paste0("Los alimentos recorren en promedio ", resultado()$av_km, " kilómetros, con un máximo de ", resultado()$max_km, " kilómetros"))
+    return(paste0("Si se cierran las rutas seleccionadas se pierde un ", resultado()$por_perdido, "% del abastecimiento, unas ", resultado()$ton_perdido, " toneladas de alimentos"))
  })
 
  output$mensaje2 <- renderText({
