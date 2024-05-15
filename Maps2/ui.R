@@ -72,18 +72,37 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(12,  
+      column(7,  
              leafletOutput("plot", width = "60%", height = "250px"),
-             downloadButton("descargar", "Descargar gráfica"),
-             downloadButton("descargarDatos", "Descargar datos")
-             #,
-             #tableOutput("vistaTabla") 
-      )
+             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargarDatos", "Datos"),
+             actionButton("github", "GitHub", icon = icon("github")),
+             actionButton("go", "Reporte", icon = icon("file-alt")),
+             actionButton("reset", "Restrablecer",icon = icon("refresh"))
+      ),
+      column(5, 
+           div(
+             wellPanel(textOutput("mensaje1"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                     style = "background-color: #005A45; color: #FFFFFF;")#,
+             #wellPanel(textOutput("mensaje3"),
+              #         style = "background-color: #094735; color: #FFFFFF;")
+        ))
     ),
-    tags$div(tags$p("Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.Este es un párrafo de texto que aparecerá debajo del panel.", class = "sub-header2"), style = "margin-top: 20px;")
+    fluidRow(
+    column(12,
+           style = "margin-top: 2px;",
+           tags$div(
+             tags$p("Este mapa permite identificar las rutas de donde vienen los alimentos que abastecen la central mayorista y minorista de Medellín, permitiendo identificar la importancia de cada una para el abastecimiento total.", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
+           )
+    )
   ),
-  tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
-    style = "position: absolute; bottom: 0; width: 100%;"
-  ) 
+    fluidRow(
+    tags$div(
+      tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+      style = "width: 100%; margin:0;"  
+    )
+  )
 )
