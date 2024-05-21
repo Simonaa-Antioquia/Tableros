@@ -27,7 +27,7 @@ complet<-readRDS("base_precios_cantidades_distancias.rds")
 #Gráficas precios----
 # Define la función
 
-Sys.setlocale("LC_TIME", "Spanish")
+#Sys.setlocale("LC_TIME", "Spanish")
 
 graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
   # Si no se proporciona alimento, calcula el promedio
@@ -113,13 +113,20 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
     theme_minimal()
   }else{
     
+    mes_en_espanol <- function(x) {
+      meses <- c("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic")
+      meses[month(x)]
+    }
     
-    p<-ggplot(df_graf, aes(x = mes_y_ano, y = !!sym(variable), group = 1)) +
+    # Convertir la columna de fecha a un formato de fecha y extraer el mes en español
+    df_graf$mes_y_ano <- as.Date(df_graf$mes_y_ano)
+    df_graf$mes <- factor(mes_en_espanol(df_graf$mes_y_ano), levels = c("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"))
+    
+    p <- ggplot(df_graf, aes(x = mes, y = !!sym(variable), group = 1)) +
       geom_line(aes(text = tooltip_text),color = "#0D8D38") +
-      scale_x_date(date_labels = "%b", date_breaks = "1 month") +
-      xlab("Fecha")+
-      labs( y = "", 
-           title = "") +
+      scale_x_discrete() +
+      xlab("Fecha") +
+      labs(y = "", title = "") +
       theme_minimal()
   }
   
