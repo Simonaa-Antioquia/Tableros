@@ -83,7 +83,7 @@ server <- function(input, output, session) {
     if(nrow(resultado$datos) < 1){
       validate("No hay datos disponibles")
     }else{
-    return(paste0("El mes más caro es ", mes_max,", siendo $", precio_max," con ",cantidades_max," mil toneladas ingresadas y ",distancia_max," kilómetros recorridos"))
+    return(paste0("El mes más caro es ", mes_max,", siendo $", precio_max," con ",cantidades_max," mil toneladas ingresadas."))
     } 
   })
   
