@@ -114,7 +114,7 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
       }
     }
     
-  
+    df_2<-df
     df$tooltip_text <- paste("Ciudad: ", df$ciudad, "<br>Diferencia de precio: ", round(df$comp, 0), "<br>Desviación Estandar:", round(df$dev, 0))
     
     map <- ggplot(df, aes(x=comp,y=1,color=ciudad)) +
@@ -157,7 +157,7 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
     
     return(list(
       grafico = p,
-      datos = df,
+      datos = df_2,
       precio_max=precio_max,
       precio_min=precio_min,
       ciudad_max=ciudad_max,
@@ -165,6 +165,4 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
     ))
   }
   
-  #
-  
-  diferencias_precios(opcion1 = 0, opcion2 = 2014, opcion3 = "",opcion4="Aguacate")
+  #diferencias_precios(opcion1 = 0, opcion2 = 2014, opcion3 = "",opcion4="Aguacate")

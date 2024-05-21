@@ -63,9 +63,9 @@ ui <- fluidPage(
                            choices = list("General" = 1, 
                                           "Producto" = 0 ))),
         column(3,
-               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(data_comparacion_anual_producto$year)))))),
+               selectInput("anio", "Año", c("Todos los años" = "todo", sort(as.character(unique(data_comparacion_anual_producto$year)))))),
         column(3,
-               selectInput("mes", "Mes", c("Todos los meses" = "", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, "Diciembre" = 12), selected = "")),
+               selectInput("mes", "Mes", c("Todos los meses" = "todo", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, "Diciembre" = 12), selected = "")),
         column(3,
                conditionalPanel(
                  condition = "input.tipo == 0 ",
@@ -98,9 +98,9 @@ ui <- fluidPage(
         column(12,
                style = "margin-top: 2px;",
                tags$div(
-                 tags$p("Este gráfico muestra la diferencia de precios promedio entre las diferentes ciudades y Medellín", class = "sub-header2", style = "margin-top: 3px;"),
-                 tags$p("El tamaño de cada una de las bolas depende de la variación del precio dentro de cada ciudad", class = "sub-header2", style = "margin-top: 3px;"),
-                 tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
+                 tags$p("Este gráfico muestra la diferencia de precios promedio entre las diferentes ciudades y Medellín",
+                        tags$br(),"El tamaño de cada una de las bolas depende de la variación del precio dentro de cada ciudad", 
+                        tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
                )
         )
         

@@ -97,11 +97,11 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
     min_val <- -max(abs(na.omit(mapa$comp)))
     max_val <- max(abs(na.omit(mapa$comp)))
     
-    valores_sin_na <- na.omit(mapa$comp2)
+    valores_sin_na <- na.omit(mapa$comp)
     min_val_sin_na <- -max(abs(na.omit(valores_sin_na)))
     max_val_sin_na <- max(abs(na.omit(valores_sin_na)))
     
-    my_palette_sin_na <- colorNumeric(palette = c("#F39F06", "white", "#1A4922"), domain = c(min_val_sin_na,max_val_sin_na))
+    my_palette_sin_na <- colorNumeric(palette = c("#1A4922", "white", "#F39F06"), domain = c(min_val_sin_na,max_val_sin_na))
     
     # Crear una paleta de colores personalizada
     my_palette <- colorNumeric(palette = colorRampPalette(c("#F39F06", "white", "#1A4922"))(length(unique(mapa$comp2))), domain = c(min_val,max_val),  na.color = "#C5C7C6")
@@ -113,8 +113,8 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
                   fillOpacity = 0.8, 
                   color = "#D5D5D5", 
                   weight = 1,
-                  popup = ~paste0("<strong>Departamento: </strong>", departamento, 
-                                  "<br><strong>Diferencia del precio: </strong>", round(comp)),
+                  popup = ~ifelse(is.na(departamento),"",paste0("<strong>Departamento: </strong>", ifelse(is.na(departamento),"",departamento), 
+                                  "<br><strong>Diferencia del precio: </strong>", ifelse(is.na(departamento),"",paste0("$",round(comp))))),
                   highlightOptions = highlightOptions(color = "white", 
                                                       weight = 2,
                                                       bringToFront = TRUE)) %>%

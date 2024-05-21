@@ -74,7 +74,7 @@ ui <- fluidPage(
     fluidRow(
       column(9,
              leafletOutput("grafico"),
-             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
              actionButton("github", "GitHub", icon = icon("github")),
              actionButton("go", "Reporte", icon = icon("file-alt")),
@@ -83,14 +83,15 @@ ui <- fluidPage(
       ),
       column(3, 
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;")#,
-             #wellPanel(textOutput("mensaje2"),
-              #         style = "background-color: #005A45; color: #FFFFFF;"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
              #wellPanel(textOutput("mensaje3"),
               #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p(tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
+    tags$div(tags$p("La comparación se realiza entre ciudades, pero para una mejor comprensión visual se considera todo el departamento.",
+                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),

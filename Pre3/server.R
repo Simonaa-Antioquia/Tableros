@@ -19,8 +19,8 @@ server <- function(input, output, session) {
     anio_seleccionado <- input$anio
     productos_seleccionados <- input$producto
     
-    if (input$anio == "") {
-      if (input$mes == "") {
+    if (input$anio == "todo") {
+      if (input$mes == "todo") {
         if (input$tipo == 1) {
           result <- diferencias_precios(input$tipo,"","")
         } else if (input$tipo == 0) {
@@ -34,7 +34,7 @@ server <- function(input, output, session) {
         }
       }
     } else {
-      if (input$mes == "") {
+      if (input$mes == "todo") {
         if (input$tipo == 1) {
           result <- diferencias_precios(input$tipo,input$anio,"")
         } else if (input$tipo == 0) {
@@ -53,7 +53,7 @@ server <- function(input, output, session) {
   output$plot <- plotly::renderPlotly({
     res <- resultado()
     if (is.character(res)) {
-      return(NULL)  # No hay gráfico para mostrar
+      validate("No hay datos disponibles")  # No hay gráfico para mostrar
     } else {
       plotly::ggplotly(res$grafico)
     }
@@ -110,16 +110,16 @@ server <- function(input, output, session) {
   server <- function(input, output, session) {
     observeEvent(input$reset, {
       updateSelectInput(session, "tipo", selected = 1)
-      updateSelectInput(session, "anio", selected = "")
-      updateSelectInput(session, "mes", selected = "")
+      updateSelectInput(session, "anio", selected = "todo")
+      updateSelectInput(session, "mes", selected = "todo")
       updateSelectInput(session, "producto", selected = NULL)
     })
     }
   
   observeEvent(input$reset, {
     updateSelectInput(session, "tipo", selected = 1)
-    updateSelectInput(session, "anio", selected = "")
-    updateSelectInput(session, "mes", selected = "")
+    updateSelectInput(session, "anio", selected = "todo")
+    updateSelectInput(session, "mes", selected = "todo")
     updateSelectInput(session, "producto", selected = NULL)
   })
   
@@ -157,7 +157,7 @@ server <- function(input, output, session) {
     tryCatch({
       # Intenta ejecutar este código
       if (input$tipo != 1) {
-        return(paste0("El lugar más economico para comprar ", input$producto, " es ", resultado()$ciudad_min, ". Es $", resultado()$precio_min, "más barato que comprarlo en Medellín."))
+        return(paste0("El lugar más economico para comprar ", input$producto, " es ", resultado()$ciudad_min, ". Es $", resultado()$precio_min, " más barato que comprarlo en Medellín."))
       } else {
         return(paste0("El lugar más economico para comprar alimentos es ", resultado()$ciudad_min, ". En promedio es $", resultado()$precio_min, " más barato que comprarlos en Medellín."))
       }

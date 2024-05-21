@@ -82,20 +82,28 @@ server <- function(input, output, session) {
     })
   
   output$mensaje1 <- renderText({
-    #resultado <- resultado()
-    #volatil<-resultado$producto_vol
-    return("La comparación se realiza entre ciudades, pero para una mejor comprensión visual se considera todo el departamento.")
+    resultado <- resultado()
+    if(nrow(resultado$datos)==0){
+      validate("No hay datos disponibles")
+    }else{if (input$producto != "todo") {
+      return(paste0("El lugar más costoso para comprar ", input$producto, " es ", resultado()$ciudad_max, ". Es $", resultado()$precio_max, " más costoso que comprarlo en Medellín."))
+    } else {
+      return(paste0("El lugar más costoso para comprar alimentos es ", resultado()$ciudad_max, ". En promedio es $", resultado()$precio_max, " más costoso que comprarlos en Medellín."))
+    }}
   })
   
   output$mensaje2 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb<-resultado$promedio_camb
-    return("Poner mensaje")
+    resultado <- resultado()
+    if(nrow(resultado$datos)==0){
+      validate("No hay datos disponibles")
+    }else{if (input$producto != "todo") {
+      return(paste0("El lugar más economico para comprar ", input$producto, " es ", resultado()$ciudad_min, ". Es $", resultado()$precio_min, " más barato que comprarlo en Medellín."))
+    } else {
+      return(paste0("El lugar más economico para comprar alimentos es ", resultado()$ciudad_min, ". En promedio es $", resultado()$precio_min, " más barato que comprarlos en Medellín."))
+    }}
   })
   
   output$mensaje3 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb_an<-resultado$promedio_camb_an
     return("Poner mensaje")
   })
   
@@ -104,7 +112,17 @@ server <- function(input, output, session) {
     screenshot()
   })
   
-  observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 10)
-  })
+  output$descargar <- downloadHandler(
+   filename = function() {
+    paste("grafica-", Sys.Date(), ".png", sep="")
+  },
+  content = function(file) {
+   tempFile <- tempfile(fileext = ".html")
+  htmlwidgets::saveWidget((resultado()$grafico), tempFile, selfcontained = FALSE)
+  webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 800)
+  }
+  )
+  #observeEvent(input$descargar, {
+   # screenshot("#grafico", scale = 10)
+  #})
 }
