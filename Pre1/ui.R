@@ -53,7 +53,7 @@ ui <- fluidPage(
           column(4,
                  selectInput("producto", "Seleccione producto:", c("Todos los productos" = "todo", as.character(names(which(table(data$producto) > 12)))))),
           column(4, 
-                 selectInput("variable", "Seleccione la variable", c("Precio promedio" = "precio_prom", "Cambio porcentual" = "cambio_pct", "Cambio porcentual año anterior"="cambio_pct_anual"))),
+                 selectInput("variable", "Seleccione la variable", c("Precio promedio" = "precio_prom", "Cambio porcentual" = "cambio_pct", "Cambio porcentual intranual"="cambio_pct_anual"))),
           column(4, 
                  selectInput("anio", "Seleccione el año", c("Todos los años" = "todo", sort(unique(data$anio)))))
         )),

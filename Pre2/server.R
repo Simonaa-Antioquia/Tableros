@@ -29,7 +29,13 @@ server <- function(input, output, session) {
   
   output$grafico <- renderPlotly({
     res<-resultado()
-    res$grafico
+    if (nrow(res$datos)<1){
+      validate(
+        "No hay datos disponibles"
+      )
+    } else {
+      res$grafico 
+    }
   })
   
   observeEvent(input$reset, {
@@ -74,27 +80,31 @@ server <- function(input, output, session) {
     cantidades_max<-resultado$cantidades_max
     precio_max<-resultado$precio_max
     
-    output$mensaje1 <- renderText({
-      #resultado <- resultado()
-      #volatil<-resultado$producto_vol
-      return("Promedio de precios y cantidades de productos en Medellín para cada mes del año")
-    })
-    
-    output$mensaje2 <- renderText({
-      #resultado <- resultado()
-      #promedio_camb<-resultado$promedio_camb
-      return("Poner mensaje")
-    })
-    
-    output$mensaje3 <- renderText({
-      #resultado <- resultado()
-      #promedio_camb_an<-resultado$promedio_camb_an
-      return("Poner mensaje")
-    })
-    #if(input$anio == ""){
+    if(nrow(resultado$datos) < 1){
+      validate("No hay datos disponibles")
+    }else{
     return(paste0("El mes más caro es ", mes_max,", siendo $", precio_max," con ",cantidades_max," mil toneladas ingresadas y ",distancia_max," kilómetros recorridos"))
-    #} 
+    } 
   })
+  
+  output$mensaje1 <- renderText({
+    #resultado <- resultado()
+    #volatil<-resultado$producto_vol
+    return("Promedio de precios y cantidades de productos en Medellín para cada mes del año")
+  })
+  
+  output$mensaje2 <- renderText({
+    resultado <- resultado()
+    promedio_camb<-resultado$mensaje2
+    #return("Poner mensaje")
+  })
+  
+  output$mensaje3 <- renderText({
+    #resultado <- resultado()
+    #promedio_camb_an<-resultado$promedio_camb_an
+    return("Poner mensaje")
+  })
+  
   # Aqui tomamos screen 
   observeEvent(input$go, {
     screenshot()

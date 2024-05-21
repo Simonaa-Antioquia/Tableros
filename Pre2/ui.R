@@ -49,7 +49,7 @@ ui <- fluidPage(
   div(class = "scrollable-content",
       fluidRow(
         column(6,
-               selectInput("producto", "Seleccione producto:", c("Todos los productos" = "total", as.character(unique(complet$producto))))),
+               selectInput("producto", "Seleccione producto:", c("Todos los productos" = "total", as.character(productos_filtrados)))),
         column(6,
                selectInput("anio", "Seleccione un año:", c("Todos los años"="todos", sort(unique(complet$anio)))))
       )),
@@ -68,8 +68,8 @@ ui <- fluidPage(
       column(3, 
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
-             #wellPanel(textOutput("mensaje2"),
-              #         style = "background-color: #005A45; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
              #wellPanel(textOutput("mensaje3"),
               #         style = "background-color: #094735; color: #FFFFFF;")
       )

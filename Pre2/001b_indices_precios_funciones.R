@@ -18,6 +18,13 @@ data<-readRDS("base_precios_cambio.rds")%>%
   filter(ciudad == "Medellín")
 complet<-readRDS("base_precios_cantidades_distancias.rds")
 
+productos_filtrados <- complet %>%
+  group_by(producto, mes_y_ano) %>%
+  summarise(n = n()) %>%
+  filter(n() >= 12) %>%
+  .$producto %>%
+  unique()
+
 ##Funcion para ver el promedio por mes de los precios y cantidades en todos los años
 
 # Define la función
@@ -65,7 +72,9 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
   precio_max <- formatC(max(datos_producto$precio_prom), format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
   producto_sel <- ifelse(alimento == "total", "todos los productos", alimento)
   anio_sel <- c(fecha,"todos los años")
-  
+  mes_max_cant <- nombres_meses[datos_producto$mes[which.max(datos_producto$cantidad)]]
+  cant_max<-formatC(max(datos_producto$cantidad), format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
+  mensaje2<-paste0("En ", mes_max_cant, " ingresaron ", cant_max, " mil toneladas, siendo el mes con más ingresos.")
   return(
     list(
       grafico=p,
@@ -73,8 +82,9 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
       mes_max =mes_max,
       distancia_max=distancia_max,
       cantidades_max=cantidades_max,
-      precio_max=precio_max
-      #producto_sel=producto_sel,
+      precio_max=precio_max,
+      mes_max_cant=mes_max_cant,
+      mensaje2=mensaje2
       #anio_sel=anio_sel
     )
   )

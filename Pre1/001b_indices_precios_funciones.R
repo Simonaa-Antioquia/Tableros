@@ -27,6 +27,8 @@ complet<-readRDS("base_precios_cantidades_distancias.rds")
 #Gráficas precios----
 # Define la función
 
+Sys.setlocale("LC_TIME", "Spanish")
+
 graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
   # Si no se proporciona alimento, calcula el promedio
   if (!is.null(alimento)) {
@@ -110,6 +112,8 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
          title = "") +
     theme_minimal()
   }else{
+    
+    
     p<-ggplot(df_graf, aes(x = mes_y_ano, y = !!sym(variable), group = 1)) +
       geom_line(aes(text = tooltip_text),color = "#0D8D38") +
       scale_x_date(date_labels = "%b", date_breaks = "1 month") +
@@ -132,7 +136,7 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
                                                  " con un ",max(datos$cambio_pct_anual, na.rm = TRUE),"%"),
                            ifelse(fecha!=2013,paste0("La mayor variación intranual fue ",format(as.Date(datos$mes_y_ano[which.max(datos$cambio_pct_anual)]), "%B-%Y"),
                            " con un ",max(datos$cambio_pct_anual, na.rm = TRUE),"%"),
-                           ""))
+                           "2013 es el primer año con datos por lo que no se puede mostrar la variación intranual"))
   return(
     list(
       grafico=map,
