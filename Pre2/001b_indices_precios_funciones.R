@@ -74,7 +74,9 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
   anio_sel <- c(fecha,"todos los años")
   mes_max_cant <- nombres_meses[datos_producto$mes[which.max(datos_producto$cantidad)]]
   cant_max<-formatC(max(datos_producto$cantidad), format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
-  mensaje2<-paste0("En ", mes_max_cant, " ingresaron ", cant_max, " mil toneladas, siendo el mes con más ingresos.")
+  
+  mensaje2<-paste0("En ", mes_max_cant, " ingresaron ", ifelse(cant_max>1,cant_max,""), " mil toneladas, siendo el mes con más ingresos.")
+  
   return(
     list(
       grafico=p,
