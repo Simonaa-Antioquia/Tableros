@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(reshape2);library(sf);library(shiny);library(htmlwidgets);library(shinyscreenshot)
-library(webshot);library(magick);library(webshot2);library(mapview)
+library(webshot);library(magick);library(webshot2)
 ################################################################################-
 
 server <- function(input, output, session) {
@@ -124,6 +124,6 @@ server <- function(input, output, session) {
   #)
   
   observeEvent(input$descargar, {
-    shinyscreenshot::screenshot("#grafico", scale =30, timer = 50)
+    shinyscreenshot::screenshot("#grafico", scale =1, timer = 1)
   })
 }
