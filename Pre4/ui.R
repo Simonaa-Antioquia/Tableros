@@ -94,7 +94,7 @@ ui <- fluidPage(
     ),
     tags$div(tags$p("La comparación se realiza entre ciudades, pero para una mejor comprensión visual se considera todo el departamento.",
                     tags$br(),"Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.",
-                    tags$br(),"Los precios fueron tomados a productos de primera calidad",
+                    tags$br(),"Los precios fueron tomados a productos de primera calidad.",
                     tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(

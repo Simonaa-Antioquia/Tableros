@@ -34,28 +34,28 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
   if (!is.null(alimento)) {
     producto_vol<-"Solo se tiene un producto"
     df <- df %>%
-      filter(ciudad == "Medellín", producto == alimento)
+      filter(producto == alimento)
     
     # Prepara los datos
     df_graf <- df %>%
-      arrange(ciudad, producto, mes_y_ano)%>%
+      arrange( producto, mes_y_ano)%>%
       mutate(precio_prom=round(precio_prom)) %>%
       mutate(cambio_pct = round((precio_prom / lag(precio_prom) - 1) * 100))  %>%
       mutate(mes_y_ano = floor_date(as.Date(as.yearmon(mes_y_ano, "%Y-%m"), frac = 1), "month")) %>%
       drop_na(mes_y_ano) %>%
-      complete(ciudad, producto, mes_y_ano = seq.Date(min(mes_y_ano, na.rm = TRUE), max(mes_y_ano, na.rm = TRUE), by = "month")) %>%
+      complete( mes_y_ano = seq.Date(min(mes_y_ano, na.rm = TRUE), max(mes_y_ano, na.rm = TRUE), by = "month")) %>%
       mutate(cambio_pct_anual = round((precio_prom / lag(precio_prom, 12) - 1) * 100,1))
   } else {
     
     if(is.null(fecha)){
       df_volatilidad <- df %>%
-      filter(ciudad == "Medellín")%>%
+      #filter(ciudad == "Medellín")%>%
       group_by(producto) %>%
       summarise(volatilidad = sd(precio_prom, na.rm = TRUE), .groups = "drop")%>%
       ungroup()
     }else{
         df_volatilidad <- df %>%
-          filter(ciudad == "Medellín")%>%
+          #filter(ciudad == "Medellín")%>%
           filter(anio == fecha)%>%
           group_by(producto) %>%
           summarise(volatilidad = sd(precio_prom, na.rm = TRUE), .groups = "drop")%>%
@@ -65,19 +65,19 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
     producto_vol<-paste0(df_volatilidad$producto[which.max(df_volatilidad$volatilidad)]," es el producto más volátil")
     
     df <- df %>%
-      group_by(ciudad, mes_y_ano, anio) %>%
+      group_by( mes_y_ano, anio) %>%
       summarise(precio_prom = round(mean(precio_prom, na.rm = TRUE)), .groups = "drop")
     
-    df <- df %>%
-      filter(ciudad == "Medellín")
+    #df <- df# %>%
+     # filter(ciudad == "Medellín")
     
     df_graf <- df %>%
-      arrange(ciudad, mes_y_ano) %>%
+      arrange( mes_y_ano) %>%
       mutate(precio_prom=round(precio_prom))%>%
       mutate(cambio_pct = round((precio_prom / lag(precio_prom) - 1) * 100)) %>%
       mutate(mes_y_ano = floor_date(as.Date(as.yearmon(mes_y_ano, "%Y-%m"), frac = 1), "month")) %>%
       drop_na(mes_y_ano) %>%
-      complete(ciudad, mes_y_ano = seq.Date(min(mes_y_ano, na.rm = TRUE), max(mes_y_ano, na.rm = TRUE), by = "month")) %>%
+      complete(mes_y_ano = seq.Date(min(mes_y_ano, na.rm = TRUE), max(mes_y_ano, na.rm = TRUE), by = "month")) %>%
       mutate(cambio_pct_anual = round((precio_prom / lag(precio_prom, 12) - 1) * 100,1)) 
   }
   
@@ -161,8 +161,7 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
 }
 
 # n<-graficar_variable(data, "precio_prom")$datos
-#graficar_variable(data, "precio_prom", fecha="2020")
-#, alimento = "", fecha="2020")
+#graficar_variable(data, "precio_prom", alimento = "Aguacate", fecha="2020")
 # Usa la función para graficar la variable "precio" para la ciudad "Bogota" y el producto "Arroz"
 
 # Define la función
