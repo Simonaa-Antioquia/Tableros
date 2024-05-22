@@ -74,9 +74,11 @@ ui <- fluidPage(
     fluidRow(
       column(9,
              leafletOutput("grafico"),
-             downloadButton("descargar", "Gráfica", icon = icon("download")),
+             actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             actionButton("github", "GitHub", icon = icon("github")),
+             #actionButton("github", "GitHub", icon = icon("github")),
+             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+                      class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restablecer", icon = icon("refresh"))#,
              #tableOutput("vistaTabla") 
@@ -91,6 +93,8 @@ ui <- fluidPage(
       )
     ),
     tags$div(tags$p("La comparación se realiza entre ciudades, pero para una mejor comprensión visual se considera todo el departamento.",
+                    tags$br(),"Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.",
+                    tags$br(),"Los precios fueron tomados a productos de primera calidad",
                     tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(

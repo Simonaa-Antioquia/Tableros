@@ -10,7 +10,7 @@ rm(list=ls())
 # Paquetes 
 ################################################################################-
 library(reshape2);library(sf);library(shiny);library(htmlwidgets);library(shinyscreenshot)
-library(webshot);library(magick);library(webshot2)
+library(webshot);library(magick);library(webshot2);library(mapview)
 ################################################################################-
 
 server <- function(input, output, session) {
@@ -62,9 +62,9 @@ server <- function(input, output, session) {
     }
   )
   
-  observeEvent(input$github, {
-    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  })
+  #observeEvent(input$github, {
+  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  #})
   
   # En el servidor
   output$subtitulo <- renderText({
@@ -112,17 +112,18 @@ server <- function(input, output, session) {
     screenshot()
   })
   
-  output$descargar <- downloadHandler(
-   filename = function() {
-    paste("grafica-", Sys.Date(), ".png", sep="")
-  },
-  content = function(file) {
-   tempFile <- tempfile(fileext = ".html")
-  htmlwidgets::saveWidget((resultado()$grafico), tempFile, selfcontained = FALSE)
-  webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 800)
-  }
-  )
-  #observeEvent(input$descargar, {
-   # screenshot("#grafico", scale = 10)
-  #})
+  #output$descargar <- downloadHandler(
+  #  filename = function() {
+  #    paste("grafica-", Sys.Date(), ".png", sep="")
+  #  },
+  #  content = function(file) {
+  #    tempFile <- tempfile(fileext = ".html")
+  #    htmlwidgets::saveWidget((resultado()$grafico), tempFile, selfcontained = FALSE)
+  #    webshot::webshot(tempFile, file = file)#, delay = 0, vwidth = 800, vheight = 800)
+  #  }
+  #)
+  
+  observeEvent(input$descargar, {
+    shinyscreenshot::screenshot("#grafico", scale =30, timer = 50)
+  })
 }
