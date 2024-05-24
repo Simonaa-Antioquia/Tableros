@@ -87,26 +87,26 @@ server <- function(input, output, session) {
     }
   )
   
-  observeEvent(input$github, {
-    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  })
+  #observeEvent(input$github, {
+  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  #})
   
   # En el servidor
-  #output$subtitulo <- renderText({
-  #  res <- resultado()
-  #  if (is.data.frame(res) || is.list(res)) {
-  #    if(nrow(res$datos) == 0) {
-  #      return("No hay datos disponibles")
-  #    }else{
-  #      porcentaje_max <- res$porcentaje_max
-  #      dpto_max <- res$dpto_max
-  #      
-  #      return(paste0(dpto_max," envía el ", porcentaje_max, "% de lo que saca, siendo Antioquia su principal socio comercial"))
-  #    }
-  #  } else {
-  #    return("No hay datos disponibles")
-  # }
-  #  })
+  output$subtitulo <- renderText({
+    res <- resultado()
+    if (is.data.frame(res) || is.list(res)) {
+      if(nrow(res$datos) == 0) {
+        return("No hay datos disponibles")
+      }else{
+        porcentaje_max <- res$porcentaje_max
+        dpto_max <- res$dpto_max
+        
+        return(paste0("Sin contar Antioquia, ",dpto_max," envía el ", porcentaje_max, "% de lo que saca, siendo Antioquia su principal socio comercial"))
+      }
+    } else {
+      return("No hay datos disponibles")
+   }
+    })
   
   output$mensaje1 <- renderText({
     #resultado <- resultado()
@@ -115,9 +115,15 @@ server <- function(input, output, session) {
   })
   
   output$mensaje2 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb<-resultado$promedio_camb
-    return("Poner mensaje")
+    res <- resultado()
+    if (is.data.frame(res) || is.list(res)) {
+      if(nrow(res$datos) == 0) {
+        return("No hay datos disponibles")
+      }else{
+        porcentaje_max <- res$porcentaje_max_1
+    return(paste0("Antioquia es su principal socio comercial ya que envía el ",porcentaje_max,"% de lo que saca a sí misma."))}} else {
+      return("No hay datos disponibles")
+    }
   })
   
   output$mensaje3 <- renderText({

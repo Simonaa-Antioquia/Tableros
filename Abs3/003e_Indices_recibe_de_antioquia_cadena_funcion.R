@@ -19,7 +19,7 @@ options(scipen = 999)
 shapefile <- st_read("MGN_DPTO_POLITICO.shp")%>%
   janitor::clean_names()%>%filter(dpto_ccdgo!=88)%>%mutate(dpto_ccdgo=as.numeric(dpto_ccdgo))
 
-antioquia<-read.csv("base_indices_cadena_antioquia.csv")
+antioquia<-readRDS("base_indices_cadena_antioquia.rds")
 #antioquia$depto_origen[antioquia$depto_origen=="BOGOTÁ, D. C."]<-"BOGOTÁ, D.C."
 
 col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
@@ -126,22 +126,25 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
                                                     bringToFront = FALSE)) %>%
     addLegend(pal = my_palette_sin_na, values = ~valores_sin_na, opacity = 0.7, title = "Porcentaje")#, na.label = "")
     
-      porcentaje_max<-round(max(df$columna_porcentaje)*100,1)
+  mapa2<-mapa%>%filter(mpio_destino!="Medellín")
+  porcentaje_max<-round(max(mapa2$columna_porcentaje))
+      porcentaje_max_1 <- round(max(df$columna_porcentaje[which(df$mpio_destino=="Medellín")]) * 100) 
       # Encontrar el índice del valor máximo ignorando los NA
-      indice_max <- which(mapa$columna_porcentaje == max(mapa$columna_porcentaje, na.rm = TRUE))
+      indice_max <- which(mapa2$columna_porcentaje == max(mapa2$columna_porcentaje, na.rm = TRUE))
       # Convertir a formato de título
-      dpto_max <- tools::toTitleCase(tolower(mapa$dpto_cnmbr[indice_max]))
+      dpto_max <- tools::toTitleCase(tolower(mapa2$dpto_cnmbr[indice_max]))
       return(list(
         grafico=p,
         datos=df,
         porcentaje_max=porcentaje_max,
-        dpto_max=dpto_max
+        dpto_max=dpto_max,
+        porcentaje_max_1=porcentaje_max_1
       ))
   }
 }
 
 #col_en_ant()
-#col_en_ant(Año=2023)
+#col_en_ant(Año=2013)
 #col_en_ant(Año=2023, Mes=1)
 #col_en_ant(Año=2013, Mes=1, Producto = "tomates otros")
 #col_en_ant(Año=2023, Producto = "arroz")

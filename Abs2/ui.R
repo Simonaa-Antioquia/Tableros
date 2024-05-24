@@ -56,11 +56,11 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("¿Qué tan importante es Antioquia para lo que envian otros departamento?", class = "main-header"),
-  #div(
-    #textOutput("subtitulo"),
-    #class = "sub-header2",
-    #style = "margin-bottom: 20px;"
-  #),
+  div(
+    textOutput("subtitulo"),
+    class = "sub-header2",
+    style = "margin-bottom: 20px;"
+  ),
   div(class = "scrollable-content",
       fluidRow(
         column(4,
@@ -72,21 +72,23 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(10,
+      column(9,
              leafletOutput("grafico", width = "500px", height = "500px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             actionButton("github", "GitHub", icon = icon("github")),
+             #actionButton("github", "GitHub", icon = icon("github")),
+             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+                      class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restablecer", icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
       ),
-      column(2, 
+      column(3, 
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;")#,
-             #wellPanel(textOutput("mensaje2"),
-              #         style = "background-color: #005A45; color: #FFFFFF;"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;"),
              #wellPanel(textOutput("mensaje3"),
               #         style = "background-color: #094735; color: #FFFFFF;")
       )

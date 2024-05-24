@@ -76,9 +76,9 @@ server <- function(input, output, session) {
     }
   )
   
-  observeEvent(input$github, {
-    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  })
+  #observeEvent(input$github, {
+  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  #})
   
   observeEvent(input$reset, {
     updateSelectInput(session, "municipios", selected = 10)

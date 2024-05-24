@@ -74,9 +74,9 @@ server <- function(input, output, session) {
     }
   )
   
-  observeEvent(input$github, {
-    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  })
+  #observeEvent(input$github, {
+  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  #})
   
   output$subtitulo <- renderText({
     res <- resultado()
@@ -87,7 +87,7 @@ server <- function(input, output, session) {
         porcentaje_max <- res$porcentaje_max
         dpto_max <- res$dpto_max
         
-        return(paste0(dpto_max," recibe el ", porcentaje_max, "% de lo que ingresa de Antioquia, siendo el departamento que más recibe de este."))
+        return(paste0(dpto_max," recibe el ", porcentaje_max, "% de sus alimentos de Antioquia, siendo el departamento que más depende de este sin contar Antioquia."))
       }
     } else {
       return("No hay datos disponibles")
@@ -97,13 +97,13 @@ server <- function(input, output, session) {
   output$mensaje1 <- renderText({
     #resultado <- resultado()
     #volatil<-resultado$producto_vol
-    return("Cada porcentaje es lo que cada departamento recibe de Antioquia del total de productos que ingresan a este.")
+    return("Cada porcentaje representa la proporción de productos que cada departamento recibe de Antioquia en relación con el total de productos que ingresan a dicho departamento.")
   })
   
   output$mensaje2 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb<-resultado$promedio_camb
-    return("Poner mensaje")
+    resultado <- resultado()
+    porcentaje_max_1<-resultado$porcentaje_max_1
+    return(paste0("El ",porcentaje_max_1,"% de los alimentos que llegan a Medellín provienen de la misma región."))
   })
   
   output$mensaje3 <- renderText({

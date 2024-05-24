@@ -18,7 +18,7 @@ options(scipen = 999)
 shapefile <- st_read("MGN_DPTO_POLITICO.shp")%>%
   janitor::clean_names()%>%filter(dpto_ccdgo!=88)%>%mutate(dpto_ccdgo=as.numeric(dpto_ccdgo))
   
-antioquia<-read.csv("base_indices_antioquia_cadena.csv")
+antioquia<-readRDS("base_indices_antioquia_cadena.rds")
 antioquia$depto_origen[antioquia$depto_origen=="QUINDÍO"]<-"QUINDIO"
 
 ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
@@ -124,8 +124,17 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
                                                     bringToFront = FALSE)) %>%
     addLegend(pal = my_palette_sin_na, values = ~valores_sin_na, opacity = 0.7, title = "Porcentaje")#, na.label = "")
   
-  porcentaje_max <- round(max(df$columna_porcentaje) * 100)
-  dpto_max <- df$depto_origen[which.max(df$columna_porcentaje)]
+  df_sin_antioquia <- df[df$depto_origen != "ANTIOQUIA",]
+  
+  # Calcula el porcentaje máximo y el departamento correspondiente
+  porcentaje_max <- round(max(df_sin_antioquia$columna_porcentaje) * 100)
+  dpto_max <- df_sin_antioquia$depto_origen[which.max(df_sin_antioquia$columna_porcentaje)]
+  porcentaje_max_1 <- round(max(df$columna_porcentaje[which(df$depto_origen=="ANTIOQUIA")]) * 100) 
+  #dpto_max_1 <- df$depto_origen[which.max(df$columna_porcenta)]
+  #dpto_max_1 <- tolower(dpto_max_1)
+  #words <- strsplit(dpto_max_1, " ")[[1]]
+  #words <- paste(toupper(substring(words, 1, 1)), substring(words, 2), sep = "")
+  #dpto_max_1 <- paste(words, collapse = " ")
   dpto_max <- tolower(dpto_max)
   words <- strsplit(dpto_max, " ")[[1]]
   words <- paste(toupper(substring(words, 1, 1)), substring(words, 2), sep = "")
@@ -135,7 +144,9 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
     grafico = p,
     datos = df,
     porcentaje_max = porcentaje_max,
-    dpto_max = dpto_max
+    dpto_max = dpto_max,
+    porcentaje_max_1=porcentaje_max_1
+    #dpto_max_1=dpto_max_1
   ))
 }
 
