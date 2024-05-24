@@ -76,9 +76,9 @@ server <- function(input, output, session) {
     updateSelectInput(session, "tipo", selected = 1)
   })
   
-  observeEvent(input$github, {
-    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  })
+  #observeEvent(input$github, {
+  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  #})
   
   output$mensaje1 <- renderText({
       return("El 'Neto' se calcula como la diferencia entre la cantidad de kilogramos que salen de Antioquia y los que ingresan.")

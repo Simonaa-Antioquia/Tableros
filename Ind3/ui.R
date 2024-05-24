@@ -57,7 +57,7 @@ ui <- fluidPage(
     tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
   tags$h1("índice de diversidad de destino de los alimentos", class = "main-header"),
-  tags$h1("Análisis de la variedad de territorios conectados por el flujo de alimentos desde Antioquia hacia otras plazas en SIPSA", class = "main-header_2"),
+  tags$h1("Análisis de la variedad de territorios conectados por el flujo de alimentos desde Antioquia hacia otras plazas en SIPSA.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -94,7 +94,8 @@ ui <- fluidPage(
                plotlyOutput("grafico"),
                actionButton("descargar", "Gráfica", icon = icon("download")),
                downloadButton("descargarDatos", "Datos"),
-               actionButton("github", "GitHub", icon = icon("github")),
+               shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+                        class = "btn btn-default shiny-action-button", icon("github")),
                actionButton("go", "Reporte", icon = icon("file-alt")),
                actionButton("reset", "Restablecer", icon = icon("refresh"))
         ),
@@ -112,9 +113,9 @@ ui <- fluidPage(
       column(12,
              style = "margin-top: 2px;",
              tags$div(
-               tags$p("Este gráfico se calcula con base en índice de Herfindahl-Hirschman", class = "sub-header2", style = "margin-top: 3px;"),
-               tags$p("Un mayor índice indica menor número de destinos de los cuales provienen los alimentos (municipios)", class = "sub-header2", style = "margin-top: 3px;"),
-               tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Este gráfico se calcula con base en índice de Herfindahl-Hirschman.", 
+                      tags$br(),"Un mayor índice indica menor número de destinos de los cuales provienen los alimentos (municipios).",  
+                      tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2", style = "margin-top: 3px;"),
                tags$div(style = "text-align: left;", 
                         tags$p("La fórmula del índice de Herfindahl-Hirschman es:", class = "sub-header2", style = "margin-top: 3px;"),
                         tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),

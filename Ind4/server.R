@@ -104,9 +104,9 @@ server <- function(input, output, session) {
   })
   
   # Conectar al git 
-  observeEvent(input$github, {
-    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  })  
+  #observeEvent(input$github, {
+  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  #})  
   
   # Borrar filtros
   observeEvent(input$reset, {

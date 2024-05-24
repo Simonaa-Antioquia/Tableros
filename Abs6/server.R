@@ -9,7 +9,7 @@
 rm(list=ls())
 # Paquetes 
 ################################################################################
-library(shiny)
+library(shiny);library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot);library(webshot2)
 ################################################################################
 server <- function(input, output, session) {
   
@@ -69,9 +69,9 @@ server <- function(input, output, session) {
     }
   )
   
-  observeEvent(input$github, {
-    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  })
+  #observeEvent(input$github, {
+  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  #})
   
   observeEvent(input$reset, {
     updateSelectInput(session, "año", selected = "todo")

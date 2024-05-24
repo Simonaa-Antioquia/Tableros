@@ -76,7 +76,9 @@ ui <- fluidPage(
              plotly::plotlyOutput("grafico",height = "400px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             actionButton("github", "GitHub", icon = icon("github")),
+             #actionButton("github", "GitHub", icon = icon("github")),
+             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+                      class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
              #,

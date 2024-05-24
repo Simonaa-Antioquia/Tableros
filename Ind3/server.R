@@ -76,9 +76,9 @@ server <- function(input, output, session) {
     }
   )
   
-  observeEvent(input$github, {
-    browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  })
+  #observeEvent(input$github, {
+  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  #})
   
   output$subtitulo <- renderText({
     if ((input$tipo == 2 || input$tipo == 4) && is.null(input$producto)) {
@@ -92,23 +92,23 @@ server <- function(input, output, session) {
     producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
     
     if (tipo == 2) {
-      return(paste("La maxima vulnerabilidad anual se encuentra en el año", fecha_max_vulnerabilidad, "para el producto", producto_max_vulnerabilidad, "y es de", max_vulnerabilidad,"%"))
+      return(paste("La maxima vulnerabilidad anual se encuentra en el año", fecha_max_vulnerabilidad, "para el producto", producto_max_vulnerabilidad, "y es de", max_vulnerabilidad,""))
     } else if (tipo == 3) {
-      return(paste("La maxima vulnerabilidad mensual, fue en", fecha_max_vulnerabilidad, "y es de", max_vulnerabilidad,"%"))
+      return(paste("La maxima vulnerabilidad mensual, fue en", fecha_max_vulnerabilidad, "y es de", max_vulnerabilidad,""))
     } else if (tipo == 4) {
-      return(paste("La mayor vulnerabilidad fue en",fecha_max_vulnerabilidad, "para el prodcuto",producto_max_vulnerabilidad,"y fue de",max_vulnerabilidad,"%"))
+      return(paste("La mayor vulnerabilidad fue en",fecha_max_vulnerabilidad, "para el prodcuto",producto_max_vulnerabilidad,"y fue de",max_vulnerabilidad,""))
     } else {
-      return(paste("El año con mayor indice de vulnerabilidad fue",fecha_max_vulnerabilidad, "y fue de",max_vulnerabilidad,"%"))
+      return(paste("El año con mayor indice de vulnerabilidad fue",fecha_max_vulnerabilidad, "y fue de",max_vulnerabilidad,""))
     }
   })
   
   
   output$mensaje1 <- renderText({
-    return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los destinos de alimentos en Antioquia, un mayor índice indica menos municipios de destino para los alimentos cuyo origen esta en Antioquia")
+    return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los destinos de alimentos en Antioquia, un mayor índice indica menos municipios de destino para los alimentos cuyo origen esta en Antioquia.")
   })
   
   output$mensaje2 <- renderUI({
-    return("Este índice puede aumentar si aumenta la participación de un municipio o disminuye el número de municipios de destino")
+    return("Este índice puede aumentar si aumenta la participación de un municipio o disminuye el número de municipios de destino.")
   })
   
   

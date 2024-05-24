@@ -23,7 +23,7 @@ library(leaflet)
 
 ui <- fluidPage(
   tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
-  tags$head(
+  tags$head(tags$title("Riesgo cierre de rutas"),  # Añade esta línea
     tags$style(HTML("
       .main-header {
         font-family: 'Prompt', sans-serif;
@@ -76,7 +76,9 @@ ui <- fluidPage(
              leafletOutput("plot", width = "100%", height = "250px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             actionButton("github", "GitHub", icon = icon("github")),
+             #actionButton("github", "GitHub", icon = icon("github")),
+             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+                      class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
       ),
@@ -100,9 +102,9 @@ ui <- fluidPage(
     )
   ),
     fluidRow(
-    tags$div(
-      tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
-      style = "width: 100%; margin:0;"  
-    )
+      tags$div(
+        tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+        style = "position: fixed; bottom: 0; width: 100%; margin:0;"  
+      )
   )
 )

@@ -93,7 +93,9 @@ ui <- fluidPage(
              plotly::plotlyOutput("grafico",height = "400px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             actionButton("github", "GitHub", icon = icon("github")),
+             #actionButton("github", "GitHub", icon = icon("github")),
+             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+                      class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
              #,
@@ -116,9 +118,9 @@ ui <- fluidPage(
     column(12,
            style = "margin-top: 2px;",
            tags$div(
-             tags$p("El índice de vulnerabilidad se calcula teniendo en cuenta el número de municipios en los que se produce un alimento y la distancia desde este municipio a Medellín", class = "sub-header2", style = "margin-top: 3px;"),
-             tags$p("Un mayor índice indica mayor vulnerabilidad", class = "sub-header2", style = "margin-top: 3px;"),
-             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("El índice de vulnerabilidad se calcula teniendo en cuenta el número de municipios en los que se produce un alimento y la distancia desde este municipio a Medellín.", 
+                    tags$br(),"Un mayor índice indica mayor vulnerabilidad.", 
+                    tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
              tags$div(style = "text-align: left;", 
                       tags$p("La fórmula de vulnerabilidad es:", class = "sub-header2", style = "margin-top: 3px;"),
                       tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),

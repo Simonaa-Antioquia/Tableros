@@ -99,7 +99,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
       df <- rename(df, fecha = anio) 
       df$tooltip_text <- paste("Año: ", df$fecha ,  "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
       p<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
-        geom_line() +
+        geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text), size = 1e-8) +
         labs(x = "Año", y = "Indice de Vulnerabilidad") +
         theme_minimal()  +
@@ -111,7 +111,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
       df <- rename(df, fecha = mes_y_ano)
       df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
       p<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
-        geom_line() +
+        geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text), size = 1e-8) +
         labs(x = "Año", y = "Indice de Vulnerabilidad") +
         theme_minimal()  +
@@ -125,7 +125,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   producto_max_vulnerabilidad <- ifelse("producto" %in% names(df), df$producto[indice_max_vulnerabilidad], NA)
   
   p <- plotly::ggplotly(p, tooltip = "text")
-  
+  df<-df%>%select(-tooltip_text)
   # Devolver el gráfico, los datos y los valores máximos
   return(list(
     grafico = p,

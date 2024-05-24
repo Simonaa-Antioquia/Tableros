@@ -68,7 +68,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   if (tipo %in% c(1)) {
     # Comprueba si df$fecha está vacío o contiene valores no numéricos
       p<-ggplot(df, aes(x = fecha, y = IHH)) +
-        geom_line() +
+        geom_line(color = "#2E7730") +
         labs(x = "Año", y = "Importancia Municipios destino") +
         scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha))) +
         scale_color_manual(values = col_palette) +
@@ -84,7 +84,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   } else if (tipo%in%(3)) { 
     
    p<- ggplot(df, aes(x = fecha, y = IHH)) +
-      geom_line() +
+      geom_line(color = "#2E7730") +
       labs(x = "Año", y = "Indice de Vulnerabilidad") +
       theme_minimal()  +
       scale_color_manual(values = col_palette) +

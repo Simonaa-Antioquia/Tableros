@@ -94,7 +94,7 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
        df <- rename(df, fecha = year) 
        df$tooltip_text <- paste("Año: ", df$fecha , "<br> IHH:" , round(df$IHH,3))
        p <- ggplot(df, aes(x = fecha, y = IHH)) +
-         geom_line() +
+         geom_line(color = "#2E7730") +
          geom_point(aes(text = tooltip_text),size = 1e-8) +
          labs(x = "Fecha", y = "Municipios en el abastecimiento") +
          theme_minimal() +
@@ -105,7 +105,7 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
       df <- rename(df, fecha = mes_y_ano)
       df$tooltip_text <- paste("Año:", df$year ,"<br> Mes:",df$month, "<br> IHH:" , round(df$IHH,3))
       p<- ggplot(df, aes(x = fecha, y = IHH)) +
-        geom_line() +
+        geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text),size = 1e-8) +
         labs(x = "Fecha", y = "Municipios en el abastecimiento") +
         theme_minimal()  +
@@ -118,10 +118,10 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
   
   # Calcular el valor máximo del índice de vulnerabilidad
   indice_max_ihh <- which.max(df$IHH)
-  max_IHH <- round(df$IHH[indice_max_ihh], 3)
+  max_IHH <- round(df$IHH[indice_max_ihh], 1)
   fecha_max_vulnerabilidad <- df$fecha[indice_max_ihh]
   producto_max_vulnerabilidad <- ifelse("producto" %in% names(df), df$producto[indice_max_ihh], NA)
-  
+  df<-df%>%select(-tooltip_text)
   # Devolver el gráfico, los datos y los valores máximos
   return(list(
     grafico = p,

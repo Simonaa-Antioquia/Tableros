@@ -109,9 +109,9 @@ server <- function(input, output, session) {
     }
   })
 
-observeEvent(input$github, {
-  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-})  
+#observeEvent(input$github, {
+#  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+#})  
 
 # Borrar filtros
 observeEvent(input$reset, {
@@ -119,11 +119,11 @@ observeEvent(input$reset, {
 })
 
 output$mensaje1 <- renderText({
-  return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los origenes de alimentos en Antioquia, un mayor índice indica menos municipios de origen")
+  return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los origenes de alimentos en Antioquia, un mayor índice indica menos municipios de origen.")
 })
 
 output$mensaje2 <- renderUI({
-  return("Este índice puede aumentar si aumenta la participación de un municipio o disminuye el número de municipios de origen")
+  return("Este índice puede aumentar si aumenta la participación de un municipio o disminuye el número de municipios de origen.")
 })
 
 

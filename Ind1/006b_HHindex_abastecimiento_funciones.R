@@ -64,7 +64,7 @@ plot_data <- function(tipo, anio = NULL) {
   }
   
 
-
+  data<-data%>%select(-tooltip_text)
   # Calcular el valor máximo del índice de vulnerabilidad
   max_IHH <- which.max(data$IHH)
   max_IHH_value <- round(data$IHH[max_IHH], 3)
