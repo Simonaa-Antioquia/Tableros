@@ -26,6 +26,7 @@ header-includes:
 - \pagestyle{fancy}
 - \fancyfoot{} 
 - \usepackage{adjustbox}
+- \fancyfoot[C]{\includegraphics[width=\textwidth]{www/logo2.png}}
 ---
 
 ```{r setup, include=FALSE}
@@ -48,7 +49,4 @@ print(params$plot)
 \fontsize{15}{15} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
 
 
-```{r logo, echo=FALSE, out.width='\\textwidth', fig.align='center'}
-knitr::include_graphics("www/logo2.png")
-```
 
