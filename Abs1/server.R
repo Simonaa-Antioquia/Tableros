@@ -8,10 +8,13 @@
 # Limpiar el entorno de trabajo
 rm(list=ls())
 # Paquetes 
+# install.packages("Sweave")
 ################################################################################-
 library(readr);library(lubridate);library(dplyr);library(ggplot2);library(zoo);library(readxl)
 library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(shiny); library(shinydashboard)
-library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot);library(webshot2)
+library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot);library(webshot2); library(knitr);library(rmarkdown)
+
+
 options(scipen = 999)
 ################################################################################-
 # Definir la función de servidor
@@ -43,15 +46,29 @@ server <- function(input, output, session) {
   })
   
 
-
+# Se genera el grafico plotly 
+  
   output$grafico <- plotly::renderPlotly({
     res <- resultado()
     if (is.character(res) || length(res) == 0 || is.null(input$municipios) || input$municipios < 1) {
       return(NULL)  # No hay gráfico para mostrar
     } else {
-      res$grafico  # Devuelve el gráfico Plotly
+      res$grafico_plotly  # Devuelve el gráfico Plotly
     }
   })
+  
+# Se genera el grafico plano
+  
+  grafico_plano <- reactive({
+    res <- resultado()
+    if (is.character(res) || length(res) == 0 || is.null(input$municipios) || input$municipios < 1) {
+      return(NULL)  # No hay gráfico para guardar
+    } else {
+      res$grafico_plano  # Guarda solo el gráfico 'grafico_plano'
+    }
+  })  
+  
+  
 
   output$descargar <- downloadHandler(
     filename = function() {
@@ -73,28 +90,44 @@ server <- function(input, output, session) {
     }
   )
   
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})
   
-  # En el servidor
+# Generamos el subtitulo 
+# Values se debe generar para guardar la variable que se lleva al rmd  
+  values <- reactiveValues(subtitulo = NULL)  
+  
   output$subtitulo <- renderText({
-    res<-resultado()
-    if(nrow(res$datos)==0){
-      return("No hay datos disponibles")
-    }else{
-      resultado <- resultado()
-    lugar_max <- resultado$lugar_max
-    porcentaje_max<-resultado$porcentaje_max
-   
-    if (is.na(input$municipios) || is.null(input$municipios )){
-      return("Por favor ingrese el numero de municipios que quiere graficar")
+    res <- resultado()
+    if(nrow(res$datos) == 0){
+      values$subtitulo <- "No hay datos disponibles"
     } else {
-      return(paste0(lugar_max, "es el municipio con mayor importancia en el abastecimeinto de Antioquia, aporta ",porcentaje_max,"%"))
-    }}
+      lugar_max <- res$lugar_max
+      porcentaje_max <- res$porcentaje_max
+      if (is.na(input$municipios) || is.null(input$municipios)){
+        values$subtitulo <- "Por favor ingrese el numero de municipios que quiere graficar"
+      } else {
+        values$subtitulo <- paste0(lugar_max, " es el municipio con mayor importancia en el abastecimiento de Antioquia, aporta ", porcentaje_max, "%")
+      }
+    }
+    return(values$subtitulo)
   })
   
- 
+  
+  
+# Mensajes 
+values <- reactiveValues(mensaje1 = NULL)
+  
+output$mensaje1 <- renderText({
+  if (is.na(input$municipios)) {
+    values$mensaje1 <- ""
+  } else {
+    values$mensaje1 <- paste0("El municipio más importante en el abastecimiento es: ", resultado()$lugar_max)
+  }
+  return(values$mensaje1)
+})
+  
+  
+# Boton de reset
+  
  observeEvent(input$reset, {
       updateSelectInput(session, "municipios", selected = 10)
       updateSelectInput(session, "anio", selected = "")
@@ -102,22 +135,42 @@ server <- function(input, output, session) {
       updateSelectInput(session, "producto", selected = NULL)
     })
  
- output$mensaje1 <- renderText({
-    if (is.na(input$municipios)) {
-       return("")
-     } else   {
-       return(paste0("El municipio mas importante en el abastecimiento es: ", resultado()$lugar_max))
-     }
- })
+
+# Descagamos el grafico
  
- # Aqui tomamos screen 
- observeEvent(input$go, {
-   screenshot()
- })
- 
- observeEvent(input$descargar, {
-   screenshot("#grafico", scale = 5)
+observeEvent(input$descargar, {
+   screenshot("#grafico", scale = 5, file = "grafico_1.png")
  }) 
+
+# Generamos el informe
+  
+output$report <- downloadHandler(
+  filename = 'informe.pdf',
+  
+  content = function(file) {
+    # Ruta al archivo RMarkdown
+    rmd_file <- "informe.Rmd"
+
+    # Renderizar el archivo RMarkdown a PDF
+    rmarkdown::render(rmd_file, output_file = file, params = list(
+      datos = resultado()$datos, 
+      lugar_max = resultado()$lugar_max, 
+      porcentaje_max = resultado()$porcentaje_max, 
+      plot = grafico_plano(),# Accede al gráfico 'grafico_plano'
+      subtitulo = values$subtitulo,
+      mensaje1 = values$mensaje1,
+      tipo = input$variable,
+      anio = input$anio,
+      mes = input$mes,
+      alimento = input$producto
+    ))
+    
+  
+  },
+  
+  contentType = 'application/pdf'
+)
+
 }
 
 

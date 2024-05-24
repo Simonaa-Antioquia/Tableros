@@ -1,0 +1,54 @@
+---
+title: ' '
+params:
+  datos: NA
+  lugar_max: NA
+  porcentaje_max: NA
+  plot: NA
+  subtitulo: NA
+  mensaje1: NA
+  tipo: NA
+  mes: NA
+  anio: NA
+  alimento: NA
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
+header-includes:
+- \usepackage{xcolor}
+- \usepackage{fontspec}
+- \usepackage{fancyhdr}
+- \usepackage{graphicx}
+- \definecolor{mygreen}{RGB}{26,73,34}
+- "\\setmainfont{Prompt-Regular.ttf}"
+- \pagestyle{fancy}
+- \fancyfoot{} 
+- \usepackage{adjustbox}
+---
+
+```{r setup, include=FALSE}
+# Instalamos librerias
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+```
+
+\fontsize{30}{30} \selectfont \textcolor{mygreen}{⁠Importancia de los municipios que abastecen antioquia}\
+
+\fontsize{15}{15} \selectfont `r params$subtitulo`\
+
+```{r, echo=FALSE,warning=FALSE}
+print(params$plot)
+```
+
+\fontsize{15}{15} \selectfont `r params$mensaje1`\
+
+\fontsize{15}{15} \selectfont \textcolor{mygreen}{Este gráfico muestra la importancia que tiene cada municipio en el abastecimiento de la central mayorista y minorista de Medellín.}\
+\fontsize{15}{15} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
+
+
+```{r logo, echo=FALSE, out.width='\\textwidth', fig.align='center'}
+knitr::include_graphics("www/logo2.png")
+```
+

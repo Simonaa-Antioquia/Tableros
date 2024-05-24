@@ -20,7 +20,7 @@ source("002b_Indices_abastecimiento_Antioquia_funciones.R")
 
 ui <- fluidPage(
   tags$head(
-    tags$title("Diferencia de precios entre ciudades"),  
+    tags$title("Improtancia_municipios"),  
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"), 
     tags$style(HTML("
       .main-header {
@@ -52,7 +52,7 @@ ui <- fluidPage(
       
     "))
   ),
-  tags$h1("⁠Importancia de los municipios que abastecen antioquia", class = "main-header"),
+    tags$h1("⁠Importancia de los municipios que abastecen antioquia", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -83,7 +83,8 @@ ui <- fluidPage(
              downloadButton("descargarDatos", "Datos"),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("reset", "Restrablecer",icon = icon("refresh"))
+             actionButton("reset", "Restrablecer",icon = icon("refresh")),
+             downloadButton("report", "Generar informe")
              #,
              #tableOutput("vistaTabla") 
            )),

@@ -135,7 +135,7 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
   
   df$tooltip_text <- paste0("Ciudad de origen: ", df$mpio_origen, "<br>Porcentaje: ", round(df$columna_porcentaje*100),"%")
   
-  p <- ggplot(df, aes(x =  forcats::fct_reorder(mpio_origen, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill =  mpio_origen, text = tooltip_text)) +
+  graf <- ggplot(df, aes(x =  forcats::fct_reorder(mpio_origen, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill =  mpio_origen, text = tooltip_text)) +
     geom_bar(stat = "identity") +
     geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 1)), hjust = 0.1) +
     coord_flip() +
@@ -144,7 +144,9 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
     theme_minimal() +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")#,axis.text.x = element_blank())
   
-  p <- plotly::ggplotly(p, tooltip = "text")
+  
+  p <- plotly::ggplotly(graf, tooltip = "text")
+  
   
   
   porcentaje_max<-round(max(df$columna_porcentaje)*100)
@@ -152,7 +154,8 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
   
   return(
     list(
-      grafico = p,
+      grafico_plano = graf,
+      grafico_plotly = p,
       datos = df,
       porcentaje_max=porcentaje_max,
       lugar_max=lugar_max
