@@ -157,8 +157,8 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
                                 color = df$colour[i],
                                 stroke = 0.05,
                                 opacity = 0.8,
-                                popup = ~ifelse(is.na(df$mpio_origen[i]),"",paste0("<strong>Municipio de origen: </strong>", ifelse(is.na(df$mpio_origen[i])),"",df$mpio_origen[i])), 
-                                  "<br><strong>Importancia: </strong>", ifelse(is.na(df$mpio_origen[i])),"",paste0("$",round(df$importancia[i])))))
+                                popup = ~ifelse(is.na(df$mpio_origen[i]),"",paste0("<strong>Municipio de origen: </strong>", ifelse(is.na(df$mpio_origen[i]),"",df$mpio_origen[i]), 
+                                  "<br><strong>Importancia: </strong>", ifelse(is.na(df$mpio_origen[i]),"",paste0("$",round(df$importancia[i])))))
   }
 
   av_km <- round(mean(df$distance), digits = 2)
