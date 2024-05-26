@@ -157,7 +157,7 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
                                 color = df$colour[i],
                                 stroke = 0.05,
                                 opacity = 0.8,
-                                label = ~paste("Municipio de origen: ",df$mpio_origen[i]), # note the tilde / ~
+                                label = ~paste0("Municipio de origen: ",df$mpio_origen[i]), # note the tilde / ~
                                 labelOptions = labelOptions(noHide = F, direction = "top"))
   }
 
