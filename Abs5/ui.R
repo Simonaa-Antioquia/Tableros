@@ -66,7 +66,7 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(10,
+      column(9,
              highchartOutput("grafico",height = "300px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
@@ -78,7 +78,7 @@ ui <- fluidPage(
              #,
              #tableOutput("vistaTabla") 
       ),
-      column(2, 
+      column(3, 
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;")#,
              #wellPanel(textOutput("mensaje2"),

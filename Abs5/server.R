@@ -21,10 +21,14 @@ server <- function(input, output, session) {
       entran_prod()
     }else if(input$año=="todo"&&input$mes=="todo"){
       entran_prod(depto = input$depto)
-    }else if(input$año=="todo"){
-      print("Seleccione un año")
+    }else if(input$año=="todo"&&input$mes!="todo"&&input$depto!="todo"){
+      validate(
+        need(input$anio != "todo", "Debe seleccionar un año.")
+      )
     }else if(input$año=="todo"&&input$depto=="todo"){
-      print("Seleccione un año")
+      validate(
+        need(input$anio != "todo", "Debe seleccionar un año.")
+      )
     }else if(input$mes=="todo"&&input$depto=="todo"){
       entran_prod(año = input$año)
     }else if(input$depto=="todo"){
@@ -100,7 +104,7 @@ server <- function(input, output, session) {
   output$mensaje1 <- renderText({
     #resultado <- resultado()
     #volatil<-resultado$producto_vol
-    return("Este gráfico muestra la importancia que tiene cada alimento en los alimentos que ingresan a los centros de acopio de Medellín.")
+    return("Este gráfico muestra el porcentaje que tiene cada alimento en el total de los productos que ingresan a los centros de acopio de Medellín.")
   })
   
   output$mensaje2 <- renderText({

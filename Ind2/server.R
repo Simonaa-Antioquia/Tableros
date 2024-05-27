@@ -108,33 +108,33 @@ server <- function(input, output, session) {
       return(paste("El año con mayor indice de vulnerabilidad fue",fecha_max_vulnerabilidad, "y fue de",max_IHH))
     }
   })
-
-#observeEvent(input$github, {
-#  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-#})  
-
-# Borrar filtros
-observeEvent(input$reset, {
-  updateSelectInput(session, "tipo", selected = 1)
-})
-
-output$mensaje1 <- renderText({
-  return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los origenes de alimentos en Antioquia, un mayor índice indica menos municipios de origen.")
-})
-
-output$mensaje2 <- renderUI({
-  return("Este índice puede aumentar si aumenta la participación de un municipio o disminuye el número de municipios de origen.")
-})
-
-
-# Aqui tomamos screen 
-observeEvent(input$go, {
-  screenshot()
-})
-
-observeEvent(input$descargar, {
-  screenshot("#grafico", scale = 5)
-})
-
+  
+  #observeEvent(input$github, {
+  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
+  #})  
+  
+  # Borrar filtros
+  observeEvent(input$reset, {
+    updateSelectInput(session, "tipo", selected = 1)
+  })
+  
+  output$mensaje1 <- renderText({
+    return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los origenes de alimentos en Antioquia, un mayor índice indica menos municipios de origen.")
+  })
+  
+  output$mensaje2 <- renderUI({
+    return("Este índice puede aumentar si aumenta la participación de un municipio o disminuye el número de municipios de origen.")
+  })
+  
+  
+  # Aqui tomamos screen 
+  observeEvent(input$go, {
+    screenshot()
+  })
+  
+  observeEvent(input$descargar, {
+    screenshot("#grafico", scale = 5)
+  })
+  
   
 }

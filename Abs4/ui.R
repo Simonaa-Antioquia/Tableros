@@ -72,7 +72,7 @@ ui <- fluidPage(
       )),
   div(
     fluidRow(
-      column(10,
+      column(9,
              plotlyOutput("grafico",height = "400px"),
              actionButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
@@ -84,7 +84,7 @@ ui <- fluidPage(
              #,
              #tableOutput("vistaTabla") 
       ),
-      column(2, 
+      column(3, 
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(textOutput("mensaje2"),
@@ -94,6 +94,7 @@ ui <- fluidPage(
       )
     ),
     tags$div(tags$p("Este gráfico muestra la importancia que tiene cada municipio como destino de los prodoctos de origen antioqueño",
+                    tags$br(),"Los municipios destino solo cuenta las principales ciudades con centros de acopio en las que se recolecta información para el SIPSA.",
                     tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(

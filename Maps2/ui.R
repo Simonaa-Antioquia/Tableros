@@ -72,8 +72,8 @@ ui <- fluidPage(
                                    "Ruta 6" = 6), inline = TRUE))
       )),
     fluidRow(
-      column(7,  
-             leafletOutput("plot", width = "100%", height = "250px"),
+      column(9,  
+             leafletOutput("plot", width = "100%", height = "500px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
              #actionButton("github", "GitHub", icon = icon("github")),
@@ -82,7 +82,7 @@ ui <- fluidPage(
              actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
       ),
-      column(5, 
+      column(3, 
            div(
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),

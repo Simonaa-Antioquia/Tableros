@@ -73,7 +73,7 @@ ui <- fluidPage(
   div(
     fluidRow(
       column(9,
-             leafletOutput("grafico", width = "500px", height = "500px"),
+             leafletOutput("grafico",  height = "500px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
              #actionButton("github", "GitHub", icon = icon("github")),

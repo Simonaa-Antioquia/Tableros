@@ -23,7 +23,7 @@ productos <- unique(indice_v_anual_producto$producto)
 
 
 ui <- fluidPage(
-  tags$title("Indice de vulnerabilidad del abastecimientos de alimentos de antioquia"),
+  tags$title("Índice de vulnerabilidad del abastecimientos de alimentos de antioquia"),
   tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
   tags$head(
     tags$style(HTML("
@@ -56,7 +56,7 @@ ui <- fluidPage(
     ")),
     tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
-  tags$h1("Indice de vulnerabilidad del abastecimiento de alimentos de Antioquia", class = "main-header"),
+  tags$h1("Índice de vulnerabilidad del abastecimiento de alimentos de Antioquia", class = "main-header"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",

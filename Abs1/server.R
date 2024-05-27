@@ -25,7 +25,7 @@ server <- function(input, output, session) {
     }
     # Comprobar si solo se ha seleccionado un producto
     if (input$producto != "todo" && input$anio == "todo" && input$mes == "todo") {
-      importancia(tipo = input$variable, Producto = input$producto)
+      importancia(tipo = input$variable, Producto = input$producto,municipios = input$municipios)
     } else if (input$mes != "todo" && input$anio == "todo") {
       validate(
         need(input$anio != "todo", "Debe seleccionar un año.")
