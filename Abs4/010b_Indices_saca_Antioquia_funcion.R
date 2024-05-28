@@ -225,9 +225,9 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
     
     p <- plotly::ggplotly(p, tooltip = "text")
   }
-  
+  df<-df%>%select(-tooltip_text)
   porcentaje_max <- ifelse(nrow(df)==0, "", round(max(df$columna_porcentaje)*100, digits = 2))
-  lugar_max<-ifelse(nrow(df)==0,"",df$mpio_destino[which.max(df$columna_porcentaje)])
+  lugar_max <- ifelse(nrow(df) == 0, "", as.character(df$mpio_destino)[which.max(df$columna_porcentaje)])
   
   return(
     list(
