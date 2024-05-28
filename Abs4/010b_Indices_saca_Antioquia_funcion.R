@@ -14,7 +14,7 @@ library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(pl
 options(scipen = 999)
 ################################################################################-
 
-proviene_antioquia<-read.csv("base_indices_sale_antioquia.csv")
+proviene_antioquia<-readRDS("base_indices_sale_antioquia.rds")
 
 #####
 

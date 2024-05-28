@@ -17,15 +17,15 @@ rm(list = ls())
 ############
 #source("009a_Indice:Vulnerabilidad.R")
 # Bases de datos 
-indice_v_anual <- read.csv("base_indice_anual_todos.csv")
+indice_v_anual <- readRDS("base_indice_anual_todos.rds")
 indice_v_anual$anio <-  as.numeric(indice_v_anual$anio)
 indice_v_anual$indice_vulnerabilidad <- as.numeric(indice_v_anual$indice_vulnerabilidad)
-indice_v_anual_producto <- read.csv("base_indice_anual_productos.csv")
-indice_v_general <- read.csv("base_indice.csv")
-indice_v_general_producto <- read.csv("base_indice_productos.csv")
-indice_v_mensual <- read.csv("base_indice_mensual.csv")
+indice_v_anual_producto <- readRDS("base_indice_anual_productos.rds")
+indice_v_general <- readRDS("base_indice.rds")
+indice_v_general_producto <- readRDS("base_indice_productos.rds")
+indice_v_mensual <- readRDS("base_indice_mensual.rds")
 indice_v_mensual$mes_y_ano <- as.Date(indice_v_mensual$mes_y_ano)
-indice_v_mensual_producto <- read.csv("base_indice_mensual_productos.csv")
+indice_v_mensual_producto <- readRDS("base_indice_mensual_productos.rds")
 indice_v_mensual_producto$mes_y_ano <- as.Date(indice_v_mensual_producto$mes_y_ano)
 
 

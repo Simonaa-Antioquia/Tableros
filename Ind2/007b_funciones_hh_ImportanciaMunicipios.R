@@ -17,13 +17,13 @@ rm(list = ls())
 ############
 #source("007a_HHINDEX_participacion_municipios.R")
 # Bases de datos 
-IHH_anual_producto <- read.csv("base_IHH_anual_producto_importanciadelosmunicipios.csv", row.names = 1) %>%
+IHH_anual_producto <- readRDS("base_IHH_anual_producto_importanciadelosmunicipios.rds", row.names = 1) %>%
   rename(year = anio)
-IHH_anual_total <- read.csv("base_IHH_anual_total_importanciadelosmunicipios.csv", row.names = 1) %>%
+IHH_anual_total <- readRDS("base_IHH_anual_total_importanciadelosmunicipios.rds", row.names = 1) %>%
   rename(year = anio)
-IHH_mensual_producto <- read.csv("base_IHH_mensual_producto_importanciadelosmunicipios.csv", row.names = 1) %>%
+IHH_mensual_producto <- readRDS("base_IHH_mensual_producto_importanciadelosmunicipios.rds", row.names = 1) %>%
   mutate(mes_y_ano = as.Date(mes_y_ano, format = "%Y-%m-%d")) 
-IHH_mensual_total <- read.csv("base_IHH_mensual_total_importanciadelosmunicipios.csv", row.names = 1) %>%
+IHH_mensual_total <- readRDS("base_IHH_mensual_total_importanciadelosmunicipios.rds", row.names = 1) %>%
   mutate(mes_y_ano = as.Date(mes_y_ano, format = "%Y-%m-%d"))
 
 

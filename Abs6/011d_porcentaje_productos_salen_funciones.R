@@ -14,7 +14,7 @@ library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(tr
 options(scipen = 999)
 ################################################################################-
 
-salen<-read.csv("base_porcentaje_productos_salen.csv")
+salen<-readRDS("base_porcentaje_productos_salen.rds")
 
 salen_prod<-function(año = NULL, Mes = NULL, depto = NULL){
   df<-salen

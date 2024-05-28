@@ -14,7 +14,7 @@ library(glue);library(tidyverse);library(gridExtra);library(corrplot);library(tr
 options(scipen = 999)
 ################################################################################-
 
-entran<-read.csv("base_porcentaje_productos_entran.csv")
+entran<-readRDS("base_porcentaje_productos_entran.rds")
 
 entran_prod<-function(año = NULL, Mes = NULL, depto = NULL){
   df<-entran

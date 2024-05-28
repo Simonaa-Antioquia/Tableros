@@ -16,9 +16,9 @@ rm(list = ls())
 #loadfonts(device = "win")
 ################################################################################
 
-IHH_anual<-read.csv("IHH_anual_abastecimiento.csv")
-IHH_total<-read.csv("IHH_total_abastecimiento.csv")
-IHH_mensual<-read.csv("IHH_mensual_abastecimiento.csv")%>%
+IHH_anual<-readRDS("IHH_anual_abastecimiento.rds")
+IHH_total<-readRDS("IHH_total_abastecimiento.rds")
+IHH_mensual<-readRDS("IHH_mensual_abastecimiento.rds")%>%
   mutate(mes_y_ano = floor_date(as.Date(as.yearmon(mes_y_ano, "%Y-%m"), frac = 1), "month"))
 
 
