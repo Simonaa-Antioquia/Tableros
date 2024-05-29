@@ -19,6 +19,7 @@ output:
 header-includes:
 - \usepackage{xcolor}
 - \usepackage{fontspec}
+- \usepackage{booktabs}  # Agregar esta línea
 - \usepackage{fancyhdr}
 - \usepackage{graphicx}
 - \definecolor{mygreen}{RGB}{26,73,34}
@@ -26,27 +27,64 @@ header-includes:
 - \pagestyle{fancy}
 - \fancyfoot{} 
 - \usepackage{adjustbox}
-- \fancyfoot[C]{\includegraphics[width=\textwidth]{www/logo2.png}}
+- \setlength{\headheight}{2cm}
+- \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
 ---
+
 
 ```{r setup, include=FALSE}
 # Instalamos librerias
+#tinytex::install_tinytex()
 knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
+#install.packages("xelatex")
+
 ```
 
-\fontsize{30}{30} \selectfont \textcolor{mygreen}{⁠Importancia de los municipios que abastecen antioquia}\
+<!-- Fecha -->
+\begin{flushleft}
+\large Reporte en línea generado: `r format(Sys.Date(), "%d %B, %Y")`
+\end{flushleft}
 
-\fontsize{15}{15} \selectfont `r params$subtitulo`\
+```{r}
+# Cargar el paquete knitr
+library(knitr)
+library(kableExtra)
 
-```{r, echo=FALSE,warning=FALSE}
+# Label para tipo: 
+opciones_tipo <- c("Total" = 1, "Local" = 2, "Externo" = 3)
+opciones_Mes <- c("Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, "Diciembre" =12)
+
+tipo_label <- ifelse(is.na(params$tipo), "", names(opciones_tipo)[which(opciones_tipo == params$tipo)])
+mes_label <- ifelse(is.na(params$mes) | !(params$mes %in% opciones_Mes), "Todos los meses", names(opciones_Mes)[which(opciones_Mes == params$mes)])
+
+df <- data.frame(
+  "Parametro" = c("Tipo", "Año", "Mes", "Alimento"),
+  "Valor" = c(tipo_label, ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio), mes_label, ifelse(is.na(params$alimento) | params$alimento == "todo", "Todos los productos", params$alimento))
+)
+
+names(df) <- NULL
+
+df %>%
+  knitr::kable(col.names = c("Parametro", "Valor"), align = c('l', 'l'), format = "latex", booktabs = TRUE) %>%
+  add_header_above(c("Parametros con los cuales se realizó en informe" = 2), escape = FALSE)
+```
+
+<!-- Titulo del tablaro -->
+\fontsize{20}{20} \selectfont \textcolor{mygreen}{⁠Importancia de los municipios que abastecen Antioquia}\
+<!-- Subtitulo -->
+\fontsize{10}{10} \selectfont `r params$subtitulo`\
+<!-- Grafica -->
+
+```{r, out.width = "80%"}
 print(params$plot)
 ```
 
-\fontsize{15}{15} \selectfont `r params$mensaje1`\
+\fontsize{10}{10} \selectfont `r params$mensaje1`\
 
-\fontsize{15}{15} \selectfont \textcolor{mygreen}{Este gráfico muestra la importancia que tiene cada municipio en el abastecimiento de la central mayorista y minorista de Medellín.}\
-\fontsize{15}{15} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Este gráfico muestra la importancia que tiene cada municipio en el abastecimiento de la central mayorista y minorista de Medellín.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
 
-
-
+```{r, echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics("www/logo_2.png")
+```
