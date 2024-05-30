@@ -86,9 +86,9 @@ server <- function(input, output, session) {
     if(nrow(resultado$datos)==0){
       validate("No hay datos disponibles")
     }else{if (input$producto != "todo") {
-      return(paste0("El lugar más costoso para comprar ", input$producto, " es ", resultado()$ciudad_max, ". Es $", resultado()$precio_max, " más costoso que comprarlo en Medellín."))
+      return(paste0("El lugar más costoso para comprar ", input$producto, " fue ", resultado()$ciudad_max, ", con una diferencia superior de $", resultado()$precio_max, " con respecto al precio de Medellín para el mismo periodo de tiempo."))
     } else {
-      return(paste0("El lugar más costoso para comprar alimentos es ", resultado()$ciudad_max, ". En promedio es $", resultado()$precio_max, " más costoso que comprarlos en Medellín."))
+      return(paste0("El lugar más costoso para comprar alimentos fue ", resultado()$ciudad_max, ", con una diferencia superior de $", resultado()$precio_max, " con respecto al precio de Medellín para el mismo periodo de tiempo."))
     }}
   })
   
@@ -97,9 +97,9 @@ server <- function(input, output, session) {
     if(nrow(resultado$datos)==0){
       validate("No hay datos disponibles")
     }else{if (input$producto != "todo") {
-      return(paste0("El lugar más economico para comprar ", input$producto, " es ", resultado()$ciudad_min, ". Es $", resultado()$precio_min, " más barato que comprarlo en Medellín."))
+      return(paste0(resultado()$ciudad_min, " ofreció el precio más bajo para ", input$producto, ", siendo $", resultado()$precio_min, " más económico que en Medellín durante el mismo período de tiempo."))
     } else {
-      return(paste0("El lugar más economico para comprar alimentos es ", resultado()$ciudad_min, ". En promedio es $", resultado()$precio_min, " más barato que comprarlos en Medellín."))
+      return(paste0(resultado()$ciudad_min, " ofreció el precio más bajo paracomprar alimentos, siendo $", resultado()$precio_min, " más económico que en Medellín durante el mismo período de tiempo."))
     }}
   })
   

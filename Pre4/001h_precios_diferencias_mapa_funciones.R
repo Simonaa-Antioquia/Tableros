@@ -119,7 +119,20 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
                                                       weight = 2,
                                                       bringToFront = TRUE)) %>%
       addLegend(pal = my_palette_sin_na, values = ~valores_sin_na, opacity = 0.7, title = "Diferencia del precio")
-  }
+    mapa2 <- ggplot() +
+      geom_sf(data = mapa, aes(fill = comp)) +
+      scale_fill_gradient2(low = "#1A4922", mid = "white", high = "#F39F06", midpoint = 0, na.value = "white", name = "Porcentaje") +
+      labs(title = titulo) +
+      theme_minimal() +
+      theme(
+        plot.background = element_blank(),  # Hace que el fondo sea transparente
+        panel.background = element_blank(),  # Hace que el fondo del panel sea transparente
+        panel.grid = element_blank(),  # Elimina las líneas de la cuadrícula
+        axis.line = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank())
+    }
   
   
   
@@ -129,6 +142,7 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
   ciudad_min <- df$departamento[which.min(df$comp)]
   return(list(
     grafico=p,
+    grafico2=mapa2,
     datos=df,
     precio_max=precio_max,
     precio_min=precio_min,
@@ -138,7 +152,7 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
   
 }
 
-#mapa_dif()
+#mapa_dif()$grafico
 #mapa_dif(Anio=2023)
 #mapa_dif(Anio=2023, Mes=1)
 #mapa_dif(Anio=2023, Mes=1, Producto = "Aguacate")

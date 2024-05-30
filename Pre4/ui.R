@@ -39,6 +39,11 @@ ui <- fluidPage(
         font-size: 40px;
         color: #0D8D38;
       }
+      .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+        }
       .sub-header {
         font-family: 'Prompt', sans-serif;
         font-size: 20px;
@@ -55,9 +60,10 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("Comparación de precios", class = "main-header"),
+  tags$h1("Análisis de precios de alimentos por departamento", class = "main-header"),
+  tags$h1("Precios promedio de alimentos por departamento comparados con Antioquia", class = "main-header_2"),
   div(
-    textOutput("subtitulo"),
+    textOutput(""),
     class = "sub-header2",
     style = "margin-bottom: 20px;"
   ),  
@@ -92,10 +98,10 @@ ui <- fluidPage(
               #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("La comparación se realiza entre ciudades, pero para una mejor comprensión visual se considera todo el departamento.",
+    tags$div(tags$p("La comparación se realiza entre ciudades, para una mejor comprensión visual se considera todo el departamento.",
                     tags$br(),"Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.",
-                    tags$br(),"Los precios fueron tomados a productos de primera calidad.",
-                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
+                    tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.",
+                    tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
