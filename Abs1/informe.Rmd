@@ -81,16 +81,17 @@ tabla_kable <- df %>%
     col.names = NULL,  # No mostrar nombres de columnas
     align = 'c',  # Alineación de las columnas
     format = "latex",  # Formato de salida
-    booktabs = TRUE,  # No utilizar el estilo de las tablas del paquete booktabs
+    booktabs = FALSE,  # No utilizar el estilo de las tablas del paquete booktabs
     linesep = "",  # No agregar ninguna línea separadora
     escape = FALSE
   ) %>%
-  kable_styling(full_width = FALSE, latex_options = "striped", position = "center", bootstrap_options = "striped")  # Estilo de la tabla con bordes blancos y cuadrícula completa
+  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "center", bootstrap_options = "striped")  # Estilo de la tabla con bordes blancos y cuadrícula completa
 
 # Imprimir la tabla con knitr::kable
 tabla_kable
 
 ```
+
 
 <!-- Titulo del tablaro -->
 \fontsize{20}{20} \selectfont \textcolor{mygreen}{⁠Importancia de los municipios que abastecen Antioquia}\
