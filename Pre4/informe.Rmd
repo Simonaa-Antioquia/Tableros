@@ -2,18 +2,19 @@
 title: ' '
 params:
   datos: NA
-  porcentaje_max: NA
+  ciudad_min: NA
   plot: NA
-  subtitulo: NA
+  precio_min: NA
   mensaje1: NA
   mensaje2: NA
-  mensaje3: NA
-  promedio: NA
+  ciudad_max: NA
+  precio_max: NA
   fecha_max: NA
   fecha_min: NA
   tipo: NA
   anio: NA
   alimento: NA
+  mes: NA
 output:
   pdf_document:
     latex_engine: xelatex
@@ -41,7 +42,7 @@ header-includes:
 ---
 
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warning=FALSE}
 # Instalamos librerias
 #tinytex::install_tinytex()
 #tinytex::tlmgr_install("caption")
@@ -58,7 +59,7 @@ library(knitr)
 
  Parámetros con los cuales se generó el informe:
 
-```{r}
+```{r, warning=FALSE}
 # Cargar el paquete knitr
 library(knitr)
 library(kableExtra)
@@ -72,8 +73,8 @@ tipo_label <- ifelse(is.na(params$tipo), "", names(opciones_tipo)[which(opciones
 mes_label <- ifelse(is.na(params$mes) | !(params$mes %in% opciones_Mes), "Todos los meses", names(opciones_Mes)[which(opciones_Mes == params$mes)])
 
 df <- data.frame(
-  "Parametro" = c("Variable", "Año", "Alimento"),
-  "Valor" = c(tipo_label, ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio), ifelse(is.na(params$alimento) | params$alimento == "todo", "Todos los productos", params$alimento))
+  "Parametro" = c( "Año","Mes", "Alimento"),
+  "Valor" = c(ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio),mes_label, ifelse(is.na(params$alimento) | params$alimento == "todo", "Todos los productos", params$alimento))
 )
 
 
@@ -99,10 +100,10 @@ tabla_kable
 <!-- Subtitulo -->
 \fontsize{15}{15} \selectfont \textcolor{mygreen}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín}\
 <!-- Subtitulo2 -->
-\fontsize{10}{10} \selectfont `r params$subtitulo`\
+
 <!-- Grafica -->
 
-```{r, out.width = "80%", fig.align = "center"}
+```{r, out.width = "80%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 

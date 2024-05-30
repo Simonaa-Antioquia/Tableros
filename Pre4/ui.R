@@ -80,12 +80,12 @@ ui <- fluidPage(
     fluidRow(
       column(9,
              leafletOutput("grafico"),
-             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
              #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte", icon = icon("file-alt")),
+             downloadButton("report", "Generar informe"),
              actionButton("reset", "Restablecer", icon = icon("refresh"))#,
              #tableOutput("vistaTabla") 
       ),

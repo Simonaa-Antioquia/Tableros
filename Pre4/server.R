@@ -80,26 +80,30 @@ server <- function(input, output, session) {
     return(paste0(ciudad_max," es $", precio_max, " costosa que Medellín, mientras que ", ciudad_min," es $", precio_min," más barata."))
     }
     })
-  
+  values <- reactiveValues(mensaje1 = NULL)
   output$mensaje1 <- renderText({
     resultado <- resultado()
     if(nrow(resultado$datos)==0){
       validate("No hay datos disponibles")
     }else{if (input$producto != "todo") {
-      return(paste0("El lugar más costoso para comprar ", input$producto, " fue ", resultado()$ciudad_max, ", con una diferencia superior de $", resultado()$precio_max, " con respecto al precio de Medellín para el mismo periodo de tiempo."))
+      values$mensaje1<-(paste0("El lugar más costoso para comprar ", input$producto, " fue ", resultado()$ciudad_max, ", con una diferencia superior de $", resultado()$precio_max, " con respecto al precio de Medellín para el mismo periodo de tiempo."))
+      return(values$mensaje1)
     } else {
-      return(paste0("El lugar más costoso para comprar alimentos fue ", resultado()$ciudad_max, ", con una diferencia superior de $", resultado()$precio_max, " con respecto al precio de Medellín para el mismo periodo de tiempo."))
+      values$mensaje1<-(paste0("El lugar más costoso para comprar alimentos fue ", resultado()$ciudad_max, ", con una diferencia superior de $", resultado()$precio_max, " con respecto al precio de Medellín para el mismo periodo de tiempo."))
+      return(values$mensaje1)
     }}
   })
-  
+  values <- reactiveValues(mensaje2 = NULL)
   output$mensaje2 <- renderText({
     resultado <- resultado()
     if(nrow(resultado$datos)==0){
       validate("No hay datos disponibles")
     }else{if (input$producto != "todo") {
-      return(paste0(resultado()$ciudad_min, " ofreció el precio más bajo para ", input$producto, ", siendo $", resultado()$precio_min, " más económico que en Medellín durante el mismo período de tiempo."))
+      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo para ", input$producto, ", siendo $", resultado()$precio_min, " más económico que en Medellín durante el mismo período de tiempo."))
+      return(values$mensaje2)
     } else {
-      return(paste0(resultado()$ciudad_min, " ofreció el precio más bajo paracomprar alimentos, siendo $", resultado()$precio_min, " más económico que en Medellín durante el mismo período de tiempo."))
+      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo paracomprar alimentos, siendo $", resultado()$precio_min, " más económico que en Medellín durante el mismo período de tiempo."))
+      return(values$mensaje2)
     }}
   })
   
@@ -107,23 +111,52 @@ server <- function(input, output, session) {
     return("Poner mensaje")
   })
   
+  grafico_plano <- reactive({
+    res <- resultado()
+    {
+      res$grafico2  # Guarda solo el gráfico 'grafico_plano'
+    }
+  })
+  
   # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        datos = resultado()$datos,
+        ciudad_min = resultado()$ciudad_min,
+        precio_min = resultado()$precio_min,
+        precio_max = resultado()$precio_max,
+        ciudad_max = resultado()$ciudad_max,
+        plot = grafico_plano(),#+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)),# Accede al gráfico 'grafico_plano'
+        mensaje1 = values$mensaje1,
+        mensaje2 = values$mensaje2,
+        anio = input$anio,
+        mes = input$mes,
+        alimento = input$producto
+      ))
+      
+      
+    },
+    
+    contentType = 'application/pdf'
+  )
   
-  #output$descargar <- downloadHandler(
-  #  filename = function() {
-  #    paste("grafica-", Sys.Date(), ".png", sep="")
-  #  },
-  #  content = function(file) {
-  #    tempFile <- tempfile(fileext = ".html")
-  #    htmlwidgets::saveWidget((resultado()$grafico), tempFile, selfcontained = FALSE)
-  #    webshot::webshot(tempFile, file = file)#, delay = 0, vwidth = 800, vheight = 800)
-  #  }
-  #)
-  
-  observeEvent(input$descargar, {
-    shinyscreenshot::screenshot("#grafico", scale =1, timer = 1)
-  })
+  output$descargar <- downloadHandler(
+    filename = function() {
+      paste("grafica_precios_diferencias_", Sys.Date(), ".png", sep="")
+    },
+    content = function(file) {
+      # Forzar la ejecución de la función reactiva
+      res <- resultado()
+      
+      # Usa ggsave para guardar el gráfico
+      ggplot2::ggsave(filename = file, plot = res$grafico2, width = 7, height = 7, dpi = 400)
+    }
+  )
 }
