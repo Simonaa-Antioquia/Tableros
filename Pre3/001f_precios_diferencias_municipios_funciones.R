@@ -115,7 +115,7 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
     }
     
     df_2<-df
-    df$tooltip_text <- paste("Ciudad: ", df$ciudad, "<br>Diferencia de precio: ", round(df$comp, 0), "<br>Desviación Estandar:", round(df$dev, 0))
+    df$tooltip_text <- paste("Ciudad: ", df$ciudad, "<br>Diferencia de precio: ", round(df$comp, 0), "<br>Desviación Estándar:", round(df$dev, 0))
     
     map <- ggplot(df, aes(x=comp,y=1,color=ciudad)) +
       geom_point(aes(size = dev, text = tooltip_text), alpha = 0.8) +
@@ -150,6 +150,7 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
       )
     }
 
+    map <- map + geom_text(aes(label=ciudad),size = 3.5, hjust=1.5, vjust=0, angle = angulos, colour = "#000000")
     precio_max <- round(max(df$comp))
     precio_min <- round(min(df$comp)*-1)
     ciudad_max <- df$ciudad[which.max(df$comp)]
@@ -157,6 +158,7 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
     
     return(list(
       grafico = p,
+      grafico2 = map,
       datos = df_2,
       precio_max=precio_max,
       precio_min=precio_min,
@@ -165,4 +167,4 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
     ))
   }
   
-  #diferencias_precios(opcion1 = 0, opcion2 = 2014, opcion3 = "",opcion4="Aguacate")
+  #diferencias_precios(opcion1 = 0, opcion2 = 2014, opcion3 = "",opcion4="Aguacate")$grafico2

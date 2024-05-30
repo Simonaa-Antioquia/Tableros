@@ -1,0 +1,127 @@
+---
+title: ' '
+params:
+  datos: NA
+  plot: NA
+  subtitulo: NA
+  mensaje1: NA
+  precio_max: NA
+  precio_min: NA
+  ciudad_max: NA
+  ciudad_min: NA
+  tipo: NA
+  anio: NA
+  mes: NA
+  alimento: NA
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
+header-includes:
+- \usepackage{float}
+- \usepackage{arydshln}
+- \usepackage{tabu}
+- \usepackage{xcolor}
+- \usepackage{fontspec}
+- \usepackage{booktabs}  # Agregar esta línea
+- \usepackage{fancyhdr}
+- \usepackage{graphicx}
+- \definecolor{mygreen}{RGB}{26,73,34}
+- \definecolor{gray}{RGB}{128,128,128}
+- "\\setmainfont{Prompt-Regular.ttf}"
+- \pagestyle{fancy}
+- \fancyfoot{} 
+- \usepackage{colortbl}
+- \usepackage{adjustbox}
+- \setlength{\headheight}{2cm}
+- \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
+- \usepackage{eso-pic}
+---
+
+
+```{r setup, include=FALSE}
+# Instalamos librerias
+#tinytex::install_tinytex()
+#tinytex::tlmgr_install("caption")
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+#install.packages("xelatex")
+
+```
+
+<!-- Fecha -->
+\begin{flushleft}
+\large \textcolor{gray}{Informe en línea generado el: `r format(Sys.Date(), "%d %B, %Y")`}
+\end{flushleft}
+
+ Parámetros con los cuales se generó el informe:
+
+```{r}
+# Cargar el paquete knitr
+library(knitr)
+library(kableExtra)
+library(xtable)
+
+# Label para tipo: 
+opciones_tipo <- c("General" = 1, "Producto" = 0)
+opciones_Mes <- c("Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, "Diciembre" =12)
+
+tipo_label <- ifelse(is.na(params$tipo), "", names(opciones_tipo)[which(opciones_tipo == params$tipo)])
+mes_label <- ifelse(is.na(params$mes) | !(params$mes %in% opciones_Mes), "Todos los meses", names(opciones_Mes)[which(opciones_Mes == params$mes)])
+
+anio_label <- ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio)
+alimento_label <- ifelse(is.na(params$alimento) | params$tipo == 1, "Todos los productos", params$alimento)
+
+# Crear el data frame
+df <- data.frame(
+  Parametro = c("Función", "Año", "Mes", "Alimento"),
+  Valor = c(tipo_label, anio_label, mes_label, alimento_label)
+)
+
+# Modificar el data frame si params$alimento es vacío
+if (params$alimento == "") {
+  df <- df[1:3, ]
+}
+
+# Crear la tabla con knitr::kable
+tabla_kable <- df %>%
+  knitr::kable(
+    col.names = NULL,  # No mostrar nombres de columnas
+    align = 'c',  # Alineación de las columnas
+    format = "latex",  # Formato de salida
+    booktabs = FALSE,  # No utilizar el estilo de las tablas del paquete booktabs
+    linesep = "",  # No agregar ninguna línea separadora
+    escape = FALSE
+  ) %>%
+  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "center", bootstrap_options = "striped")  # Estilo de la tabla con bordes blancos y cuadrícula completa
+
+# Imprimir la tabla con knitr::kable
+tabla_kable
+
+```
+
+<!-- Titulo del tablaro -->
+\fontsize{20}{20} \selectfont \textcolor{mygreen}{Análisis de precios de alimentos por ciudad}\
+<!-- Subtitulo -->
+\fontsize{15}{15} \selectfont \textcolor{mygreen}{Descubre las diferencias de precios de alimentos en ciudades, comparadas con Medellín}\
+<!-- Subtitulo2 -->
+\fontsize{10}{10} \selectfont `r params$subtitulo`\
+<!-- Grafica -->
+
+```{r, out.width = "80%", fig.align = "center"}
+print(params$plot)
+```
+
+\fontsize{10}{10} \selectfont `r params$mensaje1`\
+\fontsize{10}{10} \selectfont `r params$mensaje2`\
+\fontsize{10}{10} \selectfont `r params$mensaje3`\
+
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Este gráfico muestra la diferencia promedio de precios entre varias ciudades comparadas con Medellín.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{El tamaño del círculo refleja cuánto cambia el precio dentro de cada ciudad.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Desviación estándar: Mide qué tan parejos están los precios de los productos comparados con el promedio. Si los precios cambian mucho, la desviación estándar será alta, si no cambian mucho, será baja. Permite ver si los productos tienen un precio más o menos estable.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
+
+\AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo.png}}

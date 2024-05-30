@@ -25,6 +25,11 @@ ui <- fluidPage(
         font-size: 40px;
         color: #0D8D38;
       }
+      .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+        }
       .sub-header {
         font-family: 'Prompt', sans-serif;
         font-size: 20px;
@@ -50,7 +55,8 @@ ui <- fluidPage(
   ),
   tags$div(
     class = "scrollable-content",
-    tags$h1("Diferencia de precios entre ciudades", class = "main-header"),
+    tags$h1("Análisis de precios de alimentos por ciudad", class = "main-header"),
+    tags$h1("Descubre las diferencias de precios de alimentos en ciudades, comparadas con Medellín", class = "main-header_2"),
     div(
       textOutput("subtitulo"),
       class = "sub-header2",
@@ -60,7 +66,7 @@ ui <- fluidPage(
       fluidRow(
         column(3,
                selectInput("tipo", "Función:", 
-                           choices = list("General" = 1, 
+                           choices = list("General" = 1,
                                           "Producto" = 0 ))),
         column(3,
                selectInput("anio", "Año", c("Todos los años" = "todo", sort(as.character(unique(data_comparacion_anual_producto$year)))))),
@@ -84,27 +90,28 @@ ui <- fluidPage(
                #actionButton("github", "GitHub", icon = icon("github")),
                shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                         class = "btn btn-default shiny-action-button", icon("github")),
-               actionButton("go", "Reporte", icon = icon("file-alt")),
+               downloadButton("report", "Generar informe"),
                actionButton("reset", "Restrablecer",icon = icon("refresh"))
         ),
         column(4, 
                wellPanel(textOutput("mensaje1"),
                          style = "background-color: #0D8D38; color: #FFFFFF;"),
-               wellPanel(textOutput("mensaje2"),
-                         style = "background-color: #005A45; color: #FFFFFF;"),
-               wellPanel(textOutput("mensaje3"),
-                         style = "background-color: #094735; color: #FFFFFF;")
+               #wellPanel(textOutput("mensaje2"),
+                #         style = "background-color: #005A45; color: #FFFFFF;"),
+               #wellPanel(textOutput("mensaje3"),
+                #         style = "background-color: #094735; color: #FFFFFF;")
         )
       ), 
       fluidRow(
         column(12,
                style = "margin-top: 2px;",
                tags$div(
-                 tags$p("Este gráfico muestra la diferencia de precios promedio entre las diferentes ciudades y Medellín",
-                        tags$br(),"El tamaño de cada una de las bolas depende de la variación del precio dentro de cada ciudad", 
+                 tags$p("Este gráfico muestra la diferencia promedio de precios entre varias ciudades comparadas con Medellín.",
+                        tags$br(),"El tamaño del círculo refleja cuánto cambia el precio dentro de cada ciudad.",
+                        tags$br(),"Desviación estándar: Mide qué tan parejos están los precios de los productos comparados con el promedio. Si los precios cambian mucho, la desviación estándar será alta, si no cambian mucho, será baja. Permite ver si los productos tienen un precio más o menos estable.",
                         tags$br(),"Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.",
-                        tags$br(),"Los precios fueron tomados a productos de primera calidad.",
-                        tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
+                        tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.",
+                        tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2", style = "margin-top: 3px;")
                )
         )
         
@@ -112,7 +119,7 @@ ui <- fluidPage(
     ),
     fluidRow(
       tags$div(
-        tags$img(src = 'logo.jpeg', style = "width: 100vw; margin: 0;"),
+        tags$img(src = 'logo.png', style = "width: 100vw; margin: 0;"),
         style = "width: 100%; margin:0;"  
       )
     )

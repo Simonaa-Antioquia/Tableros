@@ -99,7 +99,7 @@ server <- function(input, output, session) {
       ciudad_max <- res$ciudad_max
       ciudad_min <- res$ciudad_min
       
-      return(paste("El menor precio reportado para el período y producto seleccionado es $", precio_min, "por debajo del precio de Medellín y se reportó en", ciudad_min, ". El mayor precio reportado fue en", ciudad_max, "y fue de $", precio_max, "pesos más que el precio de Medellín"))
+      return(paste0("El precio más bajo para el producto y periodo de tiempo se encontró en ",ciudad_min , ", con una diferencia de $", precio_min, " menos respecto al precio en Medellín. En contraste, el precio más alto se reportó en ", ciudad_max, ", superando el de Medellín en $", precio_max))
     }, error = function(e) {
       # Si ocurre un error, ejecuta este código
       return("No hay datos disponibles.")
@@ -123,13 +123,16 @@ server <- function(input, output, session) {
     updateSelectInput(session, "producto", selected = NULL)
   })
   
+  values <- reactiveValues(mensaje1 = NULL)
   output$mensaje1 <- renderText({
     tryCatch({
       # Intenta ejecutar este código
       if (input$tipo != 1) {
-        return(paste0("El producto seleccionado es: ", input$producto))
+        values$mensaje1<-(paste0("El producto seleccionado es: ", input$producto))
+        return(values$mensaje1)
       } else {
-        return("En esta opción no se filtro por ningun producto")
+        values$mensaje1<-("La visualización no se filtró por ningún producto específico.")
+        return(values$mensaje1)
       }
     }, error = function(e) {
       # Si ocurre un error, ejecuta este código
@@ -167,10 +170,41 @@ server <- function(input, output, session) {
     })
   })  
   
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
+  grafico_plano <- reactive({
+    res <- resultado()
+    {
+      res$grafico2  # Guarda solo el gráfico 'grafico_plano'
+    }
   })
+  
+  # Aqui tomamos screen 
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        datos = resultado()$datos,
+        precio_max = resultado()$precio_max,
+        precio_min = resultado()$precio_min,
+        ciudad_max = resultado()$ciudad_max,
+        ciudad_min = resultado()$ciudad_min,
+        plot = grafico_plano(),
+        subtitulo = values$subtitulo,
+        mensaje1 = values$mensaje1,
+        tipo = input$tipo,
+        anio = input$anio,
+        mes = input$mes,
+        alimento = input$producto
+      ))
+      
+      
+    },
+    
+    contentType = 'application/pdf')
   
   observeEvent(input$descargar, {
     screenshot("#plot", scale = 5)
