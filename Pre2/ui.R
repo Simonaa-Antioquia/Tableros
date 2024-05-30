@@ -30,6 +30,11 @@ ui <- fluidPage(
         font-size: 40px;
         color: #0D8D38;
       }
+      .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+      }
       .sub-header {
         font-family: 'Prompt', sans-serif;
         font-size: 20px;
@@ -41,6 +46,7 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("Relación entre volúmenes y precios de los alimentos", class = "main-header"),
+  tags$h1("Evolución del precio promedio por Kg en relación al volumen de ingreso a las centrales de abasto de Medellín", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -62,27 +68,27 @@ ui <- fluidPage(
              #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte", icon = icon("file-alt")),
+             downloadButton("report", "Generar informe"),
              actionButton("reset", "Restablecer", icon = icon("refresh"))
              #,
              #tableOutput("vistaTabla") 
       ),
       column(3, 
-             wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             #wellPanel(textOutput("mensaje1"),
+              #         style = "background-color: #005A45; color: #FFFFFF;"),
              #wellPanel(textOutput("mensaje3"),
               #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
     tags$div(tags$p("La información solo se muestra precios promedio en el centro de acopio de Medellín.",
                     tags$br(),"Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.",
-                    tags$br(),"Los precios fueron tomados a productos de primera calidad.",
-                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
+                    tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.",
+                    tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+    tags$img(src = 'logo.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
   )
 )

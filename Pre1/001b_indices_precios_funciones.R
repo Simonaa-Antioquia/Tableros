@@ -62,7 +62,7 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
           ungroup()
       }
     
-    producto_vol<-paste0(df_volatilidad$producto[which.max(df_volatilidad$volatilidad)]," es el producto más volátil")
+    producto_vol<-paste0("El precio de ",df_volatilidad$producto[which.max(df_volatilidad$volatilidad)]," experimenta cambios significativos con frecuencia, lo que lo hace más volátil que otros productos.")
     
     df <- df %>%
       group_by( mes_y_ano, anio) %>%
@@ -132,21 +132,43 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
   
   map<-plotly::ggplotly(p, tooltip = "text")
   datos<-df_graf
+  convertir_mes <- function(fecha) {
+    meses_ingles <- c("January", "February", "March", "April", "May", "June", 
+                      "July", "August", "September", "October", "November", "December")
+    meses_espanol <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+    fecha_formato <- format(fecha, "%B-%Y")
+    for (i in 1:12) {
+      fecha_formato <- gsub(meses_ingles[i], meses_espanol[i], fecha_formato)
+    }
+    return(fecha_formato)
+  }
   promedio <- round(mean(datos$precio_prom, na.rm = TRUE))
-  fecha_max <- format(as.Date(datos$mes_y_ano[which.max(datos$precio_prom)]), "%B-%Y")
-  fecha_min <- format(as.Date(datos$mes_y_ano[which.min(datos$precio_prom)]), "%B-%Y")
+  fecha_max <- as.Date(datos$mes_y_ano[which.max(datos$precio_prom)])
+  fecha_max <- convertir_mes(fecha_max)
+  fecha_min <- as.Date(datos$mes_y_ano[which.min(datos$precio_prom)])
+  fecha_min <- convertir_mes(fecha_min)
   precio_max <- formatC(max(datos$precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0))
   precio_min <- formatC(min(datos$precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0))
   producto_vol<-producto_vol
-  promedio_camb<-paste0("En promedio los precios variaron un ",round(mean(datos$cambio_pct, na.rm = TRUE)), "%")
-  promedio_camb_an<-ifelse(is.null(fecha),paste0("La mayor variación intranual fue ",format(as.Date(datos$mes_y_ano[which.max(datos$cambio_pct_anual)]), "%B-%Y"),
-                                                 " con un ",max(datos$cambio_pct_anual, na.rm = TRUE),"%"),
-                           ifelse(fecha!=2013,paste0("La mayor variación intranual fue ",format(as.Date(datos$mes_y_ano[which.max(datos$cambio_pct_anual)]), "%B-%Y"),
-                           " con un ",max(datos$cambio_pct_anual, na.rm = TRUE),"%"),
-                           "2013 es el primer año con datos por lo que no se puede mostrar la variación intranual"))
+  promedio_camb<-paste0("En promedio, los precios de los productos variaron un ",round(mean(datos$cambio_pct, na.rm = TRUE)), "%")
+  
+  fecha_max2 <- as.Date(datos$mes_y_ano[which.max(datos$cambio_pct_anual)])
+  cambio_max <- max(datos$cambio_pct_anual, na.rm = TRUE)
+  
+  mes <- format(fecha_max2, "%B")
+  ano <- format(fecha_max2, "%Y")
+  ano_anterior <- as.integer(ano) - 1
+  
+  promedio_camb_an <- ifelse(is.null(fecha),
+                             paste0("En ", mes, " de ", ano, ", los precios subieron un ", cambio_max, "% comparado con ", mes, " del año anterior."),
+                             ifelse(fecha != 2013,
+                                    paste0("En ", mes, " de ", ano, ", los precios subieron un ", cambio_max, "% comparado con ", mes, " del año anterior."),
+                                    "2013 es el primer año con datos por lo que no se puede mostrar la variación intranual"))
   return(
     list(
       grafico=map,
+      grafico2=p,
       datos=datos,
       promedio=promedio,
       fecha_max=fecha_max,
@@ -160,7 +182,7 @@ graficar_variable <- function(df, variable, alimento = NULL, fecha = NULL) {
   )
 }
 
-# n<-graficar_variable(data, "precio_prom")$datos
+# n<-graficar_variable(data, "precio_prom")$grafico2
 #graficar_variable(data, "precio_prom", alimento = "Aguacate", fecha="2020")
 # Usa la función para graficar la variable "precio" para la ciudad "Bogota" y el producto "Arroz"
 
@@ -171,12 +193,26 @@ graficar_variables <- function(df, producto=NULL, fecha = NULL) {
   grafica2 <- graficar_variable(df,"cambio_pct",  producto,  fecha)
   grafica3 <- graficar_variable(df, "cambio_pct_anual", producto, fecha)
   
+  convertir_mes <- function(fecha) {
+    meses_ingles <- c("January", "February", "March", "April", "May", "June", 
+                      "July", "August", "September", "October", "November", "December")
+    meses_espanol <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+    fecha_formato <- format(fecha, "%B-%Y")
+    for (i in 1:12) {
+      fecha_formato <- gsub(meses_ingles[i], meses_espanol[i], fecha_formato)
+    }
+    return(fecha_formato)
+  }
+  
   # Muestra las tres gráficas juntas
   p<-plotly::subplot(grafica1$grafico, grafica2$grafico, grafica3$grafico, nrows = 3)
   datos<-unique(rbind(grafica1$datos,grafica2$datos,grafica3$datos))
   promedio <- round(mean(datos$precio_prom, na.rm = TRUE))
-  fecha_max <- format(as.Date(datos$mes_y_ano[which.max(datos$precio_prom)]), "%B-%Y")
-  fecha_min <- format(as.Date(datos$mes_y_ano[which.min(datos$precio_prom)]), "%B-%Y")
+  fecha_max <- as.Date(datos$mes_y_ano[which.max(datos$precio_prom)])
+  fecha_max <- convertir_mes(fecha_max)
+  fecha_min <- as.Date(datos$mes_y_ano[which.min(datos$precio_prom)])
+  fecha_min <- convertir_mes(fecha_min)
   precio_max <- formatC(max(datos$precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0))
   precio_min <- formatC(min(datos$precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0))
   producto_vol<-grafica1$producto_vol

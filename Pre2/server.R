@@ -72,7 +72,15 @@ server <- function(input, output, session) {
   #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
   #})
   
+  grafico_plano <- reactive({
+    res <- resultado()
+    {
+      res$grafico2  # Guarda solo el gráfico 'grafico_plano'
+    }
+  })
+  
   # En el servidor
+  values <- reactiveValues(subtitulo = NULL)
   output$subtitulo <- renderText({
     resultado <- resultado()
     mes_max <- resultado$mes_max
@@ -83,7 +91,8 @@ server <- function(input, output, session) {
     if(nrow(resultado$datos) < 1){
       validate("No hay datos disponibles")
     }else{
-    return(paste0("El mes más caro es ", mes_max,", siendo $", precio_max," con ",cantidades_max," mil toneladas ingresadas."))
+      values$subtitulo<-(paste0("Para el producto y periodo de tiempo analizado, ", mes_max," destacó como el mes más costoso, con un precio promedio de $", precio_max," y un volumen total de ingreso de ",cantidades_max," mil toneladas."))
+      return(values$subtitulo)
     } 
   })
   
@@ -92,11 +101,11 @@ server <- function(input, output, session) {
     #volatil<-resultado$producto_vol
     return("Promedio de precios y cantidades de productos en Medellín para cada mes del año")
   })
-  
+  values <- reactiveValues(mensaje2 = NULL)
   output$mensaje2 <- renderText({
     resultado <- resultado()
-    promedio_camb<-resultado$mensaje2
-    #return("Poner mensaje")
+    values$mensaje2<-resultado$mensaje2
+    return(values$mensaje2)
   })
   
   output$mensaje3 <- renderText({
@@ -106,9 +115,32 @@ server <- function(input, output, session) {
   })
   
   # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        datos = resultado()$datos,
+        mes_max = resultado()$mes_max,
+        distancia_max=resultado()$distancia_max,
+        cantidades_max=resultado()$cantidades_max,
+        precio_max=resultado()$precio_max,
+        plot = grafico_plano(),#+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)),# Accede al gráfico 'grafico_plano'
+        subtitulo = values$subtitulo,
+        mensaje2 = values$mensaje2,
+        anio = input$anio,
+        alimento = input$producto
+      ))
+      
+      
+    },
+    
+    contentType = 'application/pdf'
+  )
   
   observeEvent(input$descargar, {
     screenshot("#grafico", scale = 5)

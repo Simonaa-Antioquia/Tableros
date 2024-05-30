@@ -62,38 +62,74 @@ output$descargarDatos <- downloadHandler(
   #})
   
   # En el servidor
+values <- reactiveValues(subtitulo = NULL)
+
   output$subtitulo <- renderText({
     resultado <- resultado()
     promedio <- formatC(resultado$promedio, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
     fecha_max <- resultado$fecha_max
     fecha_min <- resultado$fecha_min
-    return(paste0("El precio promedio",ifelse(input$producto==""," por kg",paste0(" del kg de ", input$producto)) ," fue de $", promedio,
+    values$subtitulo <-(paste0("El precio promedio",ifelse(input$producto=="todo"," de ''todos los productos''",paste0(" de ", input$producto)) ," fue de $", promedio,
                   ". El mes con el precio más alto fue ", fecha_max, " y el más bajo fue ", fecha_min))
+    return(values$subtitulo)
   })
   
+  grafico_plano <- reactive({
+    res <- resultado()
+    {
+      res$grafico2  # Guarda solo el gráfico 'grafico_plano'
+    }
+  })
   
+  values <- reactiveValues(mensaje1 = NULL)
   output$mensaje1 <- renderText({
     resultado <- resultado()
-    volatil<-resultado$producto_vol
-    return(volatil)
+    values$mensaje1<-resultado$producto_vol
+    return(values$mensaje1)
   })
-  
+  values <- reactiveValues(mensaje2 = NULL)
   output$mensaje2 <- renderText({
     resultado <- resultado()
-    promedio_camb<-resultado$promedio_camb
-    return(promedio_camb)
+    values$mensaje2<-resultado$promedio_camb
+    return(values$mensaje2)
   })
-  
+  values <- reactiveValues(mensaje3 = NULL)
   output$mensaje3 <- renderText({
     resultado <- resultado()
-    promedio_camb_an<-resultado$promedio_camb_an
-    return(promedio_camb_an)
+    values$mensaje3<-resultado$promedio_camb_an
+    return(values$mensaje3)
   })
   
   # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        datos = resultado()$datos,
+        promedio = resultado()$promedio,
+        fecha_max = resultado()$fecha_max,
+        fecha_min = resultado()$fecha_min,
+        plot = grafico_plano()+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)),# Accede al gráfico 'grafico_plano'
+        subtitulo = values$subtitulo,
+        mensaje1 = values$mensaje1,
+        mensaje2 = values$mensaje2,
+        mensaje3 = values$mensaje3,
+        tipo = input$variable,
+        anio = input$anio,
+        #mes = input$mes,
+        alimento = input$producto
+      ))
+      
+      
+    },
+    
+    contentType = 'application/pdf'
+  )
   
   observeEvent(input$descargar, {
     screenshot("#grafico", scale = 5)
