@@ -51,7 +51,7 @@ server <- function(input, output, session) {
   output$grafico <- plotly::renderPlotly({
     res <- resultado()
     if (is.character(res) || length(res) == 0 || is.null(input$municipios) || input$municipios < 1) {
-      return(NULL)  # No hay gráfico para mostrar
+      return(NULL)  #  No hay gráfico para mostrar
     } else {
       res$grafico_plotly  # Devuelve el gráfico Plotly
     }
