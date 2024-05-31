@@ -63,27 +63,30 @@ server <- function(input, output, session) {
     
   })
   
+  # Generacion del grafico plano
+  
+  grafico_plano <- reactive({
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      validate(
+        ("No hay datos disponibles")
+      )
+    }else{
+      res$grafico_plano
+    }
+  })
+  
+  
+
+  
+  
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
       head(resultado()$datos, 5)
     }
   })
   
-#  output$descargar <- downloadHandler(
- #   filename = function() {
-  #    paste("grafica_netos", Sys.Date(), ".png", sep="")
-   # },
-    #content = function(file) {
-     # tempFile <- tempfile(fileext = ".html")
-      #htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      #webshot::webshot(tempFile, file = file, delay = 2)
-    #}
-  #)
-  
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})
-  
+
   observeEvent(input$reset, {
     updateSelectInput(session, "año", selected = "todo")
     updateSelectInput(session, "mes", selected = "todo")
@@ -99,53 +102,93 @@ server <- function(input, output, session) {
     }
   )
   
-  # En el servidor
+  # Subtitulo
+  # Creamos un vector de valores para llevar al rmd
+  
+  values <- reactiveValues(subtitulo = NULL)
+  
   output$subtitulo <- renderText({
     res<-resultado()
     if(nrow(res$datos)==0){
       validate(
-        ("No hay datos disponibles")
+        values$subtitulo <- "No hay datos disponibles"
       )
-    }else{res <- resultado()
+    }else{res <- resultado() 
     req(res)
     porcent_prod <- res$porcent_prod
     acumulado <- res$acumulado
-    return(paste0("El ", porcent_prod, "% de los productos representan el ", acumulado,"% de lo que ",ifelse(input$algo=="Neto_sale", "sale","entra")))}
+    num_productos <- res$num_productos
+    values$subtitulo <- (paste0("El ",acumulado,"% del volumen total que ",ifelse(input$algo=="Neto_entra", " ingresa ",ifelse(input$algo == "Neto_sale"," sale ",ifelse(input$algo == "Neto_entra_local"," ingresa - local "," ingresa - externo "))), "se concentran en ", num_productos," productos (",porcent_prod,"%)"))}
+    return(values$subtitulo)
   })
   
+  values <- reactiveValues(mensaje1 = NULL, mensaje2 = NULL, mensaje3 = NULL)
+  
   output$mensaje1 <- renderText({
-    #resultado <- resultado()
-    #volatil<-resultado$producto_vol
-    return("Este gráfico muestra la importancia que tiene cada alimento en las entradas (locales o externas) y las salidas de los alimentos de Antioquia")
+    values$mensaje1 <- "El análisis de pareto identifica los productos más significativos en el abastecimiento, aquellos que representan el 80% o más del total del volumen de alimentos en un espacio o tiempo determinado."
+    values$mensaje1
   })
   
   output$mensaje2 <- renderText({
-    res<-resultado()
-    if(nrow(res$datos)==0){
-      validate(
-        ("")
-      )
-    }else{res <- resultado()
-    prod_neces<-res$prod_neces
-    acumulado<-res$acumulado
-    if(prod_neces==1){
-      return("Solo se cuenta con un alimento")
-    }else{
-      return(paste0("Se necesitaron ",prod_neces," alimentos para llegar al ",acumulado,"%")) 
-    }}
+    res <- resultado()
+    if(nrow(res$datos) == 0){
+      values$mensaje2 <- ""
+    } else {
+      prod_neces <- res$prod_neces
+      acumulado <- res$acumulado
+      if(prod_neces == 1){
+        values$mensaje2 <- "Solo se cuenta con un alimento"
+      } else {
+        values$mensaje2 <- paste0("Se necesitaron ", prod_neces, " alimentos para llegar al ", acumulado, "%")
+      }
+    }
+    values$mensaje2
   })
   
- # output$mensaje3 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb_an<-resultado$promedio_camb_an
-  #  return("Poner mensaje")
-  #})
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
+  output$mensaje3 <- renderText({
+    values$mensaje3 <- "Este gráfico muestra la importancia que tiene cada alimento en las entradas (locales o externas) y las salidas de los alimentos de Antioquia."
+    values$mensaje3
   })
+  
+  
+# Descargar grafica 
   
   observeEvent(input$descargar, {
     screenshot("#grafico", scale = 5)
   })
+
+# Generamos el Informe
+  
+
+  
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        datos = resultado()$datos, 
+        porcent_prod = resultado()$porcent_prod,
+        acumulado=resultado()$acumulado,
+        prod_neces=resultado()$prod_neces,
+        num_productos = resultado()$num_productos,
+        plot = grafico_plano(),
+        subtitulo = values$subtitulo,
+        mensaje1 = values$mensaje1,
+        mensaje2 = values$mensaje2,
+        mensaje3 = values$mensaje3,
+        algo = input$algo,
+        anio = input$año,
+        mes = input$mes,
+        ubicacion = input$ubicacion
+      ))  
+    },
+    
+    contentType = 'application/pdf'
+  )  
+  
+
 }

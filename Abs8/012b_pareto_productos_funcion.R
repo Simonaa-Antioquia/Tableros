@@ -81,10 +81,12 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
     df_filtrado <- df
   }
   
+  num_productos <- nrow(df_filtrado)
+  
   df_filtrado$tooltip_text1 <- paste0("Producto: ", df_filtrado$producto, "<br>Cantidad: ", round(df_filtrado$total_sum,1))
   df_filtrado$tooltip_text2 <- paste0("Producto: ", df_filtrado$producto, "<br>Porcentaje: ", round(df_filtrado$acumulado_total*100),"%")
   if(nrow(df) > 0){
-  p <- ggplot(df_filtrado, aes(x = reorder(producto, -total_sum), y = total_sum)) +
+  plot <- ggplot(df_filtrado, aes(x = reorder(producto, -total_sum), y = total_sum)) +
     geom_bar(stat = "identity", fill = "#0D8D38", aes(text = tooltip_text1)) +
     geom_line(aes(y = acumulado_total * total_sum_total), color = "#F39F06", group = 1) +
     geom_point(aes(y = acumulado_total * total_sum_total, text = tooltip_text2), color = "#F39F06", group = 1) +
@@ -98,7 +100,9 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
           panel.grid.major = element_blank(),  # Elimina las líneas de la cuadrícula principal
           panel.grid.minor = element_blank())  # Elimina las líneas de la cuadrícula secundaria
   
-  p<-plotly::ggplotly(p, tooltip = "text")
+  
+  
+  p<-plotly::ggplotly(plot, tooltip = "text")
   
   }else{
     p<-print("No hay datos disponibles")
@@ -111,11 +115,13 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
   prod_neces<-length(df_filtrado$producto)
   
   return(list(
+    grafico_plano=plot,
     grafico=p,
     datos=df,
     porcent_prod=porcent_prod,
     acumulado=acumulado,
-    prod_neces=prod_neces
+    prod_neces=prod_neces,
+    num_productos = num_productos
   ))
   
 }

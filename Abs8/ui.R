@@ -22,6 +22,11 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
         color: #0D8D38;
+       }
+        .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
       }
       .sub-header {
         font-family: 'Prompt', sans-serif;
@@ -47,7 +52,8 @@ ui <- fluidPage(
       
     "))
   ),
-  tags$h1("Acumulado de los principales productos", class = "main-header"),
+  tags$h1("Análisis de Pareto del flujo de alimentos en Antioquia", class = "main-header"),
+  tags$h1("Productos principales por volumen en flujo de alimentos en Antioquia.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -76,37 +82,37 @@ ui <- fluidPage(
              plotly::plotlyOutput("grafico",height = "400px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte", icon = icon("file-alt")),
-             actionButton("reset", "Restrablecer",icon = icon("refresh"))
-             #,
-             #tableOutput("vistaTabla") 
+             actionButton("reset", "Restrablecer",icon = icon("refresh")),
+              downloadButton("report", "Generar informe")
            )),
     
     column(3, 
            div(
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #094735; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje3"),
                        style = "background-color: #005A45; color: #FFFFFF;"),
-             #wellPanel(textOutput("mensaje3"),
-              #         style = "background-color: #094735; color: #FFFFFF;")
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;")
            ))
   ),
   
   fluidRow(
     column(12,
            style = "margin-top: 2px;",
-           tags$div(tags$p("Se muestran los alimentos que reunen aproximadamente el 85% del acumulado",
-                           tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
-    )
+           tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+                           tags$br(),"Se muestran los alimentos que reunen aproximadamente el 85% del acumulado.",
+                           tags$br(),"Entradas locales: Productos reportados con origen de territorios del departamento de Antioquia.",
+                           tags$br(),"Entradas externas: Productos reportados con origen fuera del departamento de  Antioquia."
+                           , class = "sub-header2"), style = "margin-top: 20px;")
+                           )
   ),
   
   fluidRow(
     tags$div(
-      tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+      tags$img(src = 'logo_2.png', style = "width: 100%; margin: 0;"),  
       style = "width: 100%; margin:0;"  
     )
   )
