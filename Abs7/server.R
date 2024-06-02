@@ -32,27 +32,44 @@ server <- function(input, output, session) {
     neto_grafica(tipo, producto_seleccionado)
   })
   
+  
+# Grafico plorly  
   output$grafico <- plotly::renderPlotly({
     res <- resultado()
-      res$grafico  # Devuelve el gráfico Plotly
+      res$grafico  
   }) 
   
-# Descargar grafica 
-
-#  output$descargar <- downloadHandler(
- #   filename = function() {
-  #    paste("grafica_netos", Sys.Date(), ".png", sep="")
-   # },
-    #content = function(file) {
-     # tempFile <- tempfile(fileext = ".html")
-      #htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      #webshot::webshot(tempFile, file = file, delay = 2)
-    #}
-  #)  
+# Grafico plano 
+  
+  
+grafico_plano <- reactive({
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      validate(
+        ("No hay datos disponibles")
+      )
+    }else{
+      res$grafico_plano
+    }
+})  
   
 
+# Descargar el grafico 
+output$descargar_ <- downloadHandler(
+  filename = function() {
+    paste("grafica_productos_ingresan_", Sys.Date(), ".png", sep="")
+  },
+  content = function(file) {
+    # Forzar la ejecución de la función reactiva
+    res <- resultado()
+    
+    # Usa ggsave para guardar el gráfico
+    ggplot2::ggsave(filename = file, plot = res$grafico_plano, width = 13, height = 7, dpi = 200)
+  }
+)
   
-# Datos
+
+# Descargar datos
   
   output$descargarDatos <- downloadHandler(
     filename = function() {
@@ -63,44 +80,39 @@ server <- function(input, output, session) {
     }
   )
   
-  # En el servidor
+# En el servidor
+  values <- reactiveValues(subtitulo = NULL)
+  
   output$subtitulo <- renderText({
     resultado <- resultado()
     fecha_min <- resultado$fecha_min
     min_ton <- resultado$min_ton
-    paste0("Hubo mayor diferencia de entrada y salida de alimentos el ", fecha_min, " ingresando ", min_ton, " mil toneladas más de las que salieron.")
-  })
+    values$subtitulo <- paste0("Hubo mayor diferencia en volumen de entradas y el volumen de salidas de alimentos el ", fecha_min, " ingresando ", min_ton, " mil toneladas más de las que salieron.")
+  return(values$subtitulo)
+    })
   
-  # Borrar filtros
+# Borrar filtros
   observeEvent(input$reset, {
     updateSelectInput(session, "tipo", selected = 1)
   })
   
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})
-  
-  output$mensaje1 <- renderText({
-      return("El 'Neto' se calcula como la diferencia entre la cantidad de kilogramos que salen de Antioquia y los que ingresan.")
-  })
-  
-  #output$mensaje2 <- renderText({
-  #    if (input$tipo != 1) {
-  #      return(paste0("El lugar más costoso para comprar ", input$producto, " es ", resultado()$ciudad_max, ". Es $", resultado()$precio_max, " más costoso que comprarlo en Medellín."))
-  #    } else {
-  #      return(paste0("El lugar más costoso para comprar alimentos es ", resultado()$ciudad_max, ". En promedio es $", resultado()$precio_max, " más costoso que comprarlos en Medellín."))
-  #    }
-  #  
-  #  })
-  
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
-  
-  observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
-  })
-  
-  
+  # Generamos el Informe
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        tipo = input$tipo,
+        producto = input$producto_seleccionado,
+        subtitulo = values$subtitulo,
+        plot = grafico_plano()
+      ))  
+    },
+    contentType = 'application/pdf'
+  )  
+
 }

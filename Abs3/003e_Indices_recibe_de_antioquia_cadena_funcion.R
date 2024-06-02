@@ -45,48 +45,48 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
     
     df<- df  %>%
       distinct(anio,mpio_destino,mpio_destino,codigo_depto_destino,producto,mes, .keep_all = TRUE) %>%
-      select(anio,mpio_destino,codigo_depto_destino, mes, producto, porcentaje_dpto_mes_producto)  
-    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_mes_producto)
+      select(anio,mpio_destino,codigo_depto_destino, mes, producto, porcentaje_dpto_mes_producto,total_kilogramos_mes_destino_prod)  
+    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_mes_producto, toneladas = total_kilogramos_mes_destino_prod)
     
   } else if (!is.null(Año) && !is.null(Mes)) {
     
     df<- df  %>%
       distinct(anio,mpio_destino,codigo_depto_destino,mes, .keep_all = TRUE) %>%
-      select(anio,mpio_destino,codigo_depto_destino, mes, porcentaje_dpto_mes)  
+      select(anio,mpio_destino,codigo_depto_destino, mes, porcentaje_dpto_mes,total_kilogramos_mes_destino)  
     columna_porcentaje <- "porcentaje_dpto_mes"
-    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_mes)
+    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_mes, toneladad = total_kilogramos_mes_destino)
     
     
   } else if (!is.null(Año) && !is.null(Producto)) {
     
     df<- df  %>%
       distinct(anio,mpio_destino,codigo_depto_destino,producto, .keep_all = TRUE) %>%
-      select(anio,mpio_destino,codigo_depto_destino, producto, porcentaje_dpto_anio_producto)  
+      select(anio,mpio_destino,codigo_depto_destino, producto, porcentaje_dpto_anio_producto,total_kilogramos_ano_destino_prod)  
     columna_porcentaje <- "porcentaje_dpto_anio_producto"
-    df <- df %>% rename( columna_porcentaje =porcentaje_dpto_anio_producto)
+    df <- df %>% rename( columna_porcentaje =porcentaje_dpto_anio_producto, toneladas = total_kilogramos_ano_destino_prod)
     
   } else if (!is.null(Año)){
     # No se tienen ni mes ni producto
     
     df<- df  %>%
       distinct(anio,mpio_destino,codigo_depto_destino, .keep_all = TRUE) %>%
-      select(anio,mpio_destino,codigo_depto_destino, porcentaje_dpto_anio)  
-    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_anio)
+      select(anio,mpio_destino,codigo_depto_destino, porcentaje_dpto_anio,total_kilogramos_ano_destino)  
+    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_anio, toneladas= total_kilogramos_ano_destino)
     
   }else if (!is.null(Producto)){
     # No se tienen ni mes ni producto
     
     df<- df  %>%
       distinct(mpio_destino,codigo_depto_destino,producto, .keep_all = TRUE) %>%
-      select(mpio_destino,codigo_depto_destino,producto, porcentaje_dpto_prod)  
-    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_prod)
+      select(mpio_destino,codigo_depto_destino,producto, porcentaje_dpto_prod,total_kilogramos_destino_prod)  
+    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_prod, toneladas = total_kilogramos_destino_prod)
     
   } else {
     
     df<- df  %>%
       distinct(mpio_destino,codigo_depto_destino, .keep_all = TRUE) %>%
-      select(mpio_destino,codigo_depto_destino, porcentaje_dpto)  
-    df <- df %>% rename( columna_porcentaje = porcentaje_dpto)
+      select(mpio_destino,codigo_depto_destino, porcentaje_dpto,total_kilogramos_destino)  
+    df <- df %>% rename( columna_porcentaje = porcentaje_dpto, toneladas=total_kilogramos_destino)
     
   }
   df<-df#%>%filter(codigo_depto_destino !=5)
@@ -119,12 +119,28 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
                 fillOpacity = 0.8, 
                 color = "#D5D5D5", 
                 weight = 1,
-                popup = ~ifelse(is.na(columna_porcentaje),"",paste0("<strong>Departamento: </strong>", tools::toTitleCase(tolower(mapa$dpto_cnmbr)), 
-                                "<br><strong>Diferencia del precio: </strong>", round(columna_porcentaje),"%")),
+                popup = ~ifelse(is.na(columna_porcentaje),"",paste0("<strong>Departamento: </strong>", tools::toTitleCase(tolower(mapa$dpto_cnmbr)),
+                                                                    "<br><strong>Toneladas: </strong>", formatC(round(toneladas), format = "f", big.mark = ",", digits = 0),
+                                                                    "<br><strong>Porcentaje: </strong>", round(columna_porcentaje,digits = 1),"%")),
                 highlightOptions = highlightOptions(color = "white", 
                                                     weight = 2,
                                                     bringToFront = FALSE)) %>%
     addLegend(pal = my_palette_sin_na, values = ~valores_sin_na, opacity = 0.7, title = "Porcentaje")#, na.label = "")
+  
+  
+  p_plano <-ggplot() +
+    geom_sf(data = mapa, aes(fill = columna_porcentaje)) +
+    scale_fill_gradient(low = "#0D8D38", high = "#F2E203", na.value = "white", name = "Porcentaje") +
+    labs(title = " ") +
+    theme_minimal() +
+    theme(
+      plot.background = element_blank(),  # Hace que el fondo sea transparente
+      panel.background = element_blank(),  # Hace que el fondo del panel sea transparente
+      panel.grid = element_blank(),  # Elimina las líneas de la cuadrícula
+      axis.line = element_blank(),
+      axis.text = element_blank(),
+      axis.ticks = element_blank(),
+      axis.title = element_blank())
     
   mapa2<-mapa%>%filter(mpio_destino!="Medellín")
   porcentaje_max<-round(max(mapa2$columna_porcentaje))
@@ -135,6 +151,7 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
       dpto_max <- tools::toTitleCase(tolower(mapa2$dpto_cnmbr[indice_max]))
       return(list(
         grafico=p,
+        grafico_plano = p_plano,
         datos=df,
         porcentaje_max=porcentaje_max,
         dpto_max=dpto_max,

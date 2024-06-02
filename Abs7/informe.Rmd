@@ -1,13 +1,10 @@
 ---
 title: ' '
 params:
-  mes: NA
-  anio: NA
-  producto: NA
-  subtitulo: NA
-  maximo: NA
-  plot: NA
-  mensaje1: NA
+ tipo: NA
+ producto: NA
+ subtitulo: NA
+ plot: NA
 output:
   pdf_document:
     latex_engine: xelatex
@@ -56,15 +53,28 @@ library(knitr)
   library(xtable)
 
   # Label para tipo: 
-  opciones_Mes <- c("Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, "Diciembre" =12)
+  opciones_tipo <- c("Balances generales anuales" = 1, "Balances anuales por producto" = 2, "Balances generales mensuales" = 3, "Balances generales mensuales por producto" = 4)
 
-  mes_label <- ifelse(is.na(params$mes) | !(params$mes %in% opciones_Mes), "Todos los meses", names(opciones_Mes)[which(opciones_Mes == params$mes)])
+  tipo_label <- ifelse(is.na(params$tipo) | !(params$tipo %in% opciones_tipo), "NA", names(opciones_tipo)[which(opciones_tipo == params$tipo)])
+  
+
+if (is.null(params$producto)) {
+  producto_label <- "Todos los productos"
+} else {
+  # Convertir la lista de productos en una cadena, con cada producto en una nueva línea
+  producto_label <- paste(params$producto, collapse = ", ")
+  # Dividir la cadena en partes más pequeñas para agregar saltos de línea
+  producto_label <- strwrap(producto_label, width = 50, simplify = TRUE)
+  producto_label <- paste(producto_label, collapse = " \\\\ ")
+}
   
   df <- data.frame(
-    "Parametro" = c("Año:", "Mes:", "Producto"),
-    "Valor" = c(ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio), mes_label, ifelse(is.na(params$producto) | params$producto == "todo", "Todos los productos", params$producto))
+    "Parametro" = c("Tipo:", "Producto(s):"),
+    "Valor" = c(tipo_label, producto_label)
   )
   
+
+
 # Crear la tabla con knitr::kable
 tabla_kable <- df %>%
   knitr::kable(
@@ -82,19 +92,19 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Antioquia y su importancia en la recepción de alimentos}\
+\fontsize{20}{20} \selectfont \textcolor{mygreen}{Balance de Alimentos: Productos de origen local vs. externo}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Descubre la importancia de Antioquia como receptor de alimentos desde otros departamentos del país.}\
+\fontsize{10}{10} \selectfont \textcolor{green2}{Compara volúmenes de alimentos locales y externos que ingresan a las principales centrales de abasto de Medellín.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
-```{r, out.width = "70%", fig.align = "center", warning=FALSE, message=FALSE}
+```{r, out.width = "70%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
-\fontsize{10}{10} \selectfont `r params$mensaje1`\
 
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{Esta visualización muestra el porcentaje de alimentos enviados a Antioquia desde cada departamento, incluyendo productos de origen local. Permite apreciar la importancia de Antioquia como receptor de alimentos provenientes de otros territorios del país}\newline 
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{* Producción se refiere a los productos cuyo origen es Antioquia.}\newline
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{El balance de alimentos se define como la diferencia en volumen entre los alimentos que ingresan a las principales centrales de abasto de Medellín con origen en Antioquia y el total de alimentos reportados en las centrales. La fórmula para calcular el balance de alimentos es $N_{it} = P_{a} - D_{a}$, donde $N_{it}$ es el balance de alimentos, $P_{a}$ es el volumen de alimentos que se originan en Antioquia y $D_{a}$ es el volumen total de alimentos que llegan al centro de acopio de Medellín.}\newline
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Un balance negativo es sinónimo de dependencia hacia otros departamentos del país.}\newline
 
 \AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo_2.png}}
+
 

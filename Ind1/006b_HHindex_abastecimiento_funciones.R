@@ -15,6 +15,7 @@ rm(list = ls())
 #font_import(pattern = "Prompt.ttf", prompt = FALSE)
 #loadfonts(device = "win")
 ################################################################################
+Sys.setlocale("LC_TIME", "Spanish")
 
 IHH_anual<-readRDS("IHH_anual_abastecimiento.rds")
 IHH_total<-readRDS("IHH_total_abastecimiento.rds")
@@ -32,36 +33,36 @@ plot_data <- function(tipo, anio = NULL) {
     data$IHH <- data$IHH * 100 
     
     # Crear un gráfico de tiempo
-    data$tooltip_text <- paste("Año: ", data$year , "<br> IHH:" , round(data$IHH,3))
-    p <- ggplot(data, aes_string(x = "date_col", y = "IHH")) +
+    data$tooltip_text <- paste("Año: ", data$year , "<br> IHH:" , round(data$IHH,1))
+    p_plano <- ggplot(data, aes_string(x = "date_col", y = "IHH")) +
       geom_line(color = "#2E7730") +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
-      labs(x = "Año - Mes", y = "Variedad en la oferta %") +
+      labs(x = "Año", y = "Variedad en la oferta") +
       theme_minimal() +  # Usar un tema minimalista
       scale_color_manual(values = "#2E7730") +  # Establecer el color de la línea
       theme(text = element_text(family = "Prompt", size = 16)) + # Establecer la fuente y el tamaño del texto
       scale_x_continuous(breaks = seq(min(data$date_col), max(data$date_col), by = 1))  # Establecer las marcas del eje x
-    
+      
   } else {
     data <- IHH_mensual
     data <- rename(data, date_col = mes_y_ano)
     data$IHH <- data$IHH *100
-    data$tooltip_text <- paste("Año: ", data$year , "<br> IHH:" , round(data$IHH,3))
+    data$tooltip_text <- paste("Año: ", data$year , "<br> IHH:" , round(data$IHH,1))
     
     # Si se especificó un año, filtrar los datos para ese año
     if (!is.null(anio)) {
-    data$tooltip_text <- paste("Año: ", data$year , "<br> Mes:" , data$month,  "<br> IHH:" , round(data$IHH,3))
+    data$tooltip_text <- paste("Año: ", data$year , "<br> Mes:" , data$month,  "<br> IHH:" , round(data$IHH,1))
       data <- data %>% filter(year == anio)
     }
     # Crear un gráfico de tiempo
-    p <- ggplot(data, aes_string(x = "date_col", y = "IHH")) +
+    p_plano <- ggplot(data, aes_string(x = "date_col", y = "IHH")) +
       geom_line(color = "#2E7730") +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
-      labs(x = "Año - Mes", y = "Variedad en la oferta %") +
+      labs(x = "Año", y = "Variedad en la oferta") +
       theme_minimal() +  # Usar un tema minimalista
       scale_color_manual(values = "#2E7730") +  # Establecer el color de la línea
       theme(text = element_text(family = "Prompt", size = 16)) # Establecer la fuente y el tamaño del texto
-  }
+      }
   
 
   data<-data%>%select(-tooltip_text)
@@ -71,9 +72,9 @@ plot_data <- function(tipo, anio = NULL) {
   mes_max_IHH <- data$month[max_IHH]
   anio_max_IHH <- data$year[max_IHH]
   
-  p <- plotly::ggplotly(p, tooltip = "text")
+  p <- plotly::ggplotly(p_plano, tooltip = "text")
   
-  return(list("plot" = p, "data" = data, "max_IHH" = max_IHH_value, "mes_max_IHH" = mes_max_IHH,"anio_max_IHH" = anio_max_IHH))
+  return(list("plot" = p, "data" = data, "max_IHH" = max_IHH_value, "mes_max_IHH" = mes_max_IHH,"anio_max_IHH" = anio_max_IHH, grafico_plano = p_plano))
 }
 
 

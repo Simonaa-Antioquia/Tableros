@@ -24,6 +24,11 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 40px;
         color: #0D8D38;
+       }
+       .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
       }
       .sub-header {
         font-family: 'Prompt', sans-serif;
@@ -49,7 +54,8 @@ ui <- fluidPage(
       
     "))
   ),
-  tags$h1("Disponibilidad Neta de alimentos en Antioquia", class = "main-header"),
+  tags$h1("Balance de Alimentos: Productos de origen local vs. externo", class = "main-header"),
+  tags$h1("Compara volúmenes de alimentos locales y externos que ingresan a las principales centrales de abasto de Medellín.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -59,10 +65,10 @@ ui <- fluidPage(
       fluidRow(
         column(4,
                selectInput("tipo", "Seleccione el tipo de funcion:", 
-                           choices = list("Netos generales anuales" = 1, 
-                                          "Netos anuales por producto" = 2, 
-                                          "Netos generales mensuales" = 3, 
-                                          "Netos generales mensuales por producto" = 4))),
+                           choices = list("Balances generales anuales" = 1, 
+                                          "Balances anuales por producto" = 2, 
+                                          "Balances generales mensuales" = 3, 
+                                          "Balances generales mensuales por producto" = 4))),
         column(4,
                conditionalPanel(
                  condition = "input.tipo == 2 || input.tipo ==4",
@@ -70,45 +76,38 @@ ui <- fluidPage(
                ))
       )),
   fluidRow(
-    column(9,
+    column(12,
            div(
              plotly::plotlyOutput("grafico",height = "400px"),
-             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargar_", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte", icon = icon("file-alt")),
-             actionButton("reset", "Restrablecer",icon = icon("refresh"))
-             #,
-             #tableOutput("vistaTabla") 
+             actionButton("reset", "Restablecer", icon = icon("refresh")),
+             downloadButton("report", "Generar informe")
            )),
     
-    column(3, 
-           div(
-             wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
-            # wellPanel(textOutput("mensaje2"),
-             #          style = "background-color: #005A45; color: #FFFFFF;"),
-             #wellPanel(textOutput("mensaje3"),
-              #         style = "background-color: #094735; color: #FFFFFF;")
-           ))
+    #column(3, 
+    #      div(
+    #         wellPanel(textOutput("mensaje1"),
+    #                  style = "background-color: #0D8D38; color: #FFFFFF;")
+    #       ))
   ),
     
     fluidRow(
       column(12,
              style = "margin-top: 2px;",
              tags$div(
-               tags$p("Este gráfico muestra los valores netos de los alimentos disponibles en los principales centros de acopio de Medellín.", class = "sub-header2", style = "margin-top: 3px;"),
-               tags$p("Se definen valores netos como: Productos que se producen en cualquiera de los municipios de Antioquia -  los productos que llegan a Medellín pero no se producen en Antiouia", class = "sub-header2", style = "margin-top: 3px;"),
-               tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
-             )
+               tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p(HTML("El balance de alimentos se define como la diferencia en volumen entre los alimentos que ingresan a las principales centrales de abasto de Medellín con origen en Antioquia y el total de alimentos reportados en las centrales. La fórmula para calcular el balance de alimentos es <i>N<sub>it</sub> = P<sub>a</sub> - D<sub>a</sub></i>, donde <i>N<sub>it</sub> es el balance de alimentos, P<sub>a</sub> es el volumen de alimentos que se originan en Antioquia y D<sub>a</sub></i> es el volumen total de alimentos que llegan al centro de acopio de Medellín."), class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p("Un balance negativo es sinónimo de dependencia hacia otros departamentos del país.", class = "sub-header2", style = "margin-top: 3px;")
+               )
       )
     ),
 
   fluidRow(
     tags$div(
-      tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+      tags$img(src = 'logo_2.png', style = "width: 100%; margin: 0;"),  
       style = "width: 100%; margin:0;"  
     )
   )

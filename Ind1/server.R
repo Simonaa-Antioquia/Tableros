@@ -22,32 +22,50 @@ server <- function(input, output, session) {
     plot_data(tipo, anio)
   })
   
+  
+# Rendre plotly
   output$grafico1 <- plotly::renderPlotly({
     resultado()$plot
   })
   
+# Render grafico plano
   
-  output$vistaTabla <- renderTable({
+  grafico_plano <- reactive({
+    res<-resultado()
+    if(nrow(res$data)==0){
+      validate(
+        ("No hay datos disponibles")
+      )
+    }else{
+      res$grafico_plano
+    }
+})  
+  
+# Descargamos la grafica
+
+  # Descargar el grafico 
+  output$descargar_ <- downloadHandler(
+    filename = function() {
+      paste("Ind1", Sys.Date(), ".png", sep="")
+    },
+    content = function(file) {
+      # Forzar la ejecución de la función reactiva
+      res <- resultado()
+      
+      # Usa ggsave para guardar el gráfico
+      ggplot2::ggsave(filename = file, plot = res$grafico_plano, width = 13, height = 7, dpi = 200)
+    })  
+  
+  
+# head de los datos    
+output$vistaTabla <- renderTable({
     if (!is.null(resultado()$data)) {
       head(resultado()$data, 5)
     }
   })
   
-  
-  # Descargar grafica 
-  
-  output$descargar <- downloadHandler(
-    filename = function() {
-      paste("grafica_netos", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(as_widget(resultado()$plot), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2)
-    }
-  )  
-  
-  output$descargarDatos <- downloadHandler(
+# Descargar datos   
+output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
     },
@@ -56,47 +74,74 @@ server <- function(input, output, session) {
     }
   )
   
+
+values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL, mensaje2=NULL)
+
+# Generar subtitulo dinamico
   output$subtitulo <- renderText({
     tipo <- input$tipo
     anio <- ifelse(is.null(input$anio) || input$anio == "", NA, input$anio)
     data_resultado <- resultado()
     
-    max_IHH <- data_resultado$max_IHH
+    max_IHH <- round(data_resultado$max_IHH,digits = 2)
     mes_max_IHH <- data_resultado$mes_max_IHH
     anio_max_IHH <- data_resultado$anio_max_IHH
     
+    # Crear un vector con los nombres de los meses en español
+    meses_es <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
+    # Crear un vector con las abreviaturas de los meses en español
+    abrev_meses_es <- c("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic")
+    
+    # Convertir la abreviatura del mes a un nombre completo de mes
+    mes_max_IHH <- meses_es[match(tolower(mes_max_IHH), abrev_meses_es)]
     
     if (tipo == 1) {
-      return(paste("La menor variedad de alimentos registrada fue en el año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH ,"%"))
+      values$subtitulo <- (paste("La menor variedad de alimentos registrada fue en el año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH))
     } else if (tipo == 0) {
-      return(paste("La menor variedad de alimentos registrada fue en el mes", mes_max_IHH,"del año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH,"%"))
+      values$subtitulo <- (paste("La menor variedad de alimentos registrada fue en el mes", mes_max_IHH,"del año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH))
     }
-    
+    return(values$subtitulo)
   })
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})
+
   
   # Borrar filtros
   observeEvent(input$reset, {
     updateSelectInput(session, "tipo", selected = 1)
   })
+
+# Mensajes: Mensaje 1  
+output$mensaje1 <- renderText({
+    values$mensaje1 <- ("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los alimentos en Antioquia, un mayor índice refleja menos variedad de alimentos")
+ values$mensaje1
+     })
   
-  output$mensaje1 <- renderText({
-    return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los alimentos en Antioquia, un mayor índice indica menos variedad de alimentos")
-  })
-  
+# Mensajes: Mensaje 2
   output$mensaje2 <- renderUI({
-    return("Este índice puede aumentar si aumenta la participación de un producto o disminuye el número de productos que ingresan.")
+    values$mensaje2 <-("Este índice puede aumentar si un producto incrementa su participación en el volumen total o si disminuye el número de productos que ingresan
+")
+    values$mensaje2
   })
+
+  # Generamos el Informe
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        tipo = input$tipo,
+        anio = input$anio,
+        subtitulo = values$subtitulo,
+        plot = grafico_plano(),
+        mensaje1 = values$mensaje1,
+        mensaje2 = values$mensaje2
+      ))  
+    },
+    contentType = 'application/pdf'
+  )   
   
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
-  
-  observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
-  })
   
 }

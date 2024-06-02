@@ -23,9 +23,9 @@ library(htmlwidgets);library(webshot);library(magick);library(shinyscreenshot);l
 
 ui <- fluidPage(
   tags$div(
-    style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
+    style = "position: relative; min-height: 100vh; padding-bottom: 100px;", 
     tags$head(
-      tags$title("Importancia de los productos antioqueños en los departamentos destinos"),  # Añade esta línea
+      tags$title("Importancia de los productos antioqueños en los departamentos destinos"),  
       tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
       #grafico {
@@ -43,6 +43,11 @@ ui <- fluidPage(
         font-size: 40px;
         color: #0D8D38;
       }
+       .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+      }
       .sub-header {
         font-family: 'Prompt', sans-serif;
         font-size: 20px;
@@ -53,7 +58,8 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("Antioquia como productor de alimentos: importancia de los productos antioqueños en los departamentos destinos", class = "main-header"),
+  tags$h1("Contribución de Antioquia al Abastecimiento Nacional", class = "main-header"),
+  tags$h1("Análisis de la participación de Antioquia en el abastecimiento de alimentos en otros departamentos del país", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -72,32 +78,36 @@ ui <- fluidPage(
     fluidRow(
       column(9,
              leafletOutput("grafico"),# width = "500px", height = "500px"),
-             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargar_", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte", icon = icon("file-alt")),
-             actionButton("reset", "Restablecer", icon = icon("refresh"))
-             #,
-             #tableOutput("vistaTabla") 
+             actionButton("reset", "Restablecer", icon = icon("refresh")),
+             downloadButton("report", "Generar informe")
+
       ),
       column(3, 
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             #wellPanel(textOutput("mensaje3"),
-              #         style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #005A45; color: #FFFFFF;")
+             
       )
     ),
     tags$div(tags$p(#"Cada porcentaje es lo que cada departamento recibe de Antioquia del total de productos que ingresan a este.",
                     #tags$br(),
-                    "Para facilidad visual se usa el departamento aunque los datos son solo a nivel de ciudades principales.",
-                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
+                    "Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+                    tags$br(),"Esta visualización muestra la contribución de Antioquia al abastecimiento de otros departamentos. Los porcentajes representan la proporción del volumen que se registra en las principales centrales de abasto de cada departamento con origen Antioquia en relación con el total del volumen recibido.",
+                    tags$br(),"La comparación se realiza entre ciudades, para una mejor comprensión visual se considera todo el departamento.",
+                    class = "sub-header2"), style = "margin-top: 20px;")
   ),
+  br(),
+  br(),
+  br(),
+  br(),
+  br(),
   tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+    tags$img(src = 'logo_2.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
     )
   ) 

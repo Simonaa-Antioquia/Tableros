@@ -26,13 +26,17 @@ server <- function(input, output, session) {
     }  
   })
   
+# Boton reset  
   observeEvent(input$reset, {
     updateSelectInput(session, "producto", selected = "todo")
     updateSelectInput(session, "mes", selected = "todo")
     updateSelectInput(session, "anio", selected = "todo")
   })
   
-  output$grafico <- renderLeaflet({
+
+# Grafico plotly
+  
+output$grafico <- renderLeaflet({
     res <- resultado()
     if (is.data.frame(res) || is.list(res)) {
       if (nrow(res$datos) == 0) {
@@ -48,23 +52,43 @@ server <- function(input, output, session) {
     }
   })
   
-  output$vistaTabla <- renderTable({
+  
+  
+# Se genera el grafico plano
+grafico_plano <- reactive({
+  res <- resultado()
+  if (nrow(res$datos) == 0) {
+    return(NULL)  
+  } else {
+    res$grafico_plano  
+  }
+}) 
+
+
+# Descargar el grafico 
+output$descargar_ <- downloadHandler(
+  filename = function() {
+    paste("grafica_productos_ingresan_", Sys.Date(), ".png", sep="")
+  },
+  content = function(file) {
+    # Forzar la ejecución de la función reactiva
+    res <- resultado()
+    
+    # Usa ggsave para guardar el gráfico
+    ggplot2::ggsave(filename = file, plot = res$grafico_plano, width = 13, height = 7, dpi = 200)
+  }
+) 
+
+  
+# Ver datos en el tablero (head)
+    output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
       head(resultado()$datos, 5)
     }
   })
   
-  #output$descargar <- downloadHandler(
-   # filename = function() {
-    #  paste("grafica-", Sys.Date(), ".png", sep="")
-    #},
-    #content = function(file) {
-     # tempFile <- tempfile(fileext = ".html")
-      #htmlwidgets::saveWidget(plotly::as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      #webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 800)
-    #}
-  #)
-  
+
+# Descargar un excel con los datos  
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
@@ -74,52 +98,66 @@ server <- function(input, output, session) {
     }
   )
   
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})
+
+# Subtitulo
+  
+values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL, mensaje2 = NULL)   
   
   output$subtitulo <- renderText({
     res <- resultado()
     if (is.data.frame(res) || is.list(res)) {
       if(nrow(res$datos) == 0) {
-        return("No hay datos disponibles")
+        values$subtitulo <- ("No hay datos disponibles")
       }else{
         porcentaje_max <- res$porcentaje_max
         dpto_max <- res$dpto_max
         
-        return(paste0(dpto_max," recibe el ", porcentaje_max, "% de sus alimentos de Antioquia, siendo el departamento que más depende de este sin contar Antioquia."))
+        values$subtitulo <- (paste0(dpto_max," recibe el ", porcentaje_max, "% de sus alimentos de Antioquia, siendo el departamento más dependiente."))
       }
     } else {
-      return("No hay datos disponibles")
+      values$subtitulo <- ("No hay datos disponibles")
     }
+    return(values$subtitulo)
   })
   
+# Mensajes: Mensaje 1   
   output$mensaje1 <- renderText({
-    #resultado <- resultado()
-    #volatil<-resultado$producto_vol
-    return("Cada porcentaje representa la proporción de productos que cada departamento recibe de Antioquia en relación con el total de productos que ingresan a dicho departamento.")
-  })
-  
+   values$mensaje1 <- ("Cada porcentaje representa la proporción de productos que cada departamento recibe de Antioquia en relación con el total de productos que ingresan a dicho departamento.")
+  return(values$mensaje1)
+   })
+#Mensaje 2  
   output$mensaje2 <- renderText({
     resultado <- resultado()
     porcentaje_max_1<-resultado$porcentaje_max_1
-    return(paste0("El ",porcentaje_max_1,"% de los alimentos que llegan a Medellín provienen de la misma región."))
-  })
+    dpto_max <- resultado$dpto_max
+    values$mensaje2 <-(paste0("Para el producto y periodo de tiempo  seleccionado, " ,dpto_max, " recibió el ",porcentaje_max_1, "% del total de volumen registrado con origen Antioquia." ))
+    return(values$mensaje1)
+     })
+
+# Generamos el Informe
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        anio = input$anio,
+        mes = input$mes,
+        producto = input$producto,
+        subtitulo = values$subtitulo,
+        maximo = resultado()$porcentaje_max_1,
+        plot = grafico_plano(),
+        mensaje1 = values$mensaje1,
+        mensaje2 = values$mensaje2
+      ))  
+    },
+    contentType = 'application/pdf'
+  )    
+
   
-  output$mensaje3 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb_an<-resultado$promedio_camb_an
-    return("Poner mensaje")
-  })
-  
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
-  
-  observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
-  })
   
 }
 
