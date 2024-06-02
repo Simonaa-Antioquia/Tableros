@@ -80,23 +80,43 @@ salen_prod<-function(año = NULL, Mes = NULL, depto = NULL){
   high_color <- "#007CC3"
   if(nrow(df)==0){
   p<-  print("No hay datos disponibles")
+  p_plano <- NULL
   } else {
+    
+df$tooltip_text <- paste("Producto:", df$producto , "<br> Porcentaje:", round(df$columna_porcentaje*100, digits = 1), "%")
+  
   p <- hchart(df, "treemap", hcaes(x = producto, value = round(columna_porcentaje*100), color = round(columna_porcentaje*100))) %>%
     hc_title(text = "") %>%
-    hc_colorAxis(minColor = low_color, maxColor = high_color)
+    hc_colorAxis(minColor = low_color, maxColor = high_color) %>%
+    hc_tooltip(pointFormat = '{point.tooltip_text}')
+
+  p_plano<-ggplot(df, aes(area = columna_porcentaje, fill = columna_porcentaje,
+                    label = producto,subgroup = grupo_alimento)) +
+    geom_treemap() +
+    geom_treemap_subgroup_border(colour = "white", size = 5) +
+    geom_treemap_subgroup_text(place = "topleft", grow = FALSE,
+                               alpha = 0.3, colour = "black",
+                               fontface = "italic", size = 15) +
+    geom_treemap_text(colour = "white", place = "centre",
+                      size = 15, grow = FALSE)+
+    scale_fill_gradient(low = low_color, high = high_color) +  # Usa un gradiente de colores
+    labs(title = "", fill = "Porcentaje")
   }
   porcentaje_max<-round(max(df$columna_porcentaje)*100)
   producto_max<-df$producto[which.max(df$columna_porcentaje)]
-  
   return(
     list(
       grafico = p,
+      grafico_plano = p_plano,
       datos = df,
       porcentaje_max=porcentaje_max,
       producto_max=tolower(producto_max)
     )
   )
 }
+
+
+
 
 
 #nrow(salen_prod(año=2013,Mes =  1,depto =  "Armenia")$datos)

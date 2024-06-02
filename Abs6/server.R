@@ -37,6 +37,7 @@ server <- function(input, output, session) {
     }
   })
   
+  # Generacion del grafico
   output$grafico <- renderHighchart({
     res<-resultado()
     if(nrow(res$datos)==0){
@@ -49,36 +50,36 @@ server <- function(input, output, session) {
     
   })
   
+  
+  # Generacion del grafico plano
+  
+  grafico_plano <- reactive({
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      validate(
+        ("No hay datos disponibles")
+      )
+    }else{
+      res$grafico_plano
+    }
+  })
+  
+  # En caso de que se quiera mostrar el head de los datos
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
       head(resultado()$datos, 5)
     }
   })
   
-  output$descargar <- downloadHandler(
-    filename = function() {
-      paste("grafico-", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      # Guardar el gráfico en un archivo temporal HTML
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(resultado()$grafico, file = tempFile, selfcontained = FALSE)
-      
-      # Usar webshot en el archivo HTML
-      webshot::webshot(url = tempFile, file = file, delay = 3)
-    }
-  )
   
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})
-  
+  # Boton de reset
   observeEvent(input$reset, {
     updateSelectInput(session, "año", selected = "todo")
     updateSelectInput(session, "mes", selected = "todo")
     updateSelectInput(session, "depto", selected = "todo")
   })
   
+  # Descarga de datos
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
@@ -88,47 +89,89 @@ server <- function(input, output, session) {
     }
   )
   
-  # En el servidor
-  output$subtitulo <- renderText({
-      res<-resultado()
-      if(nrow(res$datos)==0){
-        validate(
-          ("No hay datos disponibles.")
-        )
-      }else{
-    resultado <- resultado()
-    producto_max <- resultado$producto_max
-    porcentaje_max<-resultado$porcentaje_max
-    #if(input$anio == ""){
-    return(paste0("El producto que más sale de Antioquia es ", producto_max, " con un ", porcentaje_max,"%."))
+  # Descargar Imagen
+  output$descargar_ <- downloadHandler(
+    filename = function() {
+      paste("grafica_productos_salen_", Sys.Date(), ".png", sep="")
+    },
+    content = function(file) {
+      # Forzar la ejecución de la función reactiva
+      res <- resultado()
+      
+      # Usa ggsave para guardar el gráfico
+      ggplot2::ggsave(filename = file, plot = res$grafico_plano, width = 13, height = 7, dpi = 200)
     }
+  )
+  
+  
+  # Generamos el subtitulo
+  
+  output$subtitulo <- renderText({
+    res <- resultado()
+    if(nrow(res$datos) == 0){
+      validate(
+        need(FALSE, "No hay datos disponibles.")
+      )
+    } else {
+      resultado <- resultado()
+      producto_max <- resultado$producto_max
+      porcentaje_max <- resultado$porcentaje_max
+      depto <- input$depto
+      if(depto != "todo"){
+        values$subtitulo <- (paste0("El producto de origen antioqueño con mayor volumen reportado en la central de abasto de ", depto, " fue ", producto_max, " con un porcentaje de: ",porcentaje_max,"%"))
+      } else if (depto == "todo") {
+        values$subtitulo  <- (paste0("El producto de origen antioqueño con mayor volumen reportado fue ", producto_max, " con un porcentaje de: ",porcentaje_max,"%"))
+      }
+    }
+    return(values$subtitulo_2)
   })
+  
+  
+  
+  # Mensajes
+  
+  values <- reactiveValues(mensaje1 = NULL, mensaje2 = NULL, mensaje3 = NULL)
+  
   output$mensaje1 <- renderText({
-    #resultado <- resultado()
-    #volatil<-resultado$producto_vol
-    return("Este gráfico muestra la importancia que tiene cada alimento en los alimentos de origen antioqueño")
-  })
+    values$mensaje1 <- " Este gráfico muestra la importancia en volumen de cada alimento entre los productos de origen antioqueño reportado en las centrales de abasto del SIPSA, componente abastecimiento."
+    values$mensaje1 
+    })
   
   output$mensaje2 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb<-resultado$promedio_camb
-    return("Poner mensaje")
-  })
+    values$mensaje2 <- "Cada rectángulo en el gráfico representa un tipo de alimento, y el tamaño de cada rectángulo es  proporcional al volumen de ese alimento en comparación con los demás ingresados."
+    values$mensaje2 
+    })
   
-  output$mensaje3 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb_an<-resultado$promedio_camb_an
-    return("Poner mensaje")
-  })
+
   
   
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
+  # Generamos el Informe
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        anio = input$año,
+        mes = input$mes,
+        depto = input$depto,
+        subtitulo = values$subtitulo,
+        producto_max = resultado()$producto_max,
+        porcentaje_max = resultado()$porcentaje_max,
+        plot = grafico_plano(),
+        mensaje1 = values$mensaje1,
+        mensaje2 = values$mensaje2
+      ))  
+    },
+    
+    
+    contentType = 'application/pdf'
+  )  
   
-  observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
-  })
+
   
+
 }

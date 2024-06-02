@@ -76,10 +76,8 @@ server <- function(input, output, session) {
     }
   })
   
-  
 
-  
-  
+  # En caso de que se quiera mostrar el head de los datos
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
       head(resultado()$datos, 5)
@@ -118,9 +116,12 @@ server <- function(input, output, session) {
     porcent_prod <- res$porcent_prod
     acumulado <- res$acumulado
     num_productos <- res$num_productos
-    values$subtitulo <- (paste0("El ",acumulado,"% del volumen total que ",ifelse(input$algo=="Neto_entra", " ingresa ",ifelse(input$algo == "Neto_sale"," sale ",ifelse(input$algo == "Neto_entra_local"," ingresa - local "," ingresa - externo "))), "se concentran en ", num_productos," productos (",porcent_prod,"%)"))}
+    values$subtitulo <- (paste0("El ",acumulado,"% del volumen total que ",ifelse(input$algo=="Neto_entra", " ingresa ",ifelse(input$algo == "Neto_sale"," sale ",ifelse(input$algo == "Neto_entra_local"," ingresa - local "," ingresa - externo "))), "se concentran en ", num_productos," productos (",porcent_prod,"% del total de productos)"))}
     return(values$subtitulo)
   })
+  
+  
+  # Mensajes
   
   values <- reactiveValues(mensaje1 = NULL, mensaje2 = NULL, mensaje3 = NULL)
   
@@ -158,9 +159,6 @@ server <- function(input, output, session) {
   })
 
 # Generamos el Informe
-  
-
-  
   output$report <- downloadHandler(
     filename = 'informe.pdf',
     

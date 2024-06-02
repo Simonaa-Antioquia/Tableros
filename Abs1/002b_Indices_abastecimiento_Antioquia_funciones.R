@@ -61,14 +61,14 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
     
     df<- df  %>%
       distinct(anio, mpio_origen,producto,mes, .keep_all = TRUE) %>%
-      select(anio, mpio_origen, mes, producto, mes_municipio_producto_porcentaje)  
+      select(anio, mpio_origen,municipio_r, mes, producto, mes_municipio_producto_porcentaje)  
     df <- df %>% rename( columna_porcentaje = mes_municipio_producto_porcentaje)
     
   } else if (!is.null(Año) && !is.null(Mes)) {
     
     df<- df  %>%
       distinct(anio, mpio_origen,mes, .keep_all = TRUE) %>%
-      select(anio, mpio_origen, mes, mes_municipio_porcentaje)  
+      select(anio, mpio_origen, municipio_r,mes, mes_municipio_porcentaje)  
     columna_porcentaje <- "mes_municipio_porcentaje"
     df <- df %>% rename( columna_porcentaje = mes_municipio_porcentaje)
     
@@ -77,7 +77,7 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
     
     df<- df  %>%
       distinct(anio, mpio_origen,producto, .keep_all = TRUE) %>%
-      select(anio, mpio_origen, producto, año_municipio_producto_porcentaje)  
+      select(anio, mpio_origen,municipio_r, producto, año_municipio_producto_porcentaje)  
     columna_porcentaje <- "año_municipio_producto_porcentaje"
     df <- df %>% rename( columna_porcentaje =año_municipio_producto_porcentaje)
     
@@ -86,7 +86,7 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
     
     df<- df  %>%
       distinct(anio, mpio_origen, .keep_all = TRUE) %>%
-      select(anio, mpio_origen, año_municipio_porcentaje)  
+      select(anio, mpio_origen, municipio_r,año_municipio_porcentaje)  
     df <- df %>% rename( columna_porcentaje = año_municipio_porcentaje)
     
   }else if (!is.null(Producto)){
@@ -94,14 +94,14 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
     
     df<- df  %>%
       distinct( mpio_origen,producto, .keep_all = TRUE) %>%
-      select( mpio_origen,producto, municipio_producto_porcentaje)  
+      select( mpio_origen,producto,municipio_r, municipio_producto_porcentaje)  
     df <- df %>% rename( columna_porcentaje = municipio_producto_porcentaje)
     
   } else {
     
     df<- df  %>%
       distinct( mpio_origen, .keep_all = TRUE) %>%
-      select( mpio_origen, municipio_porcentaje)  
+      select( mpio_origen, municipio_r, municipio_porcentaje)  
     df <- df %>% rename( columna_porcentaje = municipio_porcentaje)
     
   }
@@ -133,16 +133,17 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
   col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203", "#F1B709", "#F39F06", "#BE7E11",
                    "#08384D", "#094B5C", "#00596C", "#006A75", "#007A71", "#00909C", "#0088BB", "#007CC3", "#456ABB")
   
-  df$tooltip_text <- paste0("Ciudad de origen: ", df$mpio_origen, "<br>Porcentaje: ", round(df$columna_porcentaje*100),"%")
+  df$tooltip_text <- paste0("Ciudad de origen: ", df$mpio_origen, "<br>Porcentaje: ", round(df$columna_porcentaje*100,digits = 1),"%")
   
-  graf <- ggplot(df, aes(x =  forcats::fct_reorder(mpio_origen, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill =  mpio_origen, text = tooltip_text)) +
+    graf <- ggplot(df, aes(x =  forcats::fct_reorder(municipio_r, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill =  mpio_origen, text = tooltip_text)) +
     geom_bar(stat = "identity") +
     geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 1)), hjust = 0.1) +
     coord_flip() +
     labs(x = " ", y = "Porcentaje", title = " ") +
     scale_fill_manual(values = col_palette) +  # Agregar la paleta de colores
     theme_minimal() +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")#,axis.text.x = element_blank())
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none", axis.ticks.x = element_blank(), axis.text.x = element_blank())
+  
   
   
   p <- plotly::ggplotly(graf, tooltip = "text")

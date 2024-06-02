@@ -39,11 +39,14 @@ server <- function(input, output, session) {
     }
   })
   
+  # Boton de reset
   observeEvent(input$reset, {
     updateSelectInput(session, "producto", selected = "todo")
     updateSelectInput(session, "mes", selected = "todo")
     updateSelectInput(session, "anio", selected = "todo")
   })
+  
+#Generamos graf plotly  
   
   output$grafico <- renderLeaflet({
     res <- resultado()
@@ -61,22 +64,41 @@ server <- function(input, output, session) {
     }
   })
   
+  
+  # Se genera el grafico plano
+  grafico_plano <- reactive({
+    res <- resultado()
+    if (nrow(res$datos) == 0) {
+      return(NULL)  # No hay gráfico para guardar
+    } else {
+      res$grafico_plano  # Guarda solo el gráfico 'grafico_plano'
+    }
+  }) 
+  
+  # Descargar el grafico 
+  output$descargar_ <- downloadHandler(
+    filename = function() {
+      paste("grafica_productos_ingresan_", Sys.Date(), ".png", sep="")
+    },
+    content = function(file) {
+      # Forzar la ejecución de la función reactiva
+      res <- resultado()
+      
+      # Usa ggsave para guardar el gráfico
+      ggplot2::ggsave(filename = file, plot = res$grafico_plano, width = 13, height = 7, dpi = 200)
+    }
+  ) 
+  
+  
+  # Ver Tabla
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
       head(resultado()$datos, 5)
     }
   })
   
-  output$descargar <- downloadHandler(
-    filename = function() {
-      paste("grafica-", Sys.Date(), ".png", sep="")
-    },
-    content = function(file) {
-      tempFile <- tempfile(fileext = ".html")
-      htmlwidgets::saveWidget(plotly::as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 800)
-    }
-  )
+  
+# Desacargar Datos
   
   output$descargarDatos <- downloadHandler(
     filename = function() {
@@ -87,58 +109,64 @@ server <- function(input, output, session) {
     }
   )
   
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})
+# Subtitulo 
   
-  # En el servidor
-  output$subtitulo <- renderText({
-    res <- resultado()
-    if (is.data.frame(res) || is.list(res)) {
-      if(nrow(res$datos) == 0) {
-        return("No hay datos disponibles")
-      }else{
-        porcentaje_max <- res$porcentaje_max
-        dpto_max <- res$dpto_max
-        
-        return(paste0("Sin contar Antioquia, ",dpto_max," envía el ", porcentaje_max, "% de lo que saca, siendo Antioquia su principal socio comercial"))
+values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL)   
+
+output$subtitulo <- renderText({
+  res <- resultado()
+  if (is.data.frame(res) || is.list(res)) {
+  if(nrow(res$datos) == 0) {
+  values$subtitulo <- ("No hay datos disponibles")
+  }else{
+  porcentaje_max <- res$porcentaje_max
+  dpto_max <- res$dpto_max
+       values$subtitulo <- (paste0("Sin contar Antioquia, ",dpto_max," envía el ", porcentaje_max, "% de lo que saca, siendo Antioquia su principal socio comercial"))
       }
     } else {
-      return("No hay datos disponibles")
-   }
+      values$subtitulo <- ("No hay datos disponibles")
+    }
+  return(values$subtitulo)
     })
   
-  output$mensaje1 <- renderText({
-    #resultado <- resultado()
-    #volatil<-resultado$producto_vol
-    return("Este tablero muestra el porcentaje de productos enviados por cada departamento a Antioquia.")
+ 
+# Mensajes
+output$mensaje1 <- renderText({
+  res <- resultado()
+  if (is.data.frame(res) || is.list(res)) {
+  if(nrow(res$datos) == 0) {
+  values$mensaje1 <- ("No hay datos disponibles")
+  }else{
+  porcentaje_max <- res$porcentaje_max_1
+  values$mensaje1 <- (paste0("Antioquia envia el ", res$porcentaje_max_1, " % de su producción* a Medellín."))}} else {
+  }
+  return(values$mensaje1)
   })
   
-  output$mensaje2 <- renderText({
-    res <- resultado()
-    if (is.data.frame(res) || is.list(res)) {
-      if(nrow(res$datos) == 0) {
-        return("No hay datos disponibles")
-      }else{
-        porcentaje_max <- res$porcentaje_max_1
-    return(paste0("Antioquia es su principal socio comercial ya que envía el ",porcentaje_max,"% de lo que saca a sí misma."))}} else {
-      return("No hay datos disponibles")
-    }
-  })
+
+# Generamos el Informe
+output$report <- downloadHandler(
+  filename = 'informe.pdf',
   
-  output$mensaje3 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb_an<-resultado$promedio_camb_an
-    return("Poner mensaje")
-  })
+  content = function(file) {
+    # Ruta al archivo RMarkdown
+    rmd_file <- "informe.Rmd"
+    
+    # Renderizar el archivo RMarkdown a PDF
+    rmarkdown::render(rmd_file, output_file = file, params = list(
+      anio = input$anio,
+      mes = input$mes,
+      producto = input$producto,
+      subtitulo = values$subtitulo,
+      maximo = resultado()$porcentaje_max_1,
+      plot = grafico_plano(),
+      mensaje1 = values$mensaje1
+    ))  
+  },
+  contentType = 'application/pdf'
+)  
+
   
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
   
-  observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
-  })
   
 }

@@ -32,6 +32,11 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 20px;
       }
+      .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+      }
       .sub-header2 {
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
@@ -52,7 +57,8 @@ ui <- fluidPage(
       
     "))
   ),
-    tags$h1("⁠Importancia de los municipios que abastecen antioquia", class = "main-header"),
+    tags$h1("Municipios proveedores de alimentos para Antioquia", class = "main-header"),
+    tags$h1("Descubre los principales municipios proveedores de alimentos que ingresan a Antioquia según el SIPSA", class = "main-header_2"),  
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -102,14 +108,16 @@ ui <- fluidPage(
     column(12,
            style = "margin-top: 2px;",
            tags$div(
-             tags$p("Este gráfico muestra la importancia que tiene cada municipio en el abastecimiento de la central mayorista y minorista de Medellín.", class = "sub-header2", style = "margin-top: 3px;"),
-             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Esta visualización muestra el ranking de los municipios de orígen de los alimentos que llegan a las principales centrales de abasto de Medellín, resaltando su participación porcentual en el volumen total de ingresos.", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Local: Productos reportados con origen de territorios del departamento de Antioquia.", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Externo: Productos reportados con origen fuera del departamento de  Antioquia.", class = "sub-header2", style = "margin-top: 3px;")
            )
     )
   ),
     fluidRow(
     tags$div(
-      tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+      tags$img(src = 'logo_2.png', style = "width: 100%; margin: 0;"),  
       style = "width: 100%; margin:0;"  
     )
   )

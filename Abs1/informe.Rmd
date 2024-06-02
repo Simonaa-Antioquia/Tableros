@@ -27,6 +27,7 @@ header-includes:
 - \usepackage{graphicx}
 - \definecolor{mygreen}{RGB}{26,73,34}
 - \definecolor{gray}{RGB}{128,128,128}
+- \definecolor{green2}{RGB}{13,141,56}
 - "\\setmainfont{Prompt-Regular.ttf}"
 - \pagestyle{fancy}
 - \fancyfoot{} 
@@ -38,7 +39,7 @@ header-includes:
 ---
 
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE,message=FALSE}
 # Instalamos librerias
 #tinytex::install_tinytex()
 #tinytex::tlmgr_install("caption")
@@ -49,13 +50,11 @@ library(knitr)
 ```
 
 <!-- Fecha -->
-\begin{flushleft}
-\large \textcolor{gray}{Informe en línea generado el: `r format(Sys.Date(), "%d %B, %Y")`}
-\end{flushleft}
-
- parámetros con los cuales se generó el informe:
-
-```{r}
+\begin{flushright}
+\textcolor{gray}{Informe en línea generado el: `r format(Sys.Date(), "%d %B, %Y")`}
+\end{flushright}
+\section*{Parámetros con los cuales se generó el informe:}
+```{r,message=FALSE,warning=FALSE}
   # Cargar el paquete knitr
   library(knitr)
   library(kableExtra)
@@ -72,40 +71,35 @@ library(knitr)
     "Parametro" = c("Tipo", "Año", "Mes", "Alimento"),
     "Valor" = c(tipo_label, ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio), mes_label, ifelse(is.na(params$alimento) | params$alimento == "todo", "Todos los productos", params$alimento))
   )
-  
-
 
 # Crear la tabla con knitr::kable
 tabla_kable <- df %>%
   knitr::kable(
     col.names = NULL,  # No mostrar nombres de columnas
-    align = 'c',  # Alineación de las columnas
+    align = 'l',  # Alineación de las columnas
     format = "latex",  # Formato de salida
-    booktabs = FALSE,  # No utilizar el estilo de las tablas del paquete booktabs
+    booktabs = TRUE,  # No utilizar el estilo de las tablas del paquete booktabs
     linesep = "",  # No agregar ninguna línea separadora
     escape = FALSE
   ) %>%
-  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "center", bootstrap_options = "striped")  # Estilo de la tabla con bordes blancos y cuadrícula completa
-
+   kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
 # Imprimir la tabla con knitr::kable
 tabla_kable
-
 ```
-
-
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{⁠Importancia de los municipios que abastecen Antioquia}\
+\fontsize{20}{20} \selectfont \textcolor{mygreen}{Municipios proveedores de alimentos para Antioquia}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont `r params$subtitulo`\
+\fontsize{10}{10} \selectfont \textcolor{green2}{Descubre los principales municipios proveedores de alimentos que ingresan a Antioquia según el SIPSA}\
 <!-- Grafica -->
-
-```{r, out.width = "80%"}
+```{r, out.width = "80%",warning=FALSE,message=FALSE}
 print(params$plot)
 ```
 
 \fontsize{10}{10} \selectfont `r params$mensaje1`\
 
-\fontsize{10}{10} \selectfont \textcolor{mygreen}{Este gráfico muestra la importancia que tiene cada municipio en el abastecimiento de la central mayorista y minorista de Medellín.}\
-\fontsize{10}{10} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
-\AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo_2.png}}
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Esta visualización muestra el ranking de los municipios de orígen de los alimentos que llegan a las principales centrales de abasto de Medellín, resaltando su participación porcentual en el volumen total de ingresos.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Local: Productos reportados con origen de territorios del departamento de Antioquia.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Externo: Productos reportados con origen fuera del departamento de  Antioquia.}\
 
+\AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo_2.png}}

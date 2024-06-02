@@ -21,7 +21,7 @@ options(scipen = 999)
 server <- function(input, output, session) {
   resultado<-reactive({
     if (is.null(input$municipios) || is.na(input$municipios) || input$municipios == 0) {
-      return(NULL)
+      return("No hay información disponible")
     }
     # Comprobar si solo se ha seleccionado un producto
     if (input$producto != "todo" && input$anio == "todo" && input$mes == "todo") {
@@ -99,16 +99,17 @@ server <- function(input, output, session) {
     res <- resultado()
     if(nrow(res$datos) == 0){
       values$subtitulo <- "No hay datos disponibles"
-    } else {
-      lugar_max <- res$lugar_max
-      porcentaje_max <- res$porcentaje_max
-      if (is.na(input$municipios) || is.null(input$municipios)){
-        values$subtitulo <- "Por favor ingrese el numero de municipios que quiere graficar"
-      } else {
-        values$subtitulo <- paste0(lugar_max, " es el municipio con mayor importancia en el abastecimiento de Antioquia, aporta ", porcentaje_max, "%")
-      }
-    }
-    return(values$subtitulo)
+    } 
+    #else {
+    #  lugar_max <- res$lugar_max
+    #  porcentaje_max <- res$porcentaje_max
+    #  if (is.na(input$municipios) || is.null(input$municipios)){
+    #    values$subtitulo <- "Por favor ingrese el numero de municipios que quiere graficar"
+    #  } else {
+    #    values$subtitulo <- paste0(lugar_max, " es el municipio con mayor importancia en el abastecimiento de Antioquia, aporta ", porcentaje_max, "%")
+    #  }
+    #}
+    #return(values$subtitulo)
   })
   
   
@@ -119,8 +120,12 @@ values <- reactiveValues(mensaje1 = NULL)
 output$mensaje1 <- renderText({
   if (is.na(input$municipios)) {
     values$mensaje1 <- ""
-  } else {
-    values$mensaje1 <- paste0("El municipio más importante en el abastecimiento es: ", resultado()$lugar_max)
+  } else if (input$variable == 1) {
+    values$mensaje1 <- paste0(resultado()$lugar_max, " se destaca como el principal proveedor de alimentos en las centrales de abasto de Medellín, representando el ", resultado()$porcentaje_max, " % del volumen total")
+  } else if (input$variable == 2){
+    values$mensaje1 <- paste0(resultado()$lugar_max, " se destaca como el principal proveedor de alimentos en las centrales de abasto de Medellín, representando el ", resultado()$porcentaje_max, " % del volume local")
+  } else{
+    values$mensaje1 <- paste0(resultado()$lugar_max, " se destaca como el principal proveedor de alimentos en las centrales de abasto de Medellín, representando el ", resultado()$porcentaje_max, " % del volume externo")
   }
   return(values$mensaje1)
 })

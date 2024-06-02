@@ -28,7 +28,12 @@ ui <- fluidPage(
            }
       .selectize-dropdown {
       z-index: 10000 !important;
-    }
+      }
+    .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+      }
       body {
         overflow-x: hidden;
       }
@@ -47,7 +52,8 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("Composición detallada de los alimentos disponibles en Antioquia", class = "main-header"),
+  tags$h1("Principales alimentos en centrales de abasto de Medellín, por procentaje de volumen de ingreso", class = "main-header"),
+  tags$h1("Visualiza los alimentos más destacados en las centrales de abasto de Medellín, basado en su volumen de entrada", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -68,31 +74,28 @@ ui <- fluidPage(
     fluidRow(
       column(9,
              highchartOutput("grafico",height = "300px"),
-             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargar_", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte", icon = icon("file-alt")),
-             actionButton("reset", "Restablecer", icon = icon("refresh"))
-             #,
-             #tableOutput("vistaTabla") 
+             actionButton("reset", "Restablecer", icon = icon("refresh")),
+             downloadButton("report", "Generar informe")
       ),
       column(3, 
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;")#,
-             #wellPanel(textOutput("mensaje2"),
-              #         style = "background-color: #005A45; color: #FFFFFF;"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje2"),
+                       style = "background-color: #005A45; color: #FFFFFF;")
             # wellPanel(textOutput("mensaje3"),
              #          style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
     tags$div(tags$p(" ",
-                    tags$br(),"Solo se muestran los producto que tienen al menos un 1% de la composición.",
-                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
+                    tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+                    tags$br(),"Solo se muestran los productos que tienen al menos un 1% de la composición.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+    tags$img(src = 'logo_2.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
     )
   ) 

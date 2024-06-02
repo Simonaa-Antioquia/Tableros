@@ -45,6 +45,11 @@ ui <- fluidPage(
         font-size: 40px;
         color: #0D8D38;
       }
+        .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+      }
       .sub-header {
         font-family: 'Prompt', sans-serif;
         font-size: 20px;
@@ -55,7 +60,8 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("¿Qué tan importante es Antioquia para lo que envian otros departamento?", class = "main-header"),
+  tags$h1("Antioquia y su importancia en la recepción de alimentos", class = "main-header"),
+  tags$h1("Descubre la importancia de Antioquia como receptor de alimentos desde otros departamentos del país.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -74,30 +80,30 @@ ui <- fluidPage(
     fluidRow(
       column(9,
              leafletOutput("grafico",  height = "500px"),
-             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargar_", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte", icon = icon("file-alt")),
-             actionButton("reset", "Restablecer", icon = icon("refresh"))
-             #,
-             #tableOutput("vistaTabla") 
+             actionButton("reset", "Restablecer", icon = icon("refresh")),
+             downloadButton("report", "Generar informe")
+        
       ),
       column(3, 
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             #wellPanel(textOutput("mensaje3"),
-              #         style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #0D8D38; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Cada porcentaje es lo que cada departamento envía a Antioquia, incluido lo que se queda en Antioquia.",
-                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
-  ),
+    tags$div(tags$p("Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+                    tags$br(),"Esta visualización muestra el porcentaje de alimentos enviados a Antioquia desde cada departamento, incluyendo productos de origen local. Permite apreciar la importancia de Antioquia como receptor de alimentos provenientes de otros territorios del país",
+                    tags$br(),"* Producción se refiere a los productos cuyo origen es Antioquia.", class = "sub-header2"), style = "margin-top: 20px;")
+),
+  br(),
+  br(),
+  br(),
+ br(),
+ br(),
   tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+    tags$img(src = 'logo_2.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
     )
   )
