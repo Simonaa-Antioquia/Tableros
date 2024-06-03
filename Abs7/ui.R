@@ -86,12 +86,7 @@ ui <- fluidPage(
              actionButton("reset", "Restablecer", icon = icon("refresh")),
              downloadButton("report", "Generar informe")
            )),
-    
-    #column(3, 
-    #      div(
-    #         wellPanel(textOutput("mensaje1"),
-    #                  style = "background-color: #0D8D38; color: #FFFFFF;")
-    #       ))
+ 
   ),
     
     fluidRow(

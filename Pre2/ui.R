@@ -82,13 +82,13 @@ ui <- fluidPage(
               #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("La información solo se muestra precios promedio en el centro de acopio de Medellín.",
+    tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
                     tags$br(),"Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.",
                     tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.",
-                    tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
+                    tags$br(),"La información solo se muestra precios promedio en el centro de acopio de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
-    tags$img(src = 'logo.png', style = "width: 100vw;"),
+    tags$img(src = 'logo_2.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
   )
 )

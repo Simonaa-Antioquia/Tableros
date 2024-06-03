@@ -51,23 +51,57 @@ server <- function(input, output, session) {
     }
   })
   
+  
+  
+#  BOTON DE RESET  
   observeEvent(input$reset, {
     updateSelectInput(session, "tipo", selected = 1)
     updateSelectInput(session, "producto", selected = "")
     updateSelectInput(session, "anio", selected = "")
   })
+  
+  
+# RENDER PLOTLY  
   output$grafico <- renderPlotly({
     plotly::ggplotly(resultado()$grafico)
   })
   
+# RENDER PLOT
+  grafico_plano <- reactive({
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      validate(
+        ("No hay datos disponibles")
+      )
+    }else{
+      res$grafico_plano
+    }
+  })   
+
+# DESCARGAR PLOT 
+output$descargar_ <- downloadHandler(
+    filename = function() {
+      paste("IND2_", Sys.Date(), ".png", sep="")
+    },
+    content = function(file) {
+      # Forzar la ejecución de la función reactiva
+      res <- resultado()
+      
+      # Usa ggsave para guardar el gráfico
+      ggplot2::ggsave(filename = file, plot = res$grafico_plano, width = 13, height = 7, dpi = 200)
+    }
+  )
+  
+  
+# HEAD DATOS  
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
       head(resultado()$datos, 5)
     }
   })
   
-
-    output$descargarDatos <- downloadHandler(
+# DESCARGA DE DATOS
+  output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
     },
@@ -76,52 +110,71 @@ server <- function(input, output, session) {
     }
   )
   
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})
   
-  output$subtitulo <- renderText({
+# SUBTITULO  
+values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL, mensaje2= NULL) 
+  
+output$subtitulo <- renderText({
     if ((input$tipo == 2 || input$tipo == 4) && is.null(input$producto)) {
       return("Debe seleccionar un producto.")
     }
-    
     resultado <- grafica_indice(input$tipo, input$anio, input$producto)
     tipo <- input$tipo
     max_vulnerabilidad <- resultado$max_vulnerabilidad
     fecha_max_vulnerabilidad <- resultado$fecha_max_vulnerabilidad
     producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
+    fecha_max_vulnerabilidad <- substr(fecha_max_vulnerabilidad, 1, 7)
     
     if (tipo == 2) {
-      return(paste("La maxima vulnerabilidad anual se encuentra en el año", fecha_max_vulnerabilidad, "para el producto", producto_max_vulnerabilidad, "y es de", max_vulnerabilidad,""))
-    } else if (tipo == 3) {
-      return(paste("La maxima vulnerabilidad mensual, fue en", fecha_max_vulnerabilidad, "y es de", max_vulnerabilidad,""))
+      values$subtitulo <- (paste("La menor variedad de territorios conectado por el flujo de alimentos desde Antioquia hacia otras plazas fue en ", fecha_max_vulnerabilidad,"  donde se registró un índice máximo de " , max_vulnerabilidad, " para el producto: ",producto_max_vulnerabilidad))
+      } else if (tipo == 3) {
+        values$subtitulo <- (paste( "La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ", fecha_max_vulnerabilidad, " donde se registró un índice máximo de ", max_vulnerabilidad))
     } else if (tipo == 4) {
-      return(paste("La mayor vulnerabilidad fue en",fecha_max_vulnerabilidad, "para el prodcuto",producto_max_vulnerabilidad,"y fue de",max_vulnerabilidad,""))
+      values$subtitulo <- (paste("La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ", fecha_max_vulnerabilidad, " donde se registró un índice máximo de ", max_vulnerabilidad, " para el producto: ",  producto_max_vulnerabilidad))
     } else {
-      return(paste("El año con mayor indice de vulnerabilidad fue",fecha_max_vulnerabilidad, "y fue de",max_vulnerabilidad,""))
+      values$subtitulo <- (paste("La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ",fecha_max_vulnerabilidad, " donde se registró un índice máximo de " , max_vulnerabilidad))
     }
+    return(values$subtitulo)
   })
   
-  
+# MENSAJES: MENSAJE 1   
   output$mensaje1 <- renderText({
-    return("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los destinos de alimentos en Antioquia, un mayor índice indica menos municipios de destino para los alimentos cuyo origen esta en Antioquia.")
-  })
-  
+    values$mensaje1 <-("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los destinos de alimentos en Antioquia, un mayor índice refleja menos municipios de destino para los alimentos cuyo origen esta en Antioquia.")
+    values$mensaje1  
+    })
+#MENSAJE: MENSAJE 2  
   output$mensaje2 <- renderUI({
-    return("Este índice puede aumentar si aumenta la participación de un municipio o disminuye el número de municipios de destino.")
-  })
+    values$mensaje2 <- ("Este índice puede aumentar si incrementa la participación de un municipio sobre el volumen total o disminuye el número de municipios de destino.")
+    values$mensaje2
+    })
+  
+
+  # GENERAMOS INFORME 
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        tipo = input$tipo,
+        producto= input$producto,
+        anio = input$anio,
+        plot = grafico_plano(),
+        subtitulo = values$subtitulo,
+        mensaje1 = values$mensaje1,
+        mensaje2 = values$mensaje2
+        
+      ))  
+    },
+    contentType = 'application/pdf'
+  )    
   
   
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
   
-  observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
-  })
-  
-}
+  }
 
 
 

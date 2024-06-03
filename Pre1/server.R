@@ -116,7 +116,6 @@ values <- reactiveValues(subtitulo = NULL)
         fecha_min = resultado()$fecha_min,
         plot = grafico_plano()+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)),# Accede al gráfico 'grafico_plano'
         subtitulo = values$subtitulo,
-        mensaje1 = values$mensaje1,
         mensaje2 = values$mensaje2,
         mensaje3 = values$mensaje3,
         tipo = input$variable,

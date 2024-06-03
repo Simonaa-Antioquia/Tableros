@@ -67,37 +67,35 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   # Filtrar los productos seleccionados solo para las opciones 2 y 4
   if (tipo %in% c(1)) {
     # Comprueba si df$fecha está vacío o contiene valores no numéricos
-      p<-ggplot(df, aes(x = fecha, y = IHH)) +
+      p_plano<-ggplot(df, aes(x = fecha, y = IHH)) +
         geom_line(color = "#2E7730") +
-        labs(x = "Año", y = "Importancia Municipios destino") +
+        labs(x = "Año", y = " ") +
         scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha))) +
         scale_color_manual(values = col_palette) +
         theme_minimal()  
   }else if (tipo %in% c(2)){
     df <- df[df$producto %in% productos_seleccionados, ]
-    p<-ggplot(df, aes(x = fecha, y = IHH, color = producto)) +
+    p_plano<-ggplot(df, aes(x = fecha, y = IHH, color = producto)) +
       geom_line() +
       scale_color_manual(values = col_palette) +
-      labs(x = "Año", y = "Importancia Municipios destino") +
+      labs(x = "Año", y = " ") +
       scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha))) +
       theme_minimal() 
   } else if (tipo%in%(3)) { 
     
-   p<- ggplot(df, aes(x = fecha, y = IHH)) +
+   p_plano<- ggplot(df, aes(x = fecha, y = IHH)) +
       geom_line(color = "#2E7730") +
-      labs(x = "Año", y = "Indice de Vulnerabilidad") +
+      labs(x = "Año", y = " ") +
       theme_minimal()  +
-      scale_color_manual(values = col_palette) +
-      theme(text = element_text(family = "Prompt", size = 16)) 
+      scale_color_manual(values = col_palette) 
     
   } else if (tipo%in%(4)){
     df <- df[df$producto %in% productos_seleccionados, ]
-    p<-ggplot(df, aes(x = fecha, y = IHH, color = producto)) +
+    p_plano<-ggplot(df, aes(x = fecha, y = IHH, color = producto)) +
       geom_line() +
-      labs(x = "Año", y = "Importancia Municipios destino") +
+      labs(x = "Año", y = " ") +
       theme_minimal()  +
-      scale_color_manual(values = col_palette) +
-      theme(text = element_text(family = "Prompt", size = 16))
+      scale_color_manual(values = col_palette) 
   }
   
   # Calcular el valor máximo del índice de vulnerabilidad
@@ -106,11 +104,12 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   fecha_max_vulnerabilidad <- df$fecha[indice_max_vulnerabilidad]
   producto_max_vulnerabilidad <- ifelse("producto" %in% names(df), df$producto[indice_max_vulnerabilidad], NA)
   
-  p<-plotly::ggplotly(p)
+  p<-plotly::ggplotly(p_plano)
   
   # Devolver el gráfico, los datos y los valores máximos
   return(list(
     grafico = p,
+    grafico_plano = p_plano,
     datos = df,
     max_vulnerabilidad = max_vulnerabilidad,
     fecha_max_vulnerabilidad = fecha_max_vulnerabilidad,

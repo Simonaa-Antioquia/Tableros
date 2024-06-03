@@ -76,14 +76,14 @@ ui <- fluidPage(
              conditionalPanel(
                condition = "input.tipo == 2 || input.tipo == 4",
                selectInput("producto", "Seleccione los productos:", 
-                           choices = c(NULL, unique(IHH_anual_producto$producto)), multiple = TRUE)
+                           choices = c("Todos los productos" = "", unique(IHH_anual_producto$producto)), multiple = TRUE)
              )
       ),
       column(4,
              conditionalPanel(
                condition = "input.tipo == 3 || input.tipo == 4",
                selectInput("anio", "Seleccione el año:", 
-                           choices = c("", unique(IHH_anual_producto$year)))
+                           choices = c("Todos los años"="", unique(IHH_anual_producto$year)))
              )
       )
     )
@@ -93,15 +93,12 @@ ui <- fluidPage(
     column(9,
            div(
              plotly::plotlyOutput("grafico",height = "400px"),
-             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargar_", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte", icon = icon("file-alt")),
-             actionButton("reset", "Restrablecer",icon = icon("refresh"))
-             #,
-             #tableOutput("vistaTabla") 
+             actionButton("reset", "Restablecer", icon = icon("refresh")),
+             downloadButton("report", "Generar informe")
            )),
     
     column(3, 
@@ -109,9 +106,7 @@ ui <- fluidPage(
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(uiOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;")#,
-             # wellPanel(textOutput("mensaje3"),
-             #style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #005A45; color: #FFFFFF;")
            ))
   ),
   
@@ -119,9 +114,9 @@ ui <- fluidPage(
     column(12,
            style = "margin-top: 2px;",
            tags$div(
-             tags$p("Este gráfico se calcula con base en el índice de Herfindahl-Hirschman.", 
-                    tags$br(),"Un mayor índice indica menor número de destinos de los cuales provienen los alimentos (municipios).", 
-                    tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", 
+                    tags$br(),"Este gráfico se calcula con base en el índice de Herfindahl-Hirschman.", 
+                    class = "sub-header2", style = "margin-top: 3px;"),
              tags$div(style = "text-align: left;", 
                       tags$p("La fórmula del índice de Herfindahl-Hirschman es:", class = "sub-header2", style = "margin-top: 3px;"),
                       tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),
@@ -133,7 +128,7 @@ ui <- fluidPage(
   
   fluidRow(
     tags$div(
-      tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+      tags$img(src = 'logo_2.png', style = "width: 100%; margin: 0;"),  
       style = "width: 100%; margin:0;"  
     )
   ) 
