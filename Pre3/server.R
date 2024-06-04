@@ -99,7 +99,7 @@ server <- function(input, output, session) {
       ciudad_max <- res$ciudad_max
       ciudad_min <- res$ciudad_min
       
-      return(paste0("El precio más bajo para el producto y periodo de tiempo se encontró en ",ciudad_min , ", con una diferencia de $", precio_min, " menos respecto al precio en Medellín. En contraste, el precio más alto se reportó en ", ciudad_max, ", superando el de Medellín en $", precio_max))
+      return(paste0("El precio más bajo para el producto y periodo de tiempo se encontró en ",ciudad_min , ", con una diferencia de $", precio_min, " menos respecto al precio en Medellín. En contraste, el precio más alto se reportó en ", ciudad_max, ", superando el de Medellín en $", precio_max,"."))
     }, error = function(e) {
       # Si ocurre un error, ejecuta este código
       return("No hay datos disponibles.")
@@ -127,11 +127,13 @@ server <- function(input, output, session) {
   output$mensaje1 <- renderText({
     tryCatch({
       # Intenta ejecutar este código
-      if (input$tipo != 1) {
-        values$mensaje1<-(paste0("El producto seleccionado es: ", input$producto))
+      if (input$tipo == 1) {
+        values$mensaje1 <- paste0("El precio promedio en Medellín para el periodo de tiempo seleccionado fue: $", format(resultado()$precio_medellin, big.mark = ","), " pesos.")
         return(values$mensaje1)
       } else {
-        values$mensaje1<-("La visualización no se filtró por ningún producto específico.")
+        values$mensaje1 <- paste0("El precio promedio de ", input$producto, 
+                                  " en Medellín para el periodo de tiempo seleccionado fue: $", 
+                                  format(resultado()$precio_medellin, big.mark = ","), " pesos.")
         return(values$mensaje1)
       }
     }, error = function(e) {

@@ -84,7 +84,10 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
   df <- df %>%
     dplyr::rename_with(~ ifelse(str_starts(.x, "comparacion"), "comp", .x))  
   
-    
+  df <- df %>%
+    dplyr::rename_with(~ ifelse(str_starts(.x, "precio_medellin"), "precio_medellin", .x))  
+  
+      
   df <- df[!(duplicated(df[c("ciudad")])),]
   
     
@@ -115,7 +118,10 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
     }
     
     df_2<-df
-    df$tooltip_text <- paste("Ciudad: ", df$ciudad, "<br>Diferencia de precio: ", round(df$comp, 0), "<br>Desviación Estándar:", round(df$dev, 0))
+
+    df$tooltip_text <- paste("Ciudad: ", df$ciudad, 
+                             "<br>Diferencia de precio: $", format(round(df$comp, 0), big.mark = ".", decimal.mark = ","), 
+                            "<br>Desviación Estándar:", round(df$dev, 0))
     
     map <- ggplot(df, aes(x=comp,y=1,color=ciudad)) +
       geom_point(aes(size = dev, text = tooltip_text), alpha = 0.8) +
@@ -131,6 +137,7 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
     precio_min <- round(min(df$comp)*-1)
     ciudad_max <- df$ciudad[which.max(df$comp)]
     ciudad_min <- df$ciudad[which.min(df$comp)]
+    precio_medellin <- round(df$precio_medellin)[1]
     
 
     # Convertir a plotly y especificar que el texto del tooltip viene de la columna 'text'
@@ -163,7 +170,8 @@ col_palette <- c("#007CC3", "#456ABB","#1A4922", "#2E7730", "#0D8D38", "#85A728"
       precio_max=precio_max,
       precio_min=precio_min,
       ciudad_max=ciudad_max,
-      ciudad_min=ciudad_min
+      ciudad_min=ciudad_min,
+      precio_medellin = precio_medellin
     ))
   }
   

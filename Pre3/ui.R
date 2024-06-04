@@ -106,12 +106,12 @@ ui <- fluidPage(
         column(12,
                style = "margin-top: 2px;",
                tags$div(
-                 tags$p("Este gráfico muestra la diferencia promedio de precios entre varias ciudades comparadas con Medellín.",
+                 tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+                        tags$br(),"Este gráfico muestra la diferencia promedio de precios entre varias ciudades comparadas con Medellín.",
                         tags$br(),"El tamaño del círculo refleja cuánto cambia el precio dentro de cada ciudad.",
                         tags$br(),"Desviación estándar: Mide qué tan parejos están los precios de los productos comparados con el promedio. Si los precios cambian mucho, la desviación estándar será alta, si no cambian mucho, será baja. Permite ver si los productos tienen un precio más o menos estable.",
                         tags$br(),"Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.",
-                        tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.",
-                        tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2", style = "margin-top: 3px;")
+                        tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.", class = "sub-header2", style = "margin-top: 3px;")
                )
         )
         
@@ -119,7 +119,7 @@ ui <- fluidPage(
     ),
     fluidRow(
       tags$div(
-        tags$img(src = 'logo.png', style = "width: 100vw; margin: 0;"),
+        tags$img(src = 'logo_2.png', style = "width: 100vw; margin: 0;"),
         style = "width: 100%; margin:0;"  
       )
     )

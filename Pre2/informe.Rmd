@@ -90,11 +90,9 @@ tabla_kable
 <!-- Subtitulo2 -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 <!-- Grafica -->
-
-```{r, out.width = "80%", fig.align = "center",warning=FALSE, message=FALSE}
+```{r, out.width = "70%", fig.align = "center",warning=FALSE, message=FALSE}
 print(params$plot)
 ```
-
 \fontsize{10}{10} \selectfont `r params$mensaje2`\
 
 
@@ -104,4 +102,4 @@ print(params$plot)
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.}\
 
 
-\AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=5cm,keepaspectratio]{www/logo_2.png}}
+\AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=4cm,keepaspectratio]{www/logo_2.png}}
