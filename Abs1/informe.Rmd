@@ -89,7 +89,7 @@ tabla_kable
 <!-- Titulo del tablaro -->
 \fontsize{20}{20} \selectfont \textcolor{mygreen}{Municipios proveedores de alimentos para Antioquia}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Descubre los principales municipios proveedores de alimentos que ingresan a Antioquia según el SIPSA}\
+\fontsize{10}{10} \selectfont \textcolor{green2}{Descubre los principales municipios proveedores de alimentos que ingresan a Antioquia según el SIPSA.}\
 <!-- Grafica -->
 ```{r, out.width = "80%",warning=FALSE,message=FALSE}
 print(params$plot)
@@ -97,7 +97,7 @@ print(params$plot)
 
 \fontsize{10}{10} \selectfont `r params$mensaje1`\
 
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Esta visualización muestra el ranking de los municipios de orígen de los alimentos que llegan a las principales centrales de abasto de Medellín, resaltando su participación porcentual en el volumen total de ingresos.}\
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Local: Productos reportados con origen de territorios del departamento de Antioquia.}\
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Externo: Productos reportados con origen fuera del departamento de  Antioquia.}\

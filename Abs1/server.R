@@ -116,27 +116,30 @@ server <- function(input, output, session) {
   
 # Mensajes 
 values <- reactiveValues(mensaje1 = NULL)
-  
 output$mensaje1 <- renderText({
-  if (is.na(input$municipios)) {
-    values$mensaje1 <- ""
+  resultado_data <- resultado()
+  if (nrow(resultado_data$datos) == 0) {
+    validate("No hay información disponible")
+  } else {
+  if ( is.null(input$municipios) || input$municipios < 1) {
+    values$mensaje1 <- "No hay información disponible"
   } else if (input$variable == 1) {
-    values$mensaje1 <- paste0(resultado()$lugar_max, " se destaca como el principal proveedor de alimentos en las centrales de abasto de Medellín, representando el ", resultado()$porcentaje_max, " % del volumen total")
+    values$mensaje1 <- paste0(resultado()$lugar_max, " se destaca como el principal proveedor de alimentos en las centrales de abasto de Medellín, representando el ", round(resultado()$porcentaje_max,digits = 1), " % del volumen total.")
   } else if (input$variable == 2){
-    values$mensaje1 <- paste0(resultado()$lugar_max, " se destaca como el principal proveedor de alimentos en las centrales de abasto de Medellín, representando el ", resultado()$porcentaje_max, " % del volume local")
+    values$mensaje1 <- paste0(resultado()$lugar_max, " se destaca como el principal proveedor de alimentos en las centrales de abasto de Medellín, representando el ", round(resultado()$porcentaje_max, digits = 1), " % del volumen local.")
   } else{
-    values$mensaje1 <- paste0(resultado()$lugar_max, " se destaca como el principal proveedor de alimentos en las centrales de abasto de Medellín, representando el ", resultado()$porcentaje_max, " % del volume externo")
+    values$mensaje1 <- paste0(resultado()$lugar_max, " se destaca como el principal proveedor de alimentos en las centrales de abasto de Medellín, representando el ", round(resultado()$porcentaje_max, digits = 1), " % del volumen externo.")
   }
   return(values$mensaje1)
-})
+}})
   
   
 # Boton de reset
   
  observeEvent(input$reset, {
       updateSelectInput(session, "municipios", selected = 10)
-      updateSelectInput(session, "anio", selected = "")
-      updateSelectInput(session, "mes", selected = "")
+      updateSelectInput(session, "anio", selected = "todo")
+      updateSelectInput(session, "mes", selected = "todo")
       updateSelectInput(session, "producto", selected = NULL)
     })
  

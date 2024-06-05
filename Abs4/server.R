@@ -39,22 +39,36 @@ server <- function(input, output, session) {
     }
   })
   
+  # Render Grafico
   output$grafico <- plotly::renderPlotly({
     res <- resultado()
-    if (nrow(res$datos)==0) {
-      validate(
-        ("No hay datos disponibles")
+    if (nrow(res$datos) == 0) {
+      validate("No hay datos disponibles"
       )
     } else {
       res$grafico
     }
   })
   
+  # Render Grafico plano
+  grafico_plano <- reactive({
+    res <- resultado()
+    if (is.character(res) || length(res) == 0 || is.null(input$municipios) || input$municipios < 1) {
+      return(NULL)  # No hay gráfico para guardar
+    } else {
+      res$grafico_plano  # Guarda solo el gráfico 'grafico_plano'
+    }
+  }) 
+  
+  # Head tabla 
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
       head(resultado()$datos, 5)
     }
   })
+  
+
+  # Descarga de imagen 
   
   output$descargar <- downloadHandler(
     filename = function() {
@@ -63,10 +77,13 @@ server <- function(input, output, session) {
     content = function(file) {
       tempFile <- tempfile(fileext = ".html")
       htmlwidgets::saveWidget(as_widget(resultado()$grafico), tempFile, selfcontained = FALSE)
-      webshot::webshot(tempFile, file = file, delay = 2, vwidth = 800, vheight = 500, zoom = 2)
+      webshot::webshot(tempFile, file = file, delay = 2)
     }
   )
   
+  
+  
+  # Descarga de datos
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
@@ -76,10 +93,8 @@ server <- function(input, output, session) {
     }
   )
   
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})
   
+  # Boton de reset 
   observeEvent(input$reset, {
     updateSelectInput(session, "municipios", selected = 10)
     updateSelectInput(session, "anio", selected = "todo")
@@ -87,28 +102,45 @@ server <- function(input, output, session) {
     updateSelectInput(session, "producto", selected = "todo")
   })
   
-
-
+  
+  # Mensajes
+  values <- reactiveValues(mensaje1 = NULL)
   output$mensaje1 <- renderText({
-    
-      return("El ",porcentaje_max, " de los productos procedentes de municipios de Antioquia tienen como destino los principales centros de acopio de ", lugar_max )
-})
-  
+    resultado_data <- resultado()
+    if (nrow(resultado_data$datos) == 0) {
+      validate("No hay información disponible")
+    } else {
+      values$mensaje1<- (paste0("El ", round(resultado_data$porcentaje_max, digits = 1), "% de los productos procedentes de municipios de Antioquia tienen como destino los principales centros de acopio de ", resultado_data$lugar_max, "."))
+    }
+    return(values$mensaje1)
+  })
 
   
+  # Generamos el informe
   
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+      anio = input$anio,
+      mes = input$mes,
+      alimento = input$producto,
+      municipios = input$municipios,
+      plot = resultado()$grafico_plano,
+      mensaje1 = values$mensaje1
+      ))
+      
+      
+    },
+    
+    contentType = 'application/pdf'
+  )
   
-  
-  
-  
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
-  
-  observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
-  })
   
 }
 

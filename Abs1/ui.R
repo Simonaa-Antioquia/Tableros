@@ -20,7 +20,7 @@ source("002b_Indices_abastecimiento_Antioquia_funciones.R")
 
 ui <- fluidPage(
   tags$head(
-    tags$title("Improtancia_municipios"),  
+    tags$title("Municipios_proveedores"),  
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"), 
     tags$style(HTML("
       .main-header {
@@ -58,7 +58,7 @@ ui <- fluidPage(
     "))
   ),
     tags$h1("Municipios proveedores de alimentos para Antioquia", class = "main-header"),
-    tags$h1("Descubre los principales municipios proveedores de alimentos que ingresan a Antioquia según el SIPSA", class = "main-header_2"),  
+    tags$h1("Descubre los principales municipios proveedores de alimentos que ingresan a Antioquia según el SIPSA.", class = "main-header_2"),  
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -108,7 +108,7 @@ ui <- fluidPage(
     column(12,
            style = "margin-top: 2px;",
            tags$div(
-             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2", style = "margin-top: 3px;"),
              tags$p("Esta visualización muestra el ranking de los municipios de orígen de los alimentos que llegan a las principales centrales de abasto de Medellín, resaltando su participación porcentual en el volumen total de ingresos.", class = "sub-header2", style = "margin-top: 3px;"),
              tags$p("Local: Productos reportados con origen de territorios del departamento de Antioquia.", class = "sub-header2", style = "margin-top: 3px;"),
              tags$p("Externo: Productos reportados con origen fuera del departamento de  Antioquia.", class = "sub-header2", style = "margin-top: 3px;")

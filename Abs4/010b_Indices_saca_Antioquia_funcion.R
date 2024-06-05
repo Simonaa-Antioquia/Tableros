@@ -183,6 +183,11 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
     
   }
   
+  if(nrow(df)==0){
+    p<-  validate("No hay datos disponibles")
+    p_plano <- NULL
+  } else {
+  
   df <- df  %>% 
     arrange(desc(all_of(columna_porcentaje))) %>% 
     mutate(mpio_destino = factor(mpio_destino, levels = mpio_destino)) %>% 
@@ -207,23 +212,21 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
   col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203", "#F1B709", "#F39F06", "#BE7E11",
                    "#08384D", "#094B5C", "#00596C", "#006A75", "#007A71", "#00909C", "#0088BB", "#007CC3", "#456ABB")
 
-  if(nrow(df)==0){
-    p <- print("No hay datos disponibles")
-  }else{
-    df$tooltip_text <- paste("Ciudad de origen: ", df$mpio_destino, "<br>Porcentaje: ", round(df$columna_porcentaje*100,digits = 2),"%")
+  
+    df$tooltip_text <- paste("Ciudad destino: ", df$mpio_destino, "<br>Porcentaje: ", round(df$columna_porcentaje*100,digits = 2),"%")
     
     # Ahora puedes usar col_palette en tu gráfico
-    p<-ggplot(df, aes(x = forcats::fct_reorder(mpio_destino, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill = mpio_destino,text = tooltip_text)) +
+    p_plano<-ggplot(df, aes(x = forcats::fct_reorder(mpio_destino, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill = mpio_destino,text = tooltip_text)) +
       geom_bar(stat = "identity") +
       geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 1)), hjust = 0.1) +
       coord_flip() +
       labs(x = "", y = "", title = "") +
       scale_fill_manual(values = col_palette) +  # Agregar la paleta de colores
       theme_minimal() +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none")#,axis.text.x = element_blank())
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.position = "none", axis.text.x = element_blank(), axis.ticks.x = element_blank())
     
     
-    p <- plotly::ggplotly(p, tooltip = "text")
+    p <- plotly::ggplotly(p_plano, tooltip = "text")
   }
   df<-df%>%select(-tooltip_text)
   porcentaje_max <- ifelse(nrow(df)==0, "", round(max(df$columna_porcentaje)*100, digits = 2))
@@ -232,6 +235,7 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
   return(
     list(
       grafico = p,
+      grafico_plano = p_plano,
       datos = df,
       porcentaje_max=porcentaje_max,
       lugar_max=lugar_max

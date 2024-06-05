@@ -41,6 +41,11 @@ ui <- fluidPage(
         font-size: 40px;
         color: #0D8D38;
       }
+       .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+        }
       .sub-header {
         font-family: 'Prompt', sans-serif;
         font-size: 20px;
@@ -52,6 +57,7 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("Destino de la producción de alimentos de origen antioqueño", class = "main-header"),
+  tags$h1("Descubre las principales ciudades receptores de alimentos con origen Antioquia según el SIPSA", class = "main-header_2"),
   #div(
   #  textOutput("subtitulo"),
   #  class = "sub-header2",
@@ -76,29 +82,24 @@ ui <- fluidPage(
              plotlyOutput("grafico",height = "400px"),
              actionButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
-             #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte"),
-             actionButton("reset", "Restablecer", icon = icon("refresh"))
-             #,
-             #tableOutput("vistaTabla") 
+             actionButton("reset", "Restrablecer",icon = icon("refresh")),
+             downloadButton("report", "Generar informe")
       ),
       column(3, 
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;")#,
-             #wellPanel(textOutput("mensaje3"),
-              #         style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #0D8D38; color: #FFFFFF;")
+      
       )
     ),
     tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)",
-                    tags$br(),"Los municipios destino solo cuenta las principales ciudades con centros de acopio en las que se recolecta información para el SIPSA.",
-                    tags$br(),"Este gráfico muestra la importancia que tiene cada municipio como destino de los prodoctos de origen antioqueño", class = "sub-header2"), style = "margin-top: 20px;")
+                    tags$br(),"Solo se tienen en cuenta las principales ciudades con centros de acopio en las que se recolecta información para el SIPSA.",
+                    tags$br(),"Esta visualización muestra el ranking  de destinos de los alimentos con origen Antioquia, resaltando el porcentaje de volumen de productos que llegan a cada centro de abasto según SIPSA"
+, class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
-    tags$img(src = 'logo.jpeg', style = "width: 100vw;"),
+    tags$img(src = 'logo_2.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
     )
   ) 

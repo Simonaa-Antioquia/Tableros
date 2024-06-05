@@ -84,8 +84,8 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
   }
   
   if(nrow(df)==0){
-    p<-  print("No hay datos disponibles")
-    mapa2 <- NULL
+    p<-  return("No hay datos disponibles")
+
   } else {
   
   mapa<-shapefile%>%dplyr::left_join(df, by = c("dpto_ccdgo"="cod_depto"))
