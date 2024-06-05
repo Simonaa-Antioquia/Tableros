@@ -22,8 +22,11 @@ library(leaflet)
 # Definir la interfaz de usuario
 
 ui <- fluidPage(
-  tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
-  tags$head(tags$title("Riesgo cierre de rutas"),  # Añade esta línea
+  tags$div(
+    style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
+  tags$head(
+    tags$title("Riesgo cierre de rutas"),  # Añade esta línea
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
     tags$style(HTML("
       .main-header {
         font-family: 'Prompt', sans-serif;
@@ -83,10 +86,10 @@ ui <- fluidPage(
                                    "Noroccidente" = 5,
                                    "Sur" = 6,
                                    "Choco" = 7), inline = TRUE))
-      )),
+      ),
     fluidRow(
       column(9,  
-             leafletOutput("plot", width = "100%", height = "500px"),
+             leafletOutput("plot"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
              #actionButton("github", "GitHub", icon = icon("github")),
@@ -105,19 +108,18 @@ ui <- fluidPage(
               #         style = "background-color: #094735; color: #FFFFFF;")
         ))
     ),
-    fluidRow(
-    column(12,
-           style = "margin-top: 2px;",
            tags$div(
              tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
              tags$p("Este mapa muestra la importancia de las diferentes rutas de acceso al departamento de Atioquia, permitiendo visualizar el impacto que tendría el cierre de una o unas de ellas en el abastecimiento.", class = "sub-header2", style = "margin-top: 3px;")
              )
-    )
-  ),
-    fluidRow(
-      tags$div(
-        tags$img(src = 'logo_2.png', style = "width: 100%; margin: 0;"),  
-        style = "position: fixed; bottom: 0; width: 100%; margin:0;"  
-      )
+    ),
+  br(),
+  br(),
+  br(),
+  br(),
+  tags$div(
+    tags$img(src = 'logo_2.png', style = "width: 100vw;"),
+    style = "position: absolute; bottom: 0; width: 100%;"
+  )
   )
 )
