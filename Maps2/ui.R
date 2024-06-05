@@ -53,7 +53,13 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("¿Cómo afecta cerrar una ruta de ingreso a Antioquia?", class = "main-header"),
+  tags$h1("Impacto del cierre de vías de acceso en el abastecimiento de Medellín", class = "main-header"),
+  tags$h1("Analiza cómo los cierres viales afectan el suministro de alimentos en Medellín", class = "main-header_2"),  
+  div(
+    textOutput("subtitulo"),
+    class = "sub-header2",
+    style = "margin-bottom: 20px;"
+  ),  
   div(
       fluidRow(
         column(2,
@@ -98,14 +104,13 @@ ui <- fluidPage(
     column(12,
            style = "margin-top: 2px;",
            tags$div(
-             tags$p("Este mapa permite la importancia de las diferentes rutas de acceso al departmento, visualizando el impacto de cerrar una sobre el abastecimiento.", class = "sub-header2", style = "margin-top: 3px;"),
-             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;")
-           )
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p("Este mapa muestra la importancia de las diferentes rutas de acceso al departamento de Atioquia, permitiendo visualizar el impacto que tendría el cierre de una o unas de ellas en el abastecimiento.", class = "sub-header2", style = "margin-top: 3px;")
     )
   ),
     fluidRow(
       tags$div(
-        tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+        tags$img(src = 'logo_2.png', style = "width: 100%; margin: 0;"),  
         style = "position: fixed; bottom: 0; width: 100%; margin:0;"  
       )
   )
