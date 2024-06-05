@@ -52,11 +52,11 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("Destino de la producción de alimentos de origen antioqueño", class = "main-header"),
-  div(
-    textOutput("subtitulo"),
-    class = "sub-header2",
-    style = "margin-bottom: 20px;"
-  ),  
+  #div(
+  #  textOutput("subtitulo"),
+  #  class = "sub-header2",
+  #  style = "margin-bottom: 20px;"
+  #),  
   div(class = "scrollable-content",
       fluidRow(
         column(3,
@@ -93,9 +93,9 @@ ui <- fluidPage(
               #         style = "background-color: #094735; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Este gráfico muestra la importancia que tiene cada municipio como destino de los prodoctos de origen antioqueño",
+    tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)",
                     tags$br(),"Los municipios destino solo cuenta las principales ciudades con centros de acopio en las que se recolecta información para el SIPSA.",
-                    tags$br(),"Fuente: Calculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2"), style = "margin-top: 20px;")
+                    tags$br(),"Este gráfico muestra la importancia que tiene cada municipio como destino de los prodoctos de origen antioqueño", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo.jpeg', style = "width: 100vw;"),

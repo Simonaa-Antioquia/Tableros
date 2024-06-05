@@ -87,35 +87,19 @@ server <- function(input, output, session) {
     updateSelectInput(session, "producto", selected = "todo")
   })
   
-  output$subtitulo <- renderText({
-    resultado <- resultado()
-    if (nrow(resultado$datos) == 0) {
-      validate("No hay datos disponibles")
-    } else {
-    lugar_max <- resultado$lugar_max
-    porcentaje_max<-resultado$porcentaje_max
-    #if(input$anio == ""){
-    return(paste0("El principal municipio a donde va la comida de Antioquia es ", lugar_max, " con un ", porcentaje_max,"%"))
-    }
-  })
-  
+
+
   output$mensaje1 <- renderText({
-    #resultado <- resultado()
-    #volatil<-resultado$producto_vol
-    return("La mayoría de los productos procedentes de municipios de Antioquia terminan en los centros de acopio de Medellín.")
-  })
+    
+      return("El ",porcentaje_max, " de los productos procedentes de municipios de Antioquia tienen como destino los principales centros de acopio de ", lugar_max )
+})
   
-  output$mensaje2 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb<-resultado$promedio_camb
-    return("En los últimos años, se ha observado un incremento en las exportaciones hacia otros departamentos de Colombia.")
-  })
+
   
-  #output$mensaje3 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb_an<-resultado$promedio_camb_an
-    #return("Poner mensaje")
-  #})
+  
+  
+  
+  
   
   # Aqui tomamos screen 
   observeEvent(input$go, {
