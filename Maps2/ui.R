@@ -69,7 +69,7 @@ ui <- fluidPage(
                                    "Ruta 3" = 3,
                                    "Ruta 4" = 4,
                                    "Ruta 5" = 5,
-                                   "Ruta 6" = 6), inline = TRUE)
+                                   "Ruta 6" = 6), inline = TRUE))
       )),
     fluidRow(
       column(9,  
