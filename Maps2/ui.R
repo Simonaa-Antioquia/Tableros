@@ -106,6 +106,7 @@ ui <- fluidPage(
            tags$div(
              tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
              tags$p("Este mapa muestra la importancia de las diferentes rutas de acceso al departamento de Atioquia, permitiendo visualizar el impacto que tendría el cierre de una o unas de ellas en el abastecimiento.", class = "sub-header2", style = "margin-top: 3px;")
+             )
     )
   ),
     fluidRow(
