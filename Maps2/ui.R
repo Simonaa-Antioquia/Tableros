@@ -62,7 +62,7 @@ ui <- fluidPage(
                selectInput("mes", "Mes", c("Todos los meses" = "", sort(as.numeric(unique(abastecimiento_medellin$mes)))))),
         column(2,
                selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
-        column(5,
+        column(6,
                 checkboxGroupInput("ruta", "Rutas a cerrar:",
                                  c("Antioquia" = 99,
                                    "Norte" = 1,
