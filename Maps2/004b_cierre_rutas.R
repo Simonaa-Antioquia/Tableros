@@ -61,7 +61,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
                                 color = df$color[i],
                                 stroke = 0.05,
                                 opacity = 0.8,
-                                label = paste0("Ruta: ",df$nombre[i]," "," "," "," "," Municipio de origen: ",df$mpio_origen[i]),
+                                label = paste0("Ruta: ",df$nombre[i]," "," "," - "," "," Municipio de origen: ",df$mpio_origen[i]),
                                 labelOptions = labelOptions(noHide = F, direction = "top"))
   }
 
