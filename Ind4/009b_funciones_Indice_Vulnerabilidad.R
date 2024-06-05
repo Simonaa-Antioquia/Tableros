@@ -75,47 +75,58 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
     df <- rename(df, fecha = anio) 
     df <- df[df$producto %in% productos_seleccionados, ]
     df$tooltip_text <- paste("Año: ", df$fecha , "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
-    p <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
+    p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text), size = 1e-8) +
       labs(x = "Año", y = "Indice de Vulnerabilidad") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
-      theme(text = element_text(family = "Prompt", size = 16))+
-      scale_x_continuous(breaks = unique(df$fecha))
+      theme(text = element_text(family = "Prompt", size = 16),
+            axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
+      scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha), by = 1))
+    tipo <-2
 
   }else if (tipo == 4){
     df <- rename(df, fecha = mes_y_ano)
     df <- df[df$producto %in% productos_seleccionados, ]
     df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
-    p <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
+    p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text), size = 1e-8) +
       labs(x = "Año", y = "Indice de Vulnerabilidad") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
-      theme(text = element_text(family = "Prompt", size = 16)) 
+      theme(text = element_text(family = "Prompt", size = 16),
+            axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
+      scale_x_date( date_labels = "%Y-%m")
+    tipo<-4
   } else if (tipo == 1) {
       df <- rename(df, fecha = anio) 
       df$tooltip_text <- paste("Año: ", df$fecha ,  "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
-      p<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
+      p_plano<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
         geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text), size = 1e-8) +
         labs(x = "Año", y = "Indice de Vulnerabilidad") +
         theme_minimal()  +
         scale_color_manual(values = col_palette) +
-        theme(text = element_text(family = "Prompt", size = 16))+
-        scale_x_continuous(breaks = unique(df$fecha))
+        theme(text = element_text(family = "Prompt", size = 16),
+              axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
+        scale_x_continuous(breaks = unique(df$fecha))+
+        scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha), by = 1))
+      tipo <- 1
       
     }else if (tipo == 3){
       df <- rename(df, fecha = mes_y_ano)
-      df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
-      p<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
+      df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,1))
+      p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
         geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text), size = 1e-8) +
         labs(x = "Año", y = "Indice de Vulnerabilidad") +
-        theme_minimal()  +
-        scale_color_manual(values = col_palette) 
+        theme_minimal()+
+        theme(text = element_text(family = "Prompt", size = 16),
+              axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
+        scale_x_date(date_breaks = "6 month", date_labels = "%Y-%m") 
+      tipo <-3
         
       }
   # Calcular el valor máximo del índice de vulnerabilidad
@@ -124,15 +135,17 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   fecha_max_vulnerabilidad <- df$fecha[indice_max_vulnerabilidad]
   producto_max_vulnerabilidad <- ifelse("producto" %in% names(df), df$producto[indice_max_vulnerabilidad], NA)
   
-  p <- plotly::ggplotly(p, tooltip = "text")
+  p <- plotly::ggplotly(p_plano, tooltip = "text")
   df<-df%>%select(-tooltip_text)
   # Devolver el gráfico, los datos y los valores máximos
   return(list(
     grafico = p,
+    grafico_plano = p_plano,
     datos = df,
     max_vulnerabilidad = max_vulnerabilidad,
     fecha_max_vulnerabilidad = fecha_max_vulnerabilidad,
     producto_max_vulnerabilidad = producto_max_vulnerabilidad
+    
   ))
 }
 

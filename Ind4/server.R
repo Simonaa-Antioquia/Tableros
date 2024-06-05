@@ -51,27 +51,44 @@ server <- function(input, output, session) {
     }
   })
   
-  
+  # RENDER PLOTLY
   output$grafico <- plotly::renderPlotly({
     resultado()$grafico
   })
+  # RENDER GRAFICO PLANO
+  grafico_plano <- reactive({
+    res<-resultado()
+    if(nrow(res$datos)==0){
+      validate(
+        ("No hay datos disponibles")
+      )
+    }else{
+      res$grafico_plano
+    }
+  }) 
   
+  # HEAD DE LOS DATOS
   output$vistaTabla <- renderTable({
     if (!is.null(resultado()$datos)) {
       head(resultado()$datos, 5)
     }
   })
   
-  output$descargar <- downloadHandler(
+  # DESCARGAMOS LA GRAFICA
+  output$descargar_ <- downloadHandler(
     filename = function() {
-      paste("grafica-", Sys.Date(), ".png", sep="")
+      paste("IND4_", Sys.Date(), ".png", sep="")
     },
     content = function(file) {
-      png(file)
-      print(resultado()$grafico)
-      dev.off()
+      # Forzar la ejecución de la función reactiva
+      res <- resultado()
+      
+      # Usa ggsave para guardar el gráfico
+      ggplot2::ggsave(filename = file, plot = res$grafico_plano, width = 13, height = 7, dpi = 200)
     }
   )
+  
+  #DESCARGA DE DATOS
   output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
@@ -81,53 +98,75 @@ server <- function(input, output, session) {
     }
   )
   
-  # En el servidor
-  output$subtitulo <- renderText({
+# BOTON DE RESET
+  observeEvent(input$reset, {
+    updateSelectInput(session, "tipo", selected = 1)
+  })
+  
+  
+  
+  # SUBTITULO
+  
+  values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL)
+  
+
+output$subtitulo <- renderText({
     if ((input$tipo == 2 || input$tipo == 4) && is.null(input$producto)) {
       return("Debe seleccionar un producto.")
     }
     resultado <- grafica_indice(input$tipo, input$anio, input$producto)
     tipo <- input$tipo
-    max_vulnerabilidad <- resultado$max_vulnerabilidad
+    max_vulnerabilidad <- round(resultado$max_vulnerabilidad, digits = 1)
     fecha_max_vulnerabilidad <- resultado$fecha_max_vulnerabilidad
     producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
+    fecha_max_vulnerabilidad <- as.character(fecha_max_vulnerabilidad)
+    componentes <- strsplit(fecha_max_vulnerabilidad, "-")[[1]]
+    anio <- componentes[1]
+    mes <- componentes[2]
+    dia <- componentes[3]
+    nombres_meses <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+    mes <- nombres_meses[as.integer(mes)]
     
     if (tipo == 2) {
-      return(paste("La maxima vulnerabilidad anual se encuentra en el año", fecha_max_vulnerabilidad, "para el producto", producto_max_vulnerabilidad, "y es de", max_vulnerabilidad))
-    } else if (tipo == 3) {
-      return(paste("La maxima vulnerabilidad mensual, fue en", fecha_max_vulnerabilidad, "y es de", max_vulnerabilidad))
+      values$subtitulo <-(paste("En el ", fecha_max_vulnerabilidad, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad, " para el producto ",producto_max_vulnerabilidad ))
+      } else if (tipo == 3) {
+        values$subtitulo <- (paste("En  ", mes, " del ", anio, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad ))
     } else if (tipo == 4) {
-      return(paste("La mayor vulnerabilidad fue en",fecha_max_vulnerabilidad, "para el prodcuto",producto_max_vulnerabilidad,"y fue de",max_vulnerabilidad))
-    } else {
-      return(paste("El año con mayor indice de vulnerabilidad fue",fecha_max_vulnerabilidad, "y fue de",max_vulnerabilidad))
-    }
+      values$subtitulo <- (paste("En",mes, "del", anio, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad, " para el producto ",producto_max_vulnerabilidad))
+      } else {
+        values$subtitulo <- (paste("En el ", fecha_max_vulnerabilidad, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad))
+      } 
+    return(values$subtitulo)
   })
-  
-  # Conectar al git 
-  #observeEvent(input$github, {
-  #  browseURL("https://github.com/PlasaColombia-Antioquia/Tableros.git")
-  #})  
-  
-  # Borrar filtros
-  observeEvent(input$reset, {
-    updateSelectInput(session, "tipo", selected = 1)
-  })
-  
+
   output$mensaje1 <- renderText({
-    return("El índice de vulnerabilidad se calcula mediante la combinación del índice de Herfindahl-Hirschman y la distancia desde el municipio de origen hasta Medellín.")
-  })
+    values$mensaje1 <- ("El índice mide la vulnerabilidad del abastecimiento de alimentos, basándose en la cantidad de lugares de procedencia y su distancia a Medellín. Menos lugares y mayor distancia implican mayor vulnerabilidad.")
+    values$mensaje1
+    })
   
-  output$mensaje2 <- renderUI({
-    withMathJax(paste0("La fórmula es: $$ V_{it} =  \\frac{D_i + H_{ti}}{2}$$"))
-  })
   
-  # Aqui tomamos screen 
-  observeEvent(input$go, {
-    screenshot()
-  })
+  # GENERAMOS INFORME 
+  output$report <- downloadHandler(
+    filename = 'informe.pdf',
+    
+    content = function(file) {
+      # Ruta al archivo RMarkdown
+      rmd_file <- "informe.Rmd"
+      
+      # Renderizar el archivo RMarkdown a PDF
+      rmarkdown::render(rmd_file, output_file = file, params = list(
+        tipo = input$tipo,
+        producto= input$producto,
+        anio = input$anio,
+        plot = grafico_plano(),
+        subtitulo = values$subtitulo,
+        mensaje1 = values$mensaje1
+        
+      ))  
+    },
+    contentType = 'application/pdf'
+  )     
   
-  observeEvent(input$descargar, {
-    screenshot("#grafico", scale = 5)
-  })
   
 }

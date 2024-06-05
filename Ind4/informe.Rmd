@@ -1,0 +1,123 @@
+---
+title: ' '
+params:
+ tipo: NA
+ producto: NA
+ anio: NA
+ plot: NA
+ subtitulo: NA
+ mensaje1: NA
+output:
+  pdf_document:
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
+header-includes:
+- \usepackage{float}
+- \usepackage{arydshln}
+- \usepackage{tabu}
+- \usepackage{xcolor}
+- \usepackage{fontspec}
+- \usepackage{booktabs}  
+- \usepackage{fancyhdr}
+- \usepackage{graphicx}
+- \definecolor{mygreen}{RGB}{26,73,34}
+- \definecolor{gray}{RGB}{128,128,128}
+- \definecolor{green2}{RGB}{13,141,56}
+- "\\setmainfont{Prompt-Regular.ttf}"
+- \pagestyle{fancy}
+- \fancyfoot{} 
+- \usepackage{colortbl}
+- \usepackage{adjustbox}
+- \setlength{\headheight}{2cm}
+- \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
+- \usepackage{eso-pic}
+---
+
+
+```{r setup, include=FALSE,warning=FALSE,message=FALSE}
+# Instalamos librerias
+#tinytex::install_tinytex()
+#tinytex::tlmgr_install("caption")
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+#install.packages("xelatex")
+```
+<!-- Fecha -->
+\begin{flushright}
+\textcolor{gray}{Informe en línea generado el: `r format(Sys.Date(), "%d %B, %Y")`}
+\end{flushright}
+\section*{Parámetros con los cuales se generó el informe:}
+```{r,warning=FALSE,message=FALSE}
+  # Cargar el paquete knitr
+  library(knitr)
+  library(kableExtra)
+  library(xtable)
+
+# Label para tipo: 
+opciones_tipo <- c("índice Anual" = 1, "Índice Anual por Producto" = 2, "índice Mensual" = 3, "índice Mensual por Producto" = 4)
+tipo_label <- ifelse(is.na(params$tipo) | !(params$tipo %in% opciones_tipo), "NA", names(opciones_tipo)[which(opciones_tipo == params$tipo)])
+  
+if (is.null(params$producto)) {
+  producto_label <- "Todos los productos"
+} else {
+  # Dividir la lista de productos en líneas de hasta 4 productos
+  productos_por_linea <- 5
+  grupos_productos <- split(params$producto, ceiling(seq_along(params$producto) / productos_por_linea))
+  lineas_productos <- sapply(grupos_productos, function(x) paste(x, collapse = ", "))
+  producto_label <- paste(lineas_productos, collapse = " \\\\ ")
+}
+
+# Año
+if (is.null(params$anio) || is.na(params$anio) || params$anio == "") {
+  label_anio <- "Todos los años"
+} else {
+  label_anio <- params$anio
+}
+
+  
+df <- data.frame(
+    "Parametro" = c("Tipo:", "Año","Producto(s):"),
+    "Valor" = c(tipo_label,label_anio , producto_label)
+  )
+  
+
+
+# Crear la tabla con knitr::kable
+tabla_kable <- df %>%
+  knitr::kable(
+    col.names = NULL,  # No mostrar nombres de columnas
+    align = 'l',  # Alineación de las columnas
+    format = "latex",  # Formato de salida
+    booktabs = TRUE,  # No utilizar el estilo de las tablas del paquete booktabs
+    linesep = "",  # No agregar ninguna línea separadora
+    escape = FALSE
+  ) %>%
+  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
+
+# Imprimir la tabla con knitr::kable
+tabla_kable
+
+```
+<!-- Titulo del tablaro -->
+\fontsize{20}{20} \selectfont \textcolor{mygreen}{Índice de vulnerabilidad del abastecimiento de alimentos de Antioquia} 
+
+<!-- Subtitulo -->
+\fontsize{10}{10} \selectfont \textcolor{green2}{Evaluación de la vulnerabilidad del abastecimiento por origen y distancia.} 
+
+<!-- Subtitulo dinamico -->
+\fontsize{10}{10} \selectfont `r params$subtitulo` 
+
+```{r, out.width = "70%", fig.height=3, fig.align = "center", warning=FALSE}
+print(params$plot)
+```
+
+\fontsize{10}{10} \selectfont `r params$mensaje1`\newline
+
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline
+
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{El cálculo del índice de vulnerabilidad combina dos medidas: el índice de Herfindahl-Hirschman, que evalúa la concentración de la producción de alimentos en diferentes municipios, y la distancia desde cada municipio hasta Medellín.}\newline
+
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{El primer componente de este índice se calcula utilizando el índice de Herfindahl-Hirschman, que mide la concentración de productores siguiendo  $H_{ti} = \sum_{i=1}^{N} P_{itm}^{2}$ donde $P_{itm}$ es la participación que tiene cada municipio (como productor) en el total de kilogramos que ingresan a Medellín en una fecha determinada. El segundo componente, denotado como  $D_{i}$, es la distancia ponderada por la participación entre Medellín y el municipio, que luego se reescala, obteniendo valores de $0$ a $1$, donde $0$ es Medellín y $1$ es el municipio más lejano del cual llegan alimentos a Medellín (incluso puede ser otro país). Finalmente, el índice de vulnerabilidad se obtiene siguiendo: $V_{it} = \frac{H_{it} + D_{i}}{2}$} \newline
+
+\AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo_2.png}}

@@ -36,6 +36,12 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 20px;
       }
+        .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+      }
+      .sub
       .sub-header2 {
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
@@ -57,6 +63,7 @@ ui <- fluidPage(
     tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
   tags$h1("Índice de vulnerabilidad del abastecimiento de alimentos de Antioquia", class = "main-header"),
+  tags$h1("Evaluación de la vulnerabilidad del abastecimiento por origen y distancia.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -91,25 +98,18 @@ ui <- fluidPage(
     column(8,
            div(
              plotly::plotlyOutput("grafico",height = "400px"),
-             actionButton("descargar", "Gráfica", icon = icon("download")),
+             downloadButton("descargar_", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             #actionButton("github", "GitHub", icon = icon("github")),
              shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
-             actionButton("go", "Reporte", icon = icon("file-alt")),
-             actionButton("reset", "Restrablecer",icon = icon("refresh"))
-             #,
-             #tableOutput("vistaTabla") 
+             actionButton("reset", "Restablecer", icon = icon("refresh")),
+             downloadButton("report", "Generar informe")
            )),
     
     column(4, 
            div(
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;")#,
-             #wellPanel(uiOutput("mensaje2"),
-              #         style = "background-color: #005A45; color: #FFFFFF;"),
-             #wellPanel(textOutput("mensaje3"),
-              #         style = "background-color: #094735; color: #FFFFFF;")
+                       style = "background-color: #0D8D38; color: #FFFFFF;")
            ))
   ),
   
@@ -118,21 +118,19 @@ ui <- fluidPage(
     column(12,
            style = "margin-top: 2px;",
            tags$div(
-             tags$p("El índice de vulnerabilidad se calcula teniendo en cuenta el número de municipios en los que se produce un alimento y la distancia desde este municipio a Medellín.", 
-                    tags$br(),"Un mayor índice indica mayor vulnerabilidad.", 
-                    tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
-             tags$div(style = "text-align: left;", 
-                      tags$p("La fórmula de vulnerabilidad es:", class = "sub-header2", style = "margin-top: 3px;"),
-                      tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),
-                      tags$div(id = "mathjax-output", HTML("$$ V_{it} =  \\frac{D_i + H_{ti}}{2}$$"))
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", 
+                    tags$br()," El cálculo del índice de vulnerabilidad combina dos medidas: el índice de Herfindahl-Hirschman, que evalúa la concentración de la producción de alimentos en diferentes municipios, y la distancia desde cada municipio hasta Medellín.", 
+                    tags$p(HTML("El primer componente de este índice se calcula utilizando el índice de Herfindahl-Hirschman, que mide la concentración de productores siguiendo  H<sub>ti</sub> = &sum;<sub>i=1</sub><sup>N</sup>P<sub>itm</sub><sup>2</sup>,
+                    donde P<sub>itm</sub> es la participación que tiene cada municipio (como productor) en el total de kilogramos que ingresan a Medellín en una fecha determinada. El segundo componente, denotado como  
+                    D<sub>i</sub> , es la distancia ponderada por la participación entre Medellín y el municipio, que luego se reescala, obteniendo valores de 0 a 1, donde 0 es Medellín y 1 es el municipio más lejano del cual llegan alimentos a Medellín (incluso puede ser otro país). Finalmente, el índice 
+                    de vulnerabilidad se obtiene siguiendo: V<sub>it</sub> = (H<sub>it</sub> + D<sub>i</sub>)/2."), class = "sub-header2", style = "margin-top: 3px;")
              ),
-             )
-    )),
+             )),
   
   fluidRow(
     tags$div(
-      tags$img(src = 'logo.jpeg', style = "width: 100%; margin: 0;"),  
+      tags$img(src = 'logo_2.png', style = "width: 100%; margin: 0;"),  
       style = "width: 100%; margin:0;"  
     )
   ) 
-)
+))

@@ -165,7 +165,7 @@ output$subtitulo <- renderText({
         plot = grafico_plano(),
         subtitulo = values$subtitulo,
         mensaje1 = values$mensaje1,
-        mensaje2 = values$mensaje2
+        mensaje2= values$mensaje2
         
       ))  
     },
