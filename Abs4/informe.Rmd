@@ -18,7 +18,7 @@ header-includes:
 - \usepackage{tabu}
 - \usepackage{xcolor}
 - \usepackage{fontspec}
-- \usepackage{booktabs}  # Agregar esta línea
+- \usepackage{booktabs}  
 - \usepackage{fancyhdr}
 - \usepackage{graphicx}
 - \definecolor{mygreen}{RGB}{26,73,34}

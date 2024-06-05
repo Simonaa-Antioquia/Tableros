@@ -22,7 +22,7 @@ header-includes:
 - \usepackage{tabu}
 - \usepackage{xcolor}
 - \usepackage{fontspec}
-- \usepackage{booktabs}  # Agregar esta línea
+- \usepackage{booktabs} 
 - \usepackage{fancyhdr}
 - \usepackage{graphicx}
 - \definecolor{mygreen}{RGB}{26,73,34}
@@ -35,6 +35,7 @@ header-includes:
 - \usepackage{adjustbox}
 - \setlength{\headheight}{2cm}
 - \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
+- \renewcommand{\headrule}{\color{mygreen}\hrule width\headwidth height\headrulewidth} 
 - \usepackage{eso-pic}
 ---
 
@@ -68,7 +69,7 @@ library(knitr)
   mes_label <- ifelse(is.na(params$mes) | !(params$mes %in% opciones_Mes), "Todos los meses", names(opciones_Mes)[which(opciones_Mes == params$mes)])
   
   df <- data.frame(
-    "Parametro" = c("Tipo", "Año", "Mes", "Alimento"),
+    "Parametro" = c("Tipo:", "Año:", "Mes:", "Alimento:"),
     "Valor" = c(tipo_label, ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio), mes_label, ifelse(is.na(params$alimento) | params$alimento == "todo", "Todos los productos", params$alimento))
   )
 
@@ -82,8 +83,7 @@ tabla_kable <- df %>%
     linesep = "",  # No agregar ninguna línea separadora
     escape = FALSE
   ) %>%
-   kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
-# Imprimir la tabla con knitr::kable
+   kable_styling(full_width = TRUE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")   
 tabla_kable
 ```
 <!-- Titulo del tablaro -->
