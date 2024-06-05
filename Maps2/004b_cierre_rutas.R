@@ -38,7 +38,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
 
   df <- df %>% group_by(id_ruta_externa) %>% mutate(ton_ruta = sum(suma_kg))
 
-  ruta_imp <- df$id_ruta_externa[which.max(df$ton_ruta)]
+  ruta_imp <- df$nombre[which.max(df$ton_ruta)]
   max_ton_ruta <- max(df$ton_ruta)
 
   por_ruta = round(((ton_original - max_ton_ruta)/ton_original)*100, digits = 2)
