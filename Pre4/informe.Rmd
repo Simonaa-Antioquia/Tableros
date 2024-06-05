@@ -7,6 +7,7 @@ params:
   precio_min: NA
   mensaje1: NA
   mensaje2: NA
+  mensaje3: NA
   ciudad_max: NA
   precio_max: NA
   fecha_max: NA
@@ -53,12 +54,11 @@ library(knitr)
 ```
 
 <!-- Fecha -->
-\begin{flushleft}
-\large \textcolor{gray}{Informe en línea generado el: `r format(Sys.Date(), "%d %B, %Y")`}
-\end{flushleft}
+\begin{flushright}
+\textcolor{gray}{Informe en línea generado el: `r format(Sys.Date(), "%d %B, %Y")`}
+\end{flushright}
 
- Parámetros con los cuales se generó el informe:
-
+\section*{Parámetros con los cuales se generó el informe:}
 ```{r, warning=FALSE}
 # Cargar el paquete knitr
 library(knitr)
@@ -82,13 +82,13 @@ df <- data.frame(
 tabla_kable <- df %>%
   knitr::kable(
     col.names = NULL,  # No mostrar nombres de columnas
-    align = 'c',  # Alineación de las columnas
+    align = 'l',  # Alineación de las columnas
     format = "latex",  # Formato de salida
-    booktabs = FALSE,  # No utilizar el estilo de las tablas del paquete booktabs
+    booktabs = TRUE,  # No utilizar el estilo de las tablas del paquete booktabs
     linesep = "",  # No agregar ninguna línea separadora
     escape = FALSE
   ) %>%
-  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "center", bootstrap_options = "striped")  # Estilo de la tabla con bordes blancos y cuadrícula completa
+  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "left", bootstrap_options = "striped")  # Estilo de la tabla con bordes blancos y cuadrícula completa
 
 # Imprimir la tabla con knitr::kable
 tabla_kable
@@ -96,24 +96,24 @@ tabla_kable
 ```
 
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Comportamiento de los precios en el tiempo}\
+\fontsize{20}{20} \selectfont \textcolor{mygreen}{Comportamiento de los precios en el tiempo}
 <!-- Subtitulo -->
-\fontsize{15}{15} \selectfont \textcolor{mygreen}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín}\
-<!-- Subtitulo2 -->
-
+\fontsize{15}{15} \selectfont \textcolor{mygreen}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín}
 <!-- Grafica -->
-
 ```{r, out.width = "80%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 
-\fontsize{10}{10} \selectfont `r params$mensaje1`\
-\fontsize{10}{10} \selectfont `r params$mensaje2`\
-\fontsize{10}{10} \selectfont `r params$mensaje3`\
+\fontsize{10}{10} \selectfont `r params$mensaje1`
 
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{La información solo se muestra para los precios en el centro de acopio de Medellín.}\
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.}\
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.}\
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
+\fontsize{10}{10} \selectfont `r params$mensaje2`
 
-\AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo.png}}
+\fontsize{10}{10} \selectfont `r params$mensaje3`
+
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{La información solo se muestra para los precios en el centro de acopio de Medellín.}\newline
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.}\newline
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.}\newline
+
+
+\AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo_2.png}}

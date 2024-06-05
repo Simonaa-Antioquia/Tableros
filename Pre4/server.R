@@ -44,7 +44,7 @@ server <- function(input, output, session) {
   
   output$grafico <- renderLeaflet({
     res<-resultado()
-    if(nrow(res$datos)==0){
+    if((nrow(res$datos)==0 )){
       validate("No hay datos disponibles")
     }else{
       res$grafico
@@ -86,10 +86,10 @@ server <- function(input, output, session) {
     if(nrow(resultado$datos)==0){
       validate("No hay datos disponibles")
     }else{if (input$producto != "todo") {
-      values$mensaje1<-(paste0("El lugar más costoso para comprar ", input$producto, " fue ", resultado()$ciudad_max, ", con una diferencia superior de $", resultado()$precio_max, " con respecto al precio de Medellín para el mismo periodo de tiempo."))
+      values$mensaje1<-(paste0("El lugar más costoso para comprar ", input$producto, " fue ", resultado()$ciudad_max, ", con una diferencia superior de $", format(resultado()$precio_max, big.mark = ","), " con respecto al precio de Medellín para el mismo periodo de tiempo."))
       return(values$mensaje1)
     } else {
-      values$mensaje1<-(paste0("El lugar más costoso para comprar alimentos fue ", resultado()$ciudad_max, ", con una diferencia superior de $", resultado()$precio_max, " con respecto al precio de Medellín para el mismo periodo de tiempo."))
+      values$mensaje1<-(paste0("El lugar más costoso para comprar alimentos fue ", resultado()$ciudad_max, ", con una diferencia superior de $", format(resultado()$precio_max, big.mark = ","), " con respecto al precio de Medellín para el mismo periodo de tiempo."))
       return(values$mensaje1)
     }}
   })
@@ -99,24 +99,42 @@ server <- function(input, output, session) {
     if(nrow(resultado$datos)==0){
       validate("No hay datos disponibles")
     }else{if (input$producto != "todo") {
-      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo para ", input$producto, ", siendo $", resultado()$precio_min, " más económico que en Medellín durante el mismo período de tiempo."))
+      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo para ", input$producto, ", siendo $", format(resultado()$precio_min, big.mark = ","), " más económico que en Medellín durante el mismo período de tiempo."))
       return(values$mensaje2)
     } else {
-      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo paracomprar alimentos, siendo $", resultado()$precio_min, " más económico que en Medellín durante el mismo período de tiempo."))
+      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo paracomprar alimentos, siendo $", format(resultado()$precio_min, big.mark = ","), " más económico que en Medellín durante el mismo período de tiempo."))
       return(values$mensaje2)
     }}
   })
   
+  values <- reactiveValues(mensaje3 = NULL)
   output$mensaje3 <- renderText({
-    return("Poner mensaje")
+    resultado <- resultado()
+    if(nrow(resultado$datos)==0){
+      validate("No hay datos disponibles")
+    }else{if (input$producto != "todo") {
+      values$mensaje3<-( paste0("El precio promedio de ", input$producto, 
+                                " en Medellín para el periodo de tiempo seleccionado fue: $", 
+                                format(resultado()$precio_medellin, big.mark = ","), " pesos."))
+      return(values$mensaje3)
+    } else {
+      values$mensaje3<-(paste0("El precio promedio en Medellín para el periodo de tiempo seleccionado fue: $", format(resultado()$precio_medellin, big.mark = ","), " pesos."))
+      return(values$mensaje3)
+    }}
   })
   
+  
+
   grafico_plano <- reactive({
     res <- resultado()
-    {
-      res$grafico2  # Guarda solo el gráfico 'grafico_plano'
+    if((nrow(res$datos)==0 )){
+      return(NULL)
+    } else {
+      return(res$grafico2)
     }
   })
+    
+
   
   # Aqui tomamos screen 
   output$report <- downloadHandler(
@@ -136,6 +154,7 @@ server <- function(input, output, session) {
         plot = grafico_plano(),#+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)),# Accede al gráfico 'grafico_plano'
         mensaje1 = values$mensaje1,
         mensaje2 = values$mensaje2,
+        mensaje3 = values$mensaje3,
         anio = input$anio,
         mes = input$mes,
         alimento = input$producto
