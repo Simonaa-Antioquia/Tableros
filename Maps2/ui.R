@@ -30,6 +30,11 @@ ui <- fluidPage(
         font-size: 40px;
         color: #0D8D38;
       }
+  .main-header_2 {
+        font-family: 'Prompt', sans-serif;
+        font-size: 20px;
+        color: #0D8D38;
+      }
       .sub-header {
         font-family: 'Prompt', sans-serif;
         font-size: 20px;
