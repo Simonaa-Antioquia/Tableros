@@ -91,16 +91,7 @@ server <- function(input, output, session) {
     res<-resultado()
     if(nrow(res$datos)==0){
       return("No hay datos disponibles")
-    }else{
-      resultado <- resultado()
-    lugar_max <- resultado$lugar_max
-    porcentaje_max<-resultado$porcentaje_max
-   
-    if (is.na(input$municipios) || is.null(input$municipios )){
-      return("Por favor ingrese el numero de municipios que quiere graficar")
-    } else {
-      return(paste0(lugar_max, "es el municipio con mayor importancia en el abastecimeinto de Antioquia, aporta ",porcentaje_max,"%"))
-    }}
+    }
   })
   
  
