@@ -38,7 +38,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
 
   df <- df %>% group_by(id_ruta_externa) %>% mutate(ton_ruta = sum(suma_kg))
 
-  ruta_imp <- df$id_ruta_externa[which.max(df$ton_ruta)]
+  ruta_imp <- df$nombre[which.max(df$ton_ruta)]
   max_ton_ruta <- max(df$ton_ruta)
 
   por_ruta = round(((ton_original - max_ton_ruta)/ton_original)*100, digits = 2)
@@ -57,7 +57,12 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   
   for(i in 1:nrow(df)) {
     dir <- matrix(unlist(df[i,18][[1]]), ncol = 2)
-    map <- map %>% addPolylines(data = dir, color = df$color[i], stroke = 0.05, opacity = 0.8)
+    map <- map %>% addPolylines(data = dir,
+                                color = df$color[i],
+                                stroke = 0.05,
+                                opacity = 0.8,
+                                label = paste0("Ruta: ",df$nombre[i]," "," "," - "," "," Municipio de origen: ",df$mpio_origen[i]),
+                                labelOptions = labelOptions(noHide = F, direction = "top"))
   }
 
   por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)

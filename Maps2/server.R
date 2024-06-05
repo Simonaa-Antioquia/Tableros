@@ -120,11 +120,11 @@ server <- function(input, output, session) {
     })
 
  output$mensaje1 <- renderText({
-    return(paste0("La ruta más importante para el abastecimiento de Antioquia es la ruta ", resultado()$ruta_imp, ", con un ", resultado()$por_ruta," % del abastecimiento de Antioquia"))
+    return(paste0("La ruta ",resultado()$ruta_imp," es la más importante para el abastecimiento de Antioquia, representando el",resultado()$por_ruta,"% del total del volumen de ingreso a las principales centrales de abasto."))
  })
  
 output$mensaje2 <- renderText({
-    return(paste0("Un cierre de las rutas seleccionadas llevaría a una disminución en el ", resultado()$por_perdido,"% del abastecimiento, perdiendo ",resultado()$ton_perdido," toneladas de alimentos"))
+    return(paste0("Un hipotético cierre de las rutas seleccionadas podría reducir el abastecimiento de alimentos en un ",resultado()$por_perdido,"%, al dejar de ingresar ",resultado()$ton_perdido," toneladas a las principales centrales de abasto de Medellín."))
  })
  
  # Aqui tomamos screen 
