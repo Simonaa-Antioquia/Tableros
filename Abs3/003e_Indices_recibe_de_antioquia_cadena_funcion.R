@@ -54,7 +54,7 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
       distinct(anio,mpio_destino,codigo_depto_destino,mes, .keep_all = TRUE) %>%
       select(anio,mpio_destino,codigo_depto_destino, mes, porcentaje_dpto_mes,total_kilogramos_mes_destino)  
     columna_porcentaje <- "porcentaje_dpto_mes"
-    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_mes, toneladad = total_kilogramos_mes_destino)
+    df <- df %>% rename( columna_porcentaje = porcentaje_dpto_mes, toneladas = total_kilogramos_mes_destino)
     
     
   } else if (!is.null(Año) && !is.null(Producto)) {
@@ -89,6 +89,12 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
     df <- df %>% rename( columna_porcentaje = porcentaje_dpto, toneladas=total_kilogramos_destino)
     
   }
+  if(nrow(df)==0){
+    p<-  validate("No hay datos disponibles")
+    p_plano <- NULL
+  } else {
+  
+  
   df<-df#%>%filter(codigo_depto_destino !=5)
   if (nrow(df) == 0) {
     print("No hay datos disponibles")
@@ -141,6 +147,7 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
       axis.text = element_blank(),
       axis.ticks = element_blank(),
       axis.title = element_blank())
+  }
     
   mapa2<-mapa%>%filter(mpio_destino!="Medellín")
   porcentaje_max<-round(max(mapa2$columna_porcentaje))

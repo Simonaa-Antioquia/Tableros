@@ -27,7 +27,7 @@ ui <- fluidPage(
   tags$div(
     style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
     tags$head(
-      tags$title("Importancia de Antioquia para lo que envian otros departamento"),  # Añade esta línea
+      tags$title("Importancia_Antioquia"),  # Añade esta línea
       tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
       #grafico {

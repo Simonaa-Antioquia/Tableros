@@ -128,10 +128,10 @@ values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL, mensaje2 = NULL)
 #Mensaje 2  
   output$mensaje2 <- renderText({
     resultado <- resultado()
-    porcentaje_max_1<-resultado$porcentaje_max_1
+    porcentaje_max_1<-resultado$porcentaje_max
     dpto_max <- resultado$dpto_max
     values$mensaje2 <-(paste0("Para el producto y periodo de tiempo  seleccionado, " ,dpto_max, " recibió el ",porcentaje_max_1, "% del total de volumen registrado con origen Antioquia." ))
-    return(values$mensaje1)
+    return(values$mensaje2)
      })
 
 # Generamos el Informe

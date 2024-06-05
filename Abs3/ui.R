@@ -60,11 +60,11 @@ ui <- fluidPage(
   ),
   tags$h1("Contribución de Antioquia al Abastecimiento Nacional", class = "main-header"),
   tags$h1("Análisis de la participación de Antioquia en el abastecimiento de alimentos en otros departamentos del país", class = "main-header_2"),
-  div(
-    textOutput("subtitulo"),
-    class = "sub-header2",
-    style = "margin-bottom: 20px;"
-  ),
+  #div(
+  # textOutput("subtitulo"),
+  #  class = "sub-header2",
+  #  style = "margin-bottom: 20px;"
+  #),
   div(class = "scrollable-content",
       fluidRow(
         column(4,
@@ -80,17 +80,16 @@ ui <- fluidPage(
              leafletOutput("grafico"),# width = "500px", height = "500px"),
              downloadButton("descargar_", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros/tree/8d5220f3bec2898e21495993520e1d8637e6b5d4/Abs3", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("reset", "Restablecer", icon = icon("refresh")),
              downloadButton("report", "Generar informe")
 
       ),
       column(3, 
-             wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #005A45; color: #FFFFFF;")
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
+           
              
       )
     ),
