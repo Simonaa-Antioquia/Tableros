@@ -57,7 +57,12 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   
   for(i in 1:nrow(df)) {
     dir <- matrix(unlist(df[i,18][[1]]), ncol = 2)
-    map <- map %>% addPolylines(data = dir, color = df$color[i], stroke = 0.05, opacity = 0.8)
+    map <- map %>% addPolylines(data = dir,
+                                color = df$color[i],
+                                stroke = 0.05,
+                                opacity = 0.8,
+                                label = df$mpio_origen[i],
+                                labelOptions = labelOptions(noHide = F, direction = "top"))
   }
 
   por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)
