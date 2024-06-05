@@ -39,7 +39,12 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL) {
   
   for(i in 1:nrow(df)) {
     dir <- matrix(unlist(df[i,18][[1]]), ncol = 2)
-    map <- map %>% addPolylines(data = dir, color = "#0D8D38", stroke = 0.05, opacity = 0.8)
+    map <- map %>% addPolylines(data = dir,
+                                color = "#0D8D38",
+                                stroke = 0.05,
+                                opacity = 0.8,
+                                label = paste0("Municipio de origen: ",df$mpio_origen[i]),
+                                labelOptions = labelOptions(noHide = F, direction = "top"))
   }
   
   av_km <- round(mean(df$distance), digits = 2)
@@ -138,8 +143,8 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
   
   df <- merge(x=df,y=aux,by="importancia")
   
-  importancia_max <- round(max(df$importancia)*100,2)
-  importancia_min <- round(min(df$importancia)*100,2)
+  importancia_max <- round(max(df$importancia)*100,1)
+  importancia_min <- round(min(df$importancia)*100,1)
   
   map <- leaflet() %>%
     addTiles() %>%
@@ -157,8 +162,8 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
                                 color = df$colour[i],
                                 stroke = 0.05,
                                 opacity = 0.8,
-                                popup = ~ifelse(is.na(df$mpio_origen[i]),"",paste0("<strong>Municipio de origen: </strong>", ifelse(is.na(df$mpio_origen[i]),"",df$mpio_origen[i]), 
-                                  "<br><strong>Importancia: </strong>", ifelse(is.na(df$mpio_origen[i]),"",paste0("$",round(df$importancia[i]))))))
+                                label = paste0("Municipio de origen: ",df$mpio_origen[i]," "," "," - "," "," Importancia: ",df$importancia*100,"%"),
+                                labelOptions = labelOptions(noHide = F, direction = "top"))
   }
 
   av_km <- round(mean(df$distance), digits = 2)
