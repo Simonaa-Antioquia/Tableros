@@ -91,16 +91,7 @@ server <- function(input, output, session) {
     res<-resultado()
     if(nrow(res$datos)==0){
       return("No hay datos disponibles")
-    }else{
-      resultado <- resultado()
-    lugar_max <- resultado$lugar_max
-    porcentaje_max<-resultado$porcentaje_max
-   
-    if (is.na(input$municipios) || is.null(input$municipios )){
-      return("Por favor ingrese el numero de municipios que quiere graficar")
-    } else {
-      return(paste0(lugar_max, "es el municipio con mayor importancia en el abastecimeinto de Antioquia, aporta ",porcentaje_max,"%"))
-    }}
+    }
   })
   
  
@@ -112,11 +103,11 @@ server <- function(input, output, session) {
     })
  
  output$mensaje1 <- renderText({
-    return(paste0("Los alimentos recorren en promedio ", resultado()$av_km, " kilómetros, con un máximo de ", resultado()$max_km, " kilómetros"))
+    return(paste0("Durante el periodo seleccionado y para el producto específico, se recorrieron en promedio ", resultado()$av_km," kilómetros."))
  })
 
  output$mensaje2 <- renderText({
-    return(paste0("El municipio más importante para el abastecimiento de Antioquia es ", resultado()$mpio_import))
+    return(paste0("Durante el periodo seleccionado y para el producto específico, se recorrieron la distancia mínima recorrida fue ", resultado()$min_km," kilómetros y máxima ", resultado()$max_km," kilómetros."))
  })       
  
  # Aqui tomamos screen 
