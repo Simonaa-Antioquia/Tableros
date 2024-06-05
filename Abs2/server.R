@@ -116,18 +116,20 @@ values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL)
 output$subtitulo <- renderText({
   res <- resultado()
   if (is.data.frame(res) || is.list(res)) {
-  if(nrow(res$datos) == 0) {
-  values$subtitulo <- ("No hay datos disponibles")
-  }else{
-  porcentaje_max <- res$porcentaje_max
-  dpto_max <- res$dpto_max
-       values$subtitulo <- (paste0("Sin contar Antioquia, ",dpto_max," envía el ", porcentaje_max, "% de lo que saca, siendo Antioquia su principal socio comercial"))
-      }
-    } else {
+    if(nrow(res$datos) == 0) {
       values$subtitulo <- ("No hay datos disponibles")
+    } else {
+      porcentaje_max <- res$porcentaje_max
+      dpto_max <- res$dpto_max
+      if (input$producto == "todo") {
+        values$subtitulo <- (paste0("Antioquia es uno de los principales receptores de ", dpto_max," Con un procentaje de ", porcentaje_max ,"%."))
+      } else if (input$producto != "todo") {
+        values$subtitulo <- (paste0("Antioquia es uno de los principales receptores de ", dpto_max," Con un procentaje de ", porcentaje_max ,"%."))
+      }
     }
-  return(values$subtitulo)
-    })
+  }
+  return(values$subtitulo) 
+})
   
  
 # Mensajes
@@ -136,10 +138,10 @@ output$mensaje1 <- renderText({
   if (is.data.frame(res) || is.list(res)) {
   if(nrow(res$datos) == 0) {
   values$mensaje1 <- ("No hay datos disponibles")
-  }else{
+  }else {
   porcentaje_max <- res$porcentaje_max_1
-  values$mensaje1 <- (paste0("Antioquia envia el ", res$porcentaje_max_1, " % de su producción* a Medellín."))}} else {
-  }
+  dpto_max <- res$dpto_max
+  values$mensaje1 <- (paste0("Antioquia envia el ", res$porcentaje_max_1, " % de su producción* a Medellín."))}}
   return(values$mensaje1)
   })
   

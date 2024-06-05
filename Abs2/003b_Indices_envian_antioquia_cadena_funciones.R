@@ -88,6 +88,12 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
     df <- df %>% rename( columna_porcentaje = porcentaje_dpto, total_ton = total_kilogramos_destino)
     
   }
+  
+  if(nrow(df)==0){
+    p<-  validate("No hay datos disponibles")
+    p_plano <- NULL
+  } else {
+  
   df<-df#%>%filter(depto_origen !="ANTIOQUIA")
   mapa<-shapefile%>%dplyr::left_join(df, by = c("dpto_cnmbr"="depto_origen"))%>%
     mutate(columna_porcentaje=columna_porcentaje*100)
@@ -113,14 +119,14 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
                 color = "#D5D5D5", 
                 weight = 1,
                 popup = ~paste0("<strong>Departamento: </strong>", dpto_cnmbr, 
-                                "<br><strong>Porcentaje enviado a Antioquia:: </strong>", round(columna_porcentaje, digits = 1),"%",
-                                "<br><strong>Toneladas: </strong>", formatC(round(total_ton), format = "f", big.mark = ",", digits = 0)),
+                                "<br><strong>Porcentaje enviado a Antioquia:</strong>", round(columna_porcentaje, digits = 2),"%",
+                                "<br><strong>Toneladas: </strong>", formatC(round(total_ton), format = "f", big.mark = ",", digits = 1)),
                 highlightOptions = highlightOptions(color = "white", 
                                                     weight = 2,
                                                     bringToFront = FALSE)) %>%
     addLegend(pal = my_palette_sin_na, values = ~valores_sin_na, opacity = 0.7, title = "Porcentaje")#, na.label = "")
   
-
+}
   df_sin_antioquia <- df[df$depto_origen != "ANTIOQUIA",]
   
   # Calcula el porcentaje máximo y el departamento correspondiente
