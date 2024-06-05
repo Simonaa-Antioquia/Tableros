@@ -84,7 +84,7 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
   num_productos <- nrow(df_filtrado)
   
   df_filtrado$tooltip_text1 <- paste0("Producto: ", df_filtrado$producto, "<br>Cantidad: ", round(df_filtrado$total_sum,1))
-  df_filtrado$tooltip_text2 <- paste0("Producto: ", df_filtrado$producto, "<br>Porcentaje: ", round(df_filtrado$acumulado_total*100),"%")
+  df_filtrado$tooltip_text2 <- paste0("Producto: ", df_filtrado$producto, "<br>Porcentaje: ", round(df_filtrado$acumulado_total*100,1),"%")
   if(nrow(df) > 0){
   plot <- ggplot(df_filtrado, aes(x = reorder(producto, -total_sum), y = total_sum)) +
     geom_bar(stat = "identity", fill = "#0D8D38", aes(text = tooltip_text1)) +
@@ -108,8 +108,8 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
     p<-print("No hay datos disponibles")
   }
   
-  porcent_prod<-round((length(df_filtrado$producto)/length(df$producto))*100)
-  acumulado<-round(max(df_filtrado$acumulado_total*100))
+  porcent_prod<-round((length(df_filtrado$producto)/length(df$producto))*100, digits = 1)
+  acumulado<-round(max(df_filtrado$acumulado_total*100), digits = 1)
   df<-df%>%
     select(-graficar,-origen)
   prod_neces<-length(df_filtrado$producto)

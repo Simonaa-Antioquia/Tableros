@@ -3,7 +3,7 @@
 ################################################################################-
 #Autores: Juliana Lalinde, Laura Quintero, Germán Angulo
 #Fecha de creacion: 21/04/2024
-#Fecha de ultima modificacion: 21/04/2024
+#Fecha de ultima mo dificacion: 21/04/2024
 ################################################################################-
 # Limpiar el entorno de trabajo
 rm(list=ls())
@@ -130,7 +130,7 @@ output$subtitulo <- renderText({
         values$subtitulo <- (paste0("El prodcuto con mayor volumen reportado en las centrales de abasto de Medellín fue ", producto_max))
       }
     }
-    return(values$subtitulo_2)
+    return(values$subtitulo)
   })
   
   

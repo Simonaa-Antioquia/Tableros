@@ -119,6 +119,7 @@ output$subtitulo <- renderText({
     max_vulnerabilidad <- round(resultado$max_vulnerabilidad, digits = 1)
     fecha_max_vulnerabilidad <- resultado$fecha_max_vulnerabilidad
     producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
+    
     fecha_max_vulnerabilidad <- as.character(fecha_max_vulnerabilidad)
     componentes <- strsplit(fecha_max_vulnerabilidad, "-")[[1]]
     anio <- componentes[1]

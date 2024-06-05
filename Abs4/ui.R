@@ -23,7 +23,7 @@ ui <- fluidPage(
   tags$div(
     style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
     tags$head(
-      tags$title("Destino de la producción de alimentos de antioquia"),  # Añade esta línea
+      tags$title("Destino_alimentos"),  # Añade esta línea
       tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
       #grafico {
@@ -57,7 +57,7 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("Destino de la producción de alimentos de origen antioqueño", class = "main-header"),
-  tags$h1("Descubre las principales ciudades receptores de alimentos con origen Antioquia según el SIPSA", class = "main-header_2"),
+  tags$h1("Descubre las principales ciudades receptores de alimentos con origen Antioquia según el SIPSA.", class = "main-header_2"),
   #div(
   #  textOutput("subtitulo"),
   #  class = "sub-header2",
@@ -80,9 +80,9 @@ ui <- fluidPage(
     fluidRow(
       column(9,
              plotlyOutput("grafico",height = "400px"),
-             actionButton("descargar", "Gráfica"),
+             downloadButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
-             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros/tree/8d5220f3bec2898e21495993520e1d8637e6b5d4/Abs4", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("reset", "Restrablecer",icon = icon("refresh")),
              downloadButton("report", "Generar informe")
@@ -93,9 +93,9 @@ ui <- fluidPage(
       
       )
     ),
-    tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)",
+    tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
                     tags$br(),"Solo se tienen en cuenta las principales ciudades con centros de acopio en las que se recolecta información para el SIPSA.",
-                    tags$br(),"Esta visualización muestra el ranking  de destinos de los alimentos con origen Antioquia, resaltando el porcentaje de volumen de productos que llegan a cada centro de abasto según SIPSA"
+                    tags$br(),"Esta visualización muestra el ranking  de destinos de los alimentos con origen Antioquia, resaltando el porcentaje de volumen de productos que llegan a cada centro de abasto según SIPSA."
 , class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(

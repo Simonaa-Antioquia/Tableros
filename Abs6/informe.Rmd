@@ -34,6 +34,7 @@ header-includes:
 - \usepackage{adjustbox}
 - \setlength{\headheight}{2cm}
 - \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
+- \renewcommand{\headrule}{\color{mygreen}\hrule width\headwidth height\headrulewidth}
 - \usepackage{eso-pic}
 ---
 
@@ -82,7 +83,7 @@ tabla_kable <- df %>%
     linesep = "",  # No agregar ninguna línea separadora
     escape = FALSE
   ) %>%
-  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
+  kable_styling(full_width = TRUE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
 
 # Imprimir la tabla con knitr::kable
 tabla_kable
@@ -93,9 +94,9 @@ tabla_kable
 <!-- Subtitulo -->
 \fontsize{10}{10} \selectfont \textcolor{green2}{Principales productos de Antioquia en otros mercados: volumen y composición de la 
 canasta.}\
-
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
+
 ```{r, out.width = "70%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```

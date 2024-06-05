@@ -40,6 +40,7 @@ header-includes:
 - \setlength{\headheight}{2cm}
 - \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
 - \usepackage{eso-pic}
+- \renewcommand{\headrule}{\color{mygreen}\hrule width\headwidth height\headrulewidth} 
 ---
 
 
@@ -87,7 +88,7 @@ tabla_kable <- df %>%
     linesep = "",  # No agregar ninguna línea separadora
     escape = FALSE
   ) %>%
-  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
+  kable_styling(full_width = TRUE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
 
 # Imprimir la tabla con knitr::kable
 tabla_kable
@@ -95,20 +96,18 @@ tabla_kable
 ```
 
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Análisis de Pareto del flujo de alimentos en Antioquia}\
+\fontsize{15}{15} \selectfont \textcolor{mygreen}{Análisis de Pareto del flujo de alimentos en Antioquia}\
 \fontsize{10}{10} \selectfont \textcolor{green2}{Productos principales por volumen en flujo de alimentos en Antioquia.}\
 <!-- Subtitulo -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 <!-- Grafica -->
-```{r, out.width = "60%", fig.align = "center", warning=FALSE,message=FALSE}
+```{r, out.width = "70%", fig.align = "center", warning=FALSE,message=FALSE}
 print(params$plot)
 ```
 
 \fontsize{10}{10} \selectfont `r params$mensaje1`\
 
 \fontsize{10}{10} \selectfont `r params$mensaje3`\
-
-\fontsize{10}{10} \selectfont `r params$mensaje2`\
 
 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\

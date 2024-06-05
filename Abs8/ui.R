@@ -15,7 +15,7 @@ source("012b_pareto_productos_funcion.R")
 
 ui <- fluidPage(
   tags$head(
-    tags$title("Acumulado productos"),  
+    tags$title("Acumulado_Productos"),  
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
     tags$style(HTML("
        .main-header {
@@ -82,7 +82,7 @@ ui <- fluidPage(
              plotly::plotlyOutput("grafico",height = "400px"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros/tree/8d5220f3bec2898e21495993520e1d8637e6b5d4/Abs8", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("reset", "Restrablecer",icon = icon("refresh")),
               downloadButton("report", "Generar informe")
@@ -91,11 +91,9 @@ ui <- fluidPage(
     column(3, 
            div(
              wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #094735; color: #FFFFFF;"),
+                       style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(textOutput("mensaje3"),
-                       style = "background-color: #005A45; color: #FFFFFF;"),
-             wellPanel(textOutput("mensaje2"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;")
+                       style = "background-color: #005A45; color: #FFFFFF;")
            ))
   ),
   

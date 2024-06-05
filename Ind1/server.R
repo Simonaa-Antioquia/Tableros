@@ -87,13 +87,7 @@ values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL, mensaje2=NULL)
     mes_max_IHH <- data_resultado$mes_max_IHH
     anio_max_IHH <- data_resultado$anio_max_IHH
     
-    # Crear un vector con los nombres de los meses en español
-    meses_es <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
-    # Crear un vector con las abreviaturas de los meses en español
-    abrev_meses_es <- c("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic")
     
-    # Convertir la abreviatura del mes a un nombre completo de mes
-    mes_max_IHH <- meses_es[match(tolower(mes_max_IHH), abrev_meses_es)]
     
     if (tipo == 1) {
       values$subtitulo <- (paste("La menor variedad de alimentos registrada fue en el año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH))

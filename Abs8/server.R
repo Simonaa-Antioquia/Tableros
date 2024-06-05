@@ -113,7 +113,7 @@ server <- function(input, output, session) {
       )
     }else{res <- resultado() 
     req(res)
-    porcent_prod <- res$porcent_prod
+    porcent_prod <- round(res$porcent_prod,digits = 1)
     acumulado <- res$acumulado
     num_productos <- res$num_productos
     values$subtitulo <- (paste0("El ",acumulado,"% del volumen total que ",ifelse(input$algo=="Neto_entra", " ingresa ",ifelse(input$algo == "Neto_sale"," sale ",ifelse(input$algo == "Neto_entra_local"," ingresa - local "," ingresa - externo "))), "se concentran en ", num_productos," productos (",porcent_prod,"% del total de productos)"))}
@@ -136,7 +136,8 @@ server <- function(input, output, session) {
       values$mensaje2 <- ""
     } else {
       prod_neces <- res$prod_neces
-      acumulado <- res$acumulado
+      acumulado <- round(res$acumulado,digits = 1)
+      
       if(prod_neces == 1){
         values$mensaje2 <- "Solo se cuenta con un alimento"
       } else {

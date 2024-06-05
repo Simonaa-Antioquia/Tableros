@@ -33,6 +33,7 @@ col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203
 neto_grafica <- function(tipo, productos_seleccionados = "") {
   if (tipo == 1 ) {
     df <- data_anual
+    tipo <- 1
   } else if (tipo == 2) {
     df <- data_anual_producto
     df <- df %>%
@@ -40,10 +41,12 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
     if (length(productos_seleccionados) == 0){
       message("Para esta opcion debe escoger los productos que quiere graficar")
     }
+    tipo <- 2
   } else if (tipo == 3) {
     df <- data_mensual
     df <- df %>%
       select("fecha","total_importado","sale_kg","ingresa_kg","mes")
+    tipo<- 3
     df <- rename(df, anio = fecha)
   } else if (tipo == 4) {
     df <- data_mensual_producto
@@ -53,7 +56,9 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
     if (length(productos_seleccionados) == 0){
       stop("Para esta opcion debe escoger los productos que quiere graficar")
     }
-  }
+    tipo <- 4
+    }
+  
   # Filtrar los productos seleccionados solo para las opciones 2 y 4
   if (tipo %in% c(2)) {
     df <- df[df$producto %in% productos_seleccionados, ]

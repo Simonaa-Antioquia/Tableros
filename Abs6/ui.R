@@ -19,7 +19,7 @@ ui <- fluidPage(
   tags$div(
     style = "position: relative; min-height: 100vh; padding-bottom: 100px;",  # Añade un margen inferior
     tags$head(
-      tags$title("Productos que salen de Antioquia"),  # Añade esta línea
+      tags$title("Productos_salen"),  # Añade esta línea
       tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
       tags$style(HTML("
       #grafico {
@@ -76,7 +76,7 @@ ui <- fluidPage(
              highchartOutput("grafico",height = "300px"),
              downloadButton("descargar_", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros/tree/8d5220f3bec2898e21495993520e1d8637e6b5d4/Abs6", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("reset", "Restablecer", icon = icon("refresh")),
              downloadButton("report", "Generar informe")
@@ -86,8 +86,7 @@ ui <- fluidPage(
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(textOutput("mensaje2"),
                       style = "background-color: #005A45; color: #FFFFFF;")
-             #wellPanel(textOutput("mensaje3"),
-              #         style = "background-color: #094735; color: #FFFFFF;")
+          
       )
     ),
     tags$div(tags$p(" ",

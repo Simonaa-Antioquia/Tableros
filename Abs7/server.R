@@ -87,9 +87,25 @@ output$descargar_ <- downloadHandler(
     resultado <- resultado()
     fecha_min <- resultado$fecha_min
     min_ton <- resultado$min_ton
-    values$subtitulo <- paste0("Hubo mayor diferencia en volumen de entradas y el volumen de salidas de alimentos el ", fecha_min, " ingresando ", min_ton, " mil toneladas más de las que salieron.")
+    # FECHA
+    fecha_min <- as.character(fecha_min)
+    componentes <- strsplit(fecha_min, "-")[[1]]
+    anio <- componentes[1]
+    mes <- componentes[2]
+    dia <- componentes[3]
+    nombres_meses <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+    mes <- nombres_meses[as.integer(mes)]  
+  if (input$tipo == 1 | input$tipo==2){
+    values$subtitulo <- paste0("Hubo mayor diferencia en volumen de entradas y el volumen de salidas de alimentos en el año ",anio, " ingresando ", min_ton, " mil toneladas más de las que salieron.")
+  } else if (input$tipo == 3 | input$tipo == 4){
+    values$subtitulo <- paste0("Hubo mayor diferencia en volumen de entradas y el volumen de salidas de alimentos en el ",mes, " del ",anio, " ingresando ", min_ton, " mil toneladas más de las que salieron.") 
+  }
   return(values$subtitulo)
     })
+  
+  
+  
   
 # Borrar filtros
   observeEvent(input$reset, {

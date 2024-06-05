@@ -213,7 +213,7 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
                    "#08384D", "#094B5C", "#00596C", "#006A75", "#007A71", "#00909C", "#0088BB", "#007CC3", "#456ABB")
 
   
-    df$tooltip_text <- paste("Ciudad destino: ", df$mpio_destino, "<br>Porcentaje: ", round(df$columna_porcentaje*100,digits = 2),"%")
+    df$tooltip_text <- paste("Ciudad destino: ", df$mpio_destino, "<br>Porcentaje: ", round(df$columna_porcentaje*100,digits = 1),"%")
     
     # Ahora puedes usar col_palette en tu gráfico
     p_plano<-ggplot(df, aes(x = forcats::fct_reorder(mpio_destino, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill = mpio_destino,text = tooltip_text)) +

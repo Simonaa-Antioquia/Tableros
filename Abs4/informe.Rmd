@@ -63,7 +63,7 @@ opciones_Mes <- c("Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" =
 mes_label <- ifelse(is.na(params$mes) | !(params$mes %in% opciones_Mes), "Todos los meses", names(opciones_Mes)[which(opciones_Mes == params$mes)])
   
 df <- data.frame(
-  "Parametro" = c("\\textbf{Año}", "Mes", "Número de municipios", "Alimentos"),
+  "Parametro" = c("Año:", "Mes:", "Número de municipios:", "Alimentos:"),
   "Valor" = c(
     ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio),
     mes_label,
@@ -88,7 +88,7 @@ tabla_kable
 
 <!-- Titulo del tablaro -->
 \fontsize{20}{20} \selectfont \textcolor{mygreen}{Destino de la producción de alimentos de origen antioqueño}\
-\fontsize{10}{10} \selectfont \textcolor{green2}{Descubre las principales ciudades receptores de alimentos con origen Antioquia según el SIPSA}\
+\fontsize{10}{10} \selectfont \textcolor{green2}{Descubre las principales ciudades receptores de alimentos con origen Antioquia según el SIPSA.}\
 <!-- Grafica -->
 ```{r, out.width = "60%", fig.align = "center", warning=FALSE}
 print(params$plot)
