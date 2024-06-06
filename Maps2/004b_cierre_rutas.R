@@ -41,6 +41,17 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   ruta_imp <- df$nombre[which.max(df$ton_ruta)]
   max_ton_ruta <- max(df$ton_ruta)
 
+  aux_rutas <- df[!(duplicated(df[c("id_ruta_externa","nombre")])),c("id_ruta_externa","nombre","ton_ruta")]
+  aux_rutas <- aux_rutas[order(aux_rutas$ton_ruta, decreasing = FALSE), ]
+
+  for(i in 1:nrow(aux_rutas)) {
+    if(i == 1){
+      rutas_ordenadas <- aux_rutas$nombre[i]
+    } else {
+      rutas_ordenadas <- paste0(", ",rutas_ordenadas)
+    }
+  }
+
   por_ruta = round(((ton_original - max_ton_ruta)/ton_original)*100, digits = 2)
   
   if (!is.null(Rutas)) {
@@ -74,6 +85,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     por_perdido = por_perdido,
     ton_perdido = ton_perdido,
     ruta_imp = ruta_imp,
-    por_ruta = por_ruta
+    por_ruta = por_ruta,
+    rutas_ordenadas = rutas_ordenadas
   ))
 }
