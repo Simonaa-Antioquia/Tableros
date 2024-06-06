@@ -34,17 +34,21 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL) {
   
   df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
   
-  map <- leaflet() %>%
-    addTiles()
-  
-  for(i in 1:nrow(df)) {
-    dir <- matrix(unlist(df[i,18][[1]]), ncol = 2)
-    map <- map %>% addPolylines(data = dir,
-                                color = "#0D8D38",
-                                stroke = 0.05,
-                                opacity = 0.8,
-                                label = paste0("Municipio de origen: ",df$mpio_origen[i]),
-                                labelOptions = labelOptions(noHide = F, direction = "top"))
+  if(nrow(df)==0){
+    map <-  validate("No hay datos disponibles")
+  } else {
+    map <- leaflet() %>%
+      addTiles()
+    
+    for(i in 1:nrow(df)) {
+      dir <- matrix(unlist(df[i,18][[1]]), ncol = 2)
+      map <- map %>% addPolylines(data = dir,
+                                  color = "#0D8D38",
+                                  stroke = 0.05,
+                                  opacity = 0.8,
+                                  label = paste0("Municipio de origen: ",df$mpio_origen[i]),
+                                  labelOptions = labelOptions(noHide = F, direction = "top"))
+    }
   }
   
   av_km <- round(mean(df$distance), digits = 2)
@@ -147,27 +151,30 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
   
   importancia_max <- round(max(df$importancia)*100,1)
   importancia_min <- round(min(df$importancia)*100,1)
-  
-  map <- leaflet() %>%
-    addTiles() %>%
-    addLegend(
-      position = "bottomright",
-      colors = colorRampPalette(c("#F2E203","#0088BB","#0D8D38"))(10),
-      labels = c(importancia_min,"","","","","","","","",importancia_max),
-      opacity = 1,
-      title = "Importancia (%)"
-    )
-  
-  for(i in 1:nrow(df)) {
-    dir <- matrix(unlist(df[i,19][[1]]), ncol = 2)
-    map <- map %>% addPolylines(data = dir,
-                                color = df$colour[i],
-                                stroke = 0.05,
-                                opacity = 0.8,
-                                label = paste0("Municipio de origen: ",df$mpio_origen[i]," "," "," - "," "," Importancia: ",df$importancia*100,"%"),
-                                labelOptions = labelOptions(noHide = F, direction = "top"))
-  }
 
+  if(nrow(df)==0){
+    map <-  validate("No hay datos disponibles")
+  } else {
+    map <- leaflet() %>%
+      addTiles() %>%
+      addLegend(
+        position = "bottomright",
+        colors = colorRampPalette(c("#F2E203","#0088BB","#0D8D38"))(10),
+        labels = c(importancia_min,"","","","","","","","",importancia_max),
+        opacity = 1,
+        title = "Importancia (%)"
+      )
+    
+    for(i in 1:nrow(df)) {
+      dir <- matrix(unlist(df[i,19][[1]]), ncol = 2)
+      map <- map %>% addPolylines(data = dir,
+                                  color = df$colour[i],
+                                  stroke = 0.05,
+                                  opacity = 0.8,
+                                  label = paste0("Municipio de origen: ",df$mpio_origen[i]," "," "," - "," "," Importancia: ",df$importancia*100,"%"),
+                                  labelOptions = labelOptions(noHide = F, direction = "top"))
+    }
+ }
   av_km <- round(mean(df$distance), digits = 2)
   max_km <- round(max(df$distance), digits = 2)
   min_km <- round(min(df$distance), digits = 2)
