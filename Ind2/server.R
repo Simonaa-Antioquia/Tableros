@@ -13,36 +13,35 @@ library(glue);library(tidyverse); library(shiny); library(lubridate);library(shi
 options(scipen = 999)
 ################################################################################
 server <- function(input, output, session) {
-  
   resultado <- reactive({
     tipo <- input$tipo
     anio_seleccionado <- input$anio
     productos_seleccionados <- input$producto
     
-    if ((tipo == 2 || tipo == 4) && is.null(productos_seleccionados)) {
+    if ((tipo == 2 || tipo == 4) && (is.null(productos_seleccionados) || length(productos_seleccionados) == 0)) {
       validate(
         need(FALSE, "Debe seleccionar un producto.")
       )
     }
     
-    if (is.null(productos_seleccionados)) {
+    if (is.null(productos_seleccionados))  {
       productos_seleccionados <- ""
     }
     if (tipo == 2) {
       grafica_indice_mun(tipo, "", productos_seleccionados)
     } else if (tipo == 3) {
-      if (is.null(anio_seleccionado)){
+      if (is.null(anio_seleccionado) || anio_seleccionado =="todo"){
         grafica_indice_mun(tipo)
       } else {
         grafica_indice_mun(tipo, anio_seleccionado)
       }
     } else if (tipo == 4) {
-      if (is.null(anio_seleccionado)){
+      if (is.null(anio_seleccionado) || anio_seleccionado == "todo"){
         anio_seleccionado  <- ""
       }
       grafica_indice_mun(tipo, anio_seleccionado, productos_seleccionados)
     } else {
-      if (is.null(anio_seleccionado)){
+      if (is.null(anio_seleccionado) || anio_seleccionado == "todo"){
         anio_seleccionado  <- ""
       }
       grafica_indice_mun(tipo, anio_seleccionado, productos_seleccionados)
@@ -105,28 +104,44 @@ output$descargarDatos <- downloadHandler(
 # SUBTITULO
 values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL, mensaje2= NULL)  
 # En el servidor
-  output$subtitulo <- renderText({
-    if ((input$tipo == 2 || input$tipo == 4) && is.null(input$producto)) {
-     return("Debe seleccionar un producto.")
-    }
-    
-    resultado <- grafica_indice_mun(input$tipo, input$anio, input$producto)
-    tipo <- input$tipo
-    max_IHH <- resultado$max_vulnerabilidad
-    fecha_max_vulnerabilidad <- resultado$fecha_max_vulnerabilidad
-    producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
-    
-    if (tipo == 2) {
-      values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en" ,fecha_max_vulnerabilidad," con un índice máximo de" , max_IHH, " para el producto ",producto_max_vulnerabilidad ))
-      } else if (tipo == 3) {
-        values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en ",fecha_max_vulnerabilidad," con un índice máximo de", max_IHH ))
-    } else if (tipo == 4) {
-      values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en ", fecha_max_vulnerabilidad, "con un índice máximo ", max_IHH, "para el producto" ,producto_max_vulnerabilidad))
-      } else {
-        values$subtitulo <-(paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en ",fecha_max_vulnerabilidad," con un índice máximo de", max_IHH ))
-      }
-    return(values$subtitulo)
-  })
+output$subtitulo <- renderText({
+  if ((input$tipo == 2 || input$tipo == 4) && is.null(input$producto)) {
+    return("Debe seleccionar un producto.")
+  }
+  # Lógica para manejar años no seleccionados
+  if (is.null(input$anio) || input$anio == "todo") {
+    anio <- ""
+  } else {
+    anio <- input$anio
+  }
+  
+  resultado <- grafica_indice_mun(input$tipo, anio, input$producto)
+  tipo <- input$tipo
+  max_IHH <- resultado$max_vulnerabilidad
+  fecha_max_vulnerabilidad <- resultado$fecha_max_vulnerabilidad
+  producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
+  fecha_max_vulnerabilidad <- as.character(fecha_max_vulnerabilidad)
+  componentes <- strsplit(fecha_max_vulnerabilidad, "-")[[1]]
+  anio <- componentes[1]
+  mes <- componentes[2]
+  dia <- componentes[3]
+  nombres_meses <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+  mes <- nombres_meses[as.integer(mes)]
+  producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
+  
+  if (tipo == 2) {
+    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en el" ,anio," con un índice máximo de" , max_IHH, " para el producto ",producto_max_vulnerabilidad ))
+  } else if (tipo == 3) {
+    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en ",mes, " del año ",anio, "con un índice máximo de", max_IHH ))
+  } else if (tipo == 4) {
+    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en ",mes, " del año ",anio, " con un índice máximo ", max_IHH, "para el producto" ,producto_max_vulnerabilidad))
+  } else {
+    values$subtitulo <-(paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en el ",anio," con un índice máximo de", max_IHH ))
+  }
+  return(values$subtitulo)
+})
+
   
   # Borrar filtros
   observeEvent(input$reset, {

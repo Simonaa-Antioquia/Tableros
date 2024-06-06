@@ -63,27 +63,27 @@ ui <- fluidPage(
     class = "sub-header2",
     style = "margin-bottom: 20px;"
   ),
-  div(
-      fluidRow(
-        column(4,
-               selectInput("tipo", "Seleccione el tipo:", 
-                           choices = list("Anual" = 1, 
-                                          "Anual por producto" = 2, 
-                                          "Mensual" = 3, 
-                                          "Mensual por producto" = 4))
+    div(
+        fluidRow(
+          column(4,
+                 selectInput("tipo", "Seleccione el tipo:", 
+                             choices = list("Anual" = 1, 
+                                            "Anual por producto" = 2, 
+                                            "Mensual" = 3, 
+                                            "Mensual por producto" = 4))
         ),
         column(4,
                conditionalPanel(
                  condition = "input.tipo == 2 || input.tipo == 4",
                  selectInput("producto", "Seleccione los productos:", 
-                             choices = c(NULL, unique(IHH_anual_producto$producto)), multiple = TRUE)
+                             choices = c("Todos los productos" = NULL , unique(IHH_anual_producto$producto)), multiple = TRUE)
                )
         ),
         column(4,
                conditionalPanel(
                  condition = "input.tipo == 3 || input.tipo == 4",
                  selectInput("anio", "Seleccione el año:", 
-                             choices = c("", unique(IHH_mensual_producto$year)))
+                             choices = c("Todos los años" = "todo", unique(IHH_mensual_producto$year)))
                )
         )
       )

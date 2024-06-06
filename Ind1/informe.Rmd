@@ -32,6 +32,7 @@ header-includes:
 - \setlength{\headheight}{2cm}
 - \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
 - \usepackage{eso-pic}
+- \renewcommand{\headrule}{\color{mygreen}\hrule width\headwidth height\headrulewidth} 
 ---
 
 
@@ -60,7 +61,7 @@ opciones_Tipo <- list("Anual" = 1, "Mensual" = 0)
 tipo_label <- ifelse(is.na(params$tipo) | !(params$tipo %in% opciones_Tipo), "Todos los años", names(opciones_Tipo)[which(opciones_Tipo == params$tipo)])
 
 # Si params$anio es NULL, NA o vacío, asignar un valor predeterminado
-if (is.null(params$anio) || is.na(params$anio) || params$anio == "") {
+if (is.null(params$anio) || is.na(params$anio) || params$anio == ""|| params$anio == "todo") {
   anio <- "Todos los años"
 } else {
   anio <- params$anio
@@ -83,7 +84,7 @@ tabla_kable <- df %>%
     linesep = "",  # No agregar ninguna línea separadora
     escape = FALSE
   ) %>%
-  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
+  kable_styling(full_width = TRUE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
 
 # Imprimir la tabla con knitr::kable
 tabla_kable

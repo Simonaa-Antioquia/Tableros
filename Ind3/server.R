@@ -33,18 +33,18 @@ server <- function(input, output, session) {
     if (tipo == 2) {
       grafica_indice(tipo, "", productos_seleccionados)
     } else if (tipo == 3) {
-      if (is.null(anio_seleccionado)){
+      if (is.null(anio_seleccionado) || anio_seleccionado == "todo"){
         grafica_indice(tipo)
       } else {
         grafica_indice(tipo, anio_seleccionado)
       }
     } else if (tipo == 4) {
-      if (is.null(anio_seleccionado)){
+      if (is.null(anio_seleccionado) || anio_seleccionado == "todo"){
         anio_seleccionado  <- ""
       }
       grafica_indice(tipo, anio_seleccionado, productos_seleccionados)
     } else {
-      if (is.null(anio_seleccionado)){ 
+      if (is.null(anio_seleccionado) || anio_seleccionado == "todo"){ 
         anio_seleccionado  <- ""
       }
       grafica_indice(tipo, anio_seleccionado, productos_seleccionados)
@@ -57,7 +57,7 @@ server <- function(input, output, session) {
   observeEvent(input$reset, {
     updateSelectInput(session, "tipo", selected = 1)
     updateSelectInput(session, "producto", selected = "")
-    updateSelectInput(session, "anio", selected = "")
+    updateSelectInput(session, "anio", selected = "todo")
   })
   
   
@@ -118,21 +118,32 @@ output$subtitulo <- renderText({
     if ((input$tipo == 2 || input$tipo == 4) && is.null(input$producto)) {
       return("Debe seleccionar un producto.")
     }
-    resultado <- grafica_indice(input$tipo, input$anio, input$producto)
+  anio <- ""
+  if (!is.null(input$anio) && input$anio != "todo") {
+    anio <- input$anio
+  }
+    resultado <- grafica_indice(input$tipo, anio, input$producto)
     tipo <- input$tipo
     max_vulnerabilidad <- resultado$max_vulnerabilidad
     fecha_max_vulnerabilidad <- resultado$fecha_max_vulnerabilidad
     producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
-    fecha_max_vulnerabilidad <- substr(fecha_max_vulnerabilidad, 1, 7)
+    fecha_max_vulnerabilidad <- as.character(fecha_max_vulnerabilidad)
+    componentes <- strsplit(fecha_max_vulnerabilidad, "-")[[1]]
+    anio <- componentes[1]
+    mes <- componentes[2]
+    dia <- componentes[3]
+    nombres_meses <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
+                       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+    mes <- nombres_meses[as.integer(mes)]
     
     if (tipo == 2) {
-      values$subtitulo <- (paste("La menor variedad de territorios conectado por el flujo de alimentos desde Antioquia hacia otras plazas fue en ", fecha_max_vulnerabilidad,"  donde se registró un índice máximo de " , max_vulnerabilidad, " para el producto: ",producto_max_vulnerabilidad))
+      values$subtitulo <- (paste("La menor variedad de territorios conectado por el flujo de alimentos desde Antioquia hacia otras plazas fue en el ", anio ,"  donde se registró un índice máximo de " , max_vulnerabilidad, " para el producto: ",producto_max_vulnerabilidad))
       } else if (tipo == 3) {
-        values$subtitulo <- (paste( "La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ", fecha_max_vulnerabilidad, " donde se registró un índice máximo de ", max_vulnerabilidad))
+        values$subtitulo <- (paste( "La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ", mes, " del ",anio, " donde se registró un índice máximo de ", max_vulnerabilidad))
     } else if (tipo == 4) {
-      values$subtitulo <- (paste("La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ", fecha_max_vulnerabilidad, " donde se registró un índice máximo de ", max_vulnerabilidad, " para el producto: ",  producto_max_vulnerabilidad))
+      values$subtitulo <- (paste("La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ", mes , " del ", anio, " donde se registró un índice máximo de ", max_vulnerabilidad, " para el producto: ",  producto_max_vulnerabilidad))
     } else {
-      values$subtitulo <- (paste("La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ",fecha_max_vulnerabilidad, " donde se registró un índice máximo de " , max_vulnerabilidad))
+      values$subtitulo <- (paste("La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en el",anio, " donde se registró un índice máximo de " , max_vulnerabilidad))
     }
     return(values$subtitulo)
   })

@@ -74,11 +74,11 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   if (tipo == 2) {
     df <- rename(df, fecha = anio) 
     df <- df[df$producto %in% productos_seleccionados, ]
-    df$tooltip_text <- paste("Año: ", df$fecha , "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
+    df$tooltip_text <- paste("Año: ", df$fecha , "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,1))
     p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text), size = 1e-8) +
-      labs(x = "Año", y = "Indice de Vulnerabilidad") +
+      labs(x = "Año", y = " ") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
       theme(text = element_text(family = "Prompt", size = 16),
@@ -89,11 +89,11 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
   }else if (tipo == 4){
     df <- rename(df, fecha = mes_y_ano)
     df <- df[df$producto %in% productos_seleccionados, ]
-    df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
+    df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,1))
     p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text), size = 1e-8) +
-      labs(x = "Año", y = "Indice de Vulnerabilidad") +
+      labs(x = "Año", y = " ") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
       theme(text = element_text(family = "Prompt", size = 16),
@@ -102,11 +102,11 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
     tipo<-4
   } else if (tipo == 1) {
       df <- rename(df, fecha = anio) 
-      df$tooltip_text <- paste("Año: ", df$fecha ,  "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,3))
+      df$tooltip_text <- paste("Año: ", df$fecha ,  "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,1))
       p_plano<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
         geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text), size = 1e-8) +
-        labs(x = "Año", y = "Indice de Vulnerabilidad") +
+        labs(x = "Año", y = " ") +
         theme_minimal()  +
         scale_color_manual(values = col_palette) +
         theme(text = element_text(family = "Prompt", size = 16),
@@ -121,7 +121,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
       p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
         geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text), size = 1e-8) +
-        labs(x = "Año", y = "Indice de Vulnerabilidad") +
+        labs(x = "Año", y = " ") +
         theme_minimal()+
         theme(text = element_text(family = "Prompt", size = 16),
               axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +

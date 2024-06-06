@@ -32,6 +32,7 @@ header-includes:
 - \setlength{\headheight}{2cm}
 - \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
 - \usepackage{eso-pic}
+- \renewcommand{\headrule}{\color{mygreen}\hrule width\headwidth height\headrulewidth} 
 ---
 
 
@@ -69,7 +70,7 @@ if (is.null(params$producto)) {
 }
 
 # Año
-if (is.null(params$anio) || is.na(params$anio) || params$anio == "") {
+if (is.null(params$anio) || is.na(params$anio) || params$anio == "todos") {
   label_anio <- "Todos los años"
 } else {
   label_anio <- params$anio
@@ -77,8 +78,8 @@ if (is.null(params$anio) || is.na(params$anio) || params$anio == "") {
 
   
 df <- data.frame(
-    "Parametro" = c("Tipo:", "Año","Producto(s):"),
-    "Valor" = c(tipo_label,label_anio , producto_label)
+    "Parametro" = c("Tipo:", "Año"),
+    "Valor" = c(tipo_label,label_anio)
   )
   
 
@@ -93,7 +94,7 @@ tabla_kable <- df %>%
     linesep = "",  # No agregar ninguna línea separadora
     escape = FALSE
   ) %>%
-  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
+  kable_styling(full_width = TRUE, latex_options = "HOLD_position", position = "left", bootstrap_options = "borderless")  # Estilo de la tabla con bordes blancos y cuadrícula completa
 
 # Imprimir la tabla con knitr::kable
 tabla_kable
@@ -108,7 +109,7 @@ tabla_kable
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo` 
 
-```{r, out.width = "70%", fig.height=3, fig.align = "center", warning=FALSE}
+```{r, out.width = "80%", fig.height=3, fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 

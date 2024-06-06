@@ -14,21 +14,21 @@ options(scipen = 999)
 
 server <- function(input, output, session) {
   resultado <- reactive({
-    # Si el input del año está vacío, déjalo vacío, de lo contrario, usa el año seleccionado
-    anio <- if (is.null(input$anio) || input$anio == "") NULL else input$anio
+    # Si el input del año está vacío o es "todo", usa "todo", de lo contrario, usa el año seleccionado
+    anio <- if (is.null(input$anio) || input$anio == "todo") NULL else input$anio
     tipo <- input$tipo
     
     # Llama a la función plot_data con los parámetros seleccionados
     plot_data(tipo, anio)
   })
+
   
-  
-# Rendre plotly
+  # Rendre plotly
   output$grafico1 <- plotly::renderPlotly({
     resultado()$plot
   })
   
-# Render grafico plano
+  # Render grafico plano
   
   grafico_plano <- reactive({
     res<-resultado()
@@ -39,10 +39,10 @@ server <- function(input, output, session) {
     }else{
       res$grafico_plano
     }
-})  
+  })  
   
-# Descargamos la grafica
-
+  # Descargamos la grafica
+  
   # Descargar el grafico 
   output$descargar_ <- downloadHandler(
     filename = function() {
@@ -57,15 +57,15 @@ server <- function(input, output, session) {
     })  
   
   
-# head de los datos    
-output$vistaTabla <- renderTable({
+  # head de los datos    
+  output$vistaTabla <- renderTable({
     if (!is.null(resultado()$data)) {
       head(resultado()$data, 5)
     }
   })
   
-# Descargar datos   
-output$descargarDatos <- downloadHandler(
+  # Descargar datos   
+  output$descargarDatos <- downloadHandler(
     filename = function() {
       paste("datos-", Sys.Date(), ".csv", sep="")
     },
@@ -74,20 +74,26 @@ output$descargarDatos <- downloadHandler(
     }
   )
   
-
-values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL, mensaje2=NULL)
-
-# Generar subtitulo dinamico
+  
+  values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL, mensaje2=NULL)
+  
+  # Generar subtitulo dinamico
   output$subtitulo <- renderText({
     tipo <- input$tipo
-    anio <- ifelse(is.null(input$anio) || input$anio == "", NA, input$anio)
+    anio <- ifelse(is.null(input$anio) || input$anio == "todo", NA, input$anio)
     data_resultado <- resultado()
     
-    max_IHH <- round(data_resultado$max_IHH,digits = 2)
+    max_IHH <- round(data_resultado$max_IHH,digits = 1)
     mes_max_IHH <- data_resultado$mes_max_IHH
     anio_max_IHH <- data_resultado$anio_max_IHH
     
+    # Crear un vector con los nombres de los meses en español
+    meses_es <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
+    # Crear un vector con las abreviaturas de los meses en español
+    abrev_meses_es <- c("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic")
     
+    # Convertir la abreviatura del mes a un nombre completo de mes
+    mes_max_IHH <- meses_es[match(tolower(mes_max_IHH), abrev_meses_es)]
     
     if (tipo == 1) {
       values$subtitulo <- (paste("La menor variedad de alimentos registrada fue en el año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH))
@@ -96,26 +102,26 @@ values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL, mensaje2=NULL)
     }
     return(values$subtitulo)
   })
-
+  
   
   # Borrar filtros
   observeEvent(input$reset, {
     updateSelectInput(session, "tipo", selected = 1)
   })
-
-# Mensajes: Mensaje 1  
-output$mensaje1 <- renderText({
-    values$mensaje1 <- ("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los alimentos en Antioquia, un mayor índice refleja menos variedad de alimentos")
- values$mensaje1
-     })
   
-# Mensajes: Mensaje 2
+  # Mensajes: Mensaje 1  
+  output$mensaje1 <- renderText({
+    values$mensaje1 <- ("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los alimentos en Antioquia, un mayor índice refleja menos variedad de alimentos")
+    values$mensaje1
+  })
+  
+  # Mensajes: Mensaje 2
   output$mensaje2 <- renderUI({
     values$mensaje2 <-("Este índice puede aumentar si un producto incrementa su participación en el volumen total o si disminuye el número de productos que ingresan
 ")
     values$mensaje2
   })
-
+  
   # Generamos el Informe
   output$report <- downloadHandler(
     filename = 'informe.pdf',

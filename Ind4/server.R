@@ -33,18 +33,18 @@ server <- function(input, output, session) {
     if (tipo == 2) {
       grafica_indice(tipo, "", productos_seleccionados)
     } else if (tipo == 3) {
-      if (is.null(anio_seleccionado)){
+      if (is.null(anio_seleccionado) || anio_seleccionado == "todo"){
         grafica_indice(tipo)
       } else {
         grafica_indice(tipo, anio_seleccionado)
       }
     } else if (tipo == 4) {
-      if (is.null(anio_seleccionado)){
+      if (is.null(anio_seleccionado)|anio_seleccionado == "todo"){
         anio_seleccionado  <- ""
       }
       grafica_indice(tipo, anio_seleccionado, productos_seleccionados)
     } else {
-      if (is.null(anio_seleccionado)){
+      if (is.null(anio_seleccionado)| anio_seleccionado == "todo"){
         anio_seleccionado  <- ""
       }
       grafica_indice(tipo, anio_seleccionado, productos_seleccionados)
@@ -114,12 +114,20 @@ output$subtitulo <- renderText({
     if ((input$tipo == 2 || input$tipo == 4) && is.null(input$producto)) {
       return("Debe seleccionar un producto.")
     }
-    resultado <- grafica_indice(input$tipo, input$anio, input$producto)
+  
+  # Lógica para manejar años no seleccionados
+  if (is.null(input$anio) || input$anio == "todo") {
+    anio <- ""
+  } else {
+    anio <- input$anio
+  }
+  
+  
+    resultado <- grafica_indice(input$tipo, anio, input$producto)
     tipo <- input$tipo
     max_vulnerabilidad <- round(resultado$max_vulnerabilidad, digits = 1)
     fecha_max_vulnerabilidad <- resultado$fecha_max_vulnerabilidad
     producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
-    
     fecha_max_vulnerabilidad <- as.character(fecha_max_vulnerabilidad)
     componentes <- strsplit(fecha_max_vulnerabilidad, "-")[[1]]
     anio <- componentes[1]

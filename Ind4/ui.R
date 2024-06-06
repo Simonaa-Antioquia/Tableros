@@ -82,14 +82,14 @@ ui <- fluidPage(
                conditionalPanel(
                  condition = "input.tipo == 2 || input.tipo == 4",
                  selectInput("producto", "Seleccione los productos:", 
-                             choices = c(NULL, unique(indice_v_anual_producto$producto)), multiple = TRUE)
+                             choices = c("Todos los productos"= NULL, unique(indice_v_anual_producto$producto)), multiple = TRUE)
                )
         ),
         column(4,
                conditionalPanel(
                  condition = "input.tipo == 3 || input.tipo == 4",
                  selectInput("anio", "Seleccione el año:", 
-                             choices = c("", unique(indice_v_mensual$anio)))
+                             choices = c("Todos los años" = "todo", unique(indice_v_mensual$anio)))
                )
         )
       )
