@@ -94,7 +94,7 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
     p_plano <- NULL
   } else {
   
-  df<-df#%>%filter(depto_origen !="ANTIOQUIA")
+  df<-df%>%mutate(represent_ant=total_ton/sum(total_ton, na.rm = TRUE))
   mapa<-shapefile%>%dplyr::left_join(df, by = c("dpto_cnmbr"="depto_origen"))%>%
     mutate(columna_porcentaje=columna_porcentaje*100)
 
@@ -119,8 +119,9 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
                 color = "#D5D5D5", 
                 weight = 1,
                 popup = ~paste0("<strong>Departamento: </strong>", dpto_cnmbr, 
-                                "<br><strong>Porcentaje enviado a Antioquia:</strong>", round(columna_porcentaje, digits = 2),"%",
-                                "<br><strong>Toneladas: </strong>", formatC(round(total_ton), format = "f", big.mark = ",", digits = 1)),
+                                "<br><strong>Porcentaje enviado a Antioquia:</strong>", round(columna_porcentaje, digits = 1),"%",
+                                "<br><strong>Toneladas: </strong>", formatC((total_ton), format = "f", big.mark = ".",decimal.mark = ",", digits = 1), 
+                                "<br><strong>Porcentaje que representa para Antioquia:</strong>", round(represent_ant*100, digits = 1),"%"),
                 highlightOptions = highlightOptions(color = "white", 
                                                     weight = 2,
                                                     bringToFront = FALSE)) %>%

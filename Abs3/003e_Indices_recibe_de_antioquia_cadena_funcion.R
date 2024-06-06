@@ -95,7 +95,7 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
   } else {
   
   
-  df<-df#%>%filter(codigo_depto_destino !=5)
+    df<-df%>%mutate(represent_ant=toneladas/sum(toneladas, na.rm = TRUE))
   if (nrow(df) == 0) {
     print("No hay datos disponibles")
   } else {mapa<-shapefile%>%left_join(df, by = c("dpto_ccdgo"="codigo_depto_destino"))%>%
@@ -126,8 +126,9 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
                 color = "#D5D5D5", 
                 weight = 1,
                 popup = ~ifelse(is.na(columna_porcentaje),"",paste0("<strong>Departamento: </strong>", tools::toTitleCase(tolower(mapa$dpto_cnmbr)),
-                                                                    "<br><strong>Toneladas: </strong>", formatC(round(toneladas), format = "f", big.mark = ",", digits = 0),
-                                                                    "<br><strong>Porcentaje: </strong>", round(columna_porcentaje,digits = 1),"%")),
+                                                                    "<br><strong>Toneladas: </strong>", formatC((toneladas), format = "f", big.mark = ".",decimal.mark = ",", digits = 0),
+                                                                    "<br><strong>Porcentaje que representa para el dpto: </strong>", round(columna_porcentaje,digits = 1),"%", 
+                                                                    "<br><strong>Porcentaje que representa para Antioquia:</strong>", round(represent_ant*100, digits = 1),"%")),
                 highlightOptions = highlightOptions(color = "white", 
                                                     weight = 2,
                                                     bringToFront = FALSE)) %>%

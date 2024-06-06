@@ -93,7 +93,7 @@ ui <- fluidPage(
                        style = "background-color: #0D8D38; color: #FFFFFF;")
       )
     ),
-    tags$div(tags$p("Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+    tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
                     tags$br(),"Esta visualización muestra el porcentaje de alimentos enviados a Antioquia desde cada departamento, incluyendo productos de origen local. Permite apreciar la importancia de Antioquia como receptor de alimentos provenientes de otros territorios del país.",
                     tags$br(),"* Producción se refiere a los productos cuyo origen es Antioquia.", class = "sub-header2"), style = "margin-top: 20px;")
 ),
