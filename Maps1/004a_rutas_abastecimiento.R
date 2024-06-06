@@ -168,6 +168,7 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
 
   av_km <- round(mean(df$distance), digits = 2)
   max_km <- round(max(df$distance), digits = 2)
+  min_km <- round(min(df$distance), digits = 2)
 
   mpio_import <- df$mpio_origen[which.max(df$importancia)]
   
@@ -176,6 +177,7 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
     datos=df,
     av_km = av_km,
     max_km = max_km,
+    min_km = min_km,
     mpio_import = mpio_import
   ))
 }
