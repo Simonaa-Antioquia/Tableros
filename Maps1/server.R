@@ -9,42 +9,42 @@ server <- function(input, output, session) {
     #Revisar si se incluye importancia o no
     if (input$importancia == ""){
       # Comprobar si solo se ha seleccionado un producto
-      if (input$producto != "" && input$anio == "" && input$mes == "") {
+      if (input$producto != "todo" && input$anio == "todo" && input$mes == "todo") {
         ruta(Producto = input$producto)
-      } else if (input$mes != "" && input$anio == "") {
+      } else if (input$mes != "todo" && input$anio == "todo") {
         validate(
-          need(input$anio != "", "Debe seleccionar un año.")
+          need(input$anio != "todo", "Debe seleccionar un año.")
         )
-      } else if(input$anio == "" && input$producto == "" && input$mes == ""){
+      } else if(input$anio == "todo" && input$producto == "todo" && input$mes == "todo"){
         ruta()
-      } else if(input$producto == "" && input$mes == "" ){
+      } else if(input$producto == "todo" && input$mes == "todo" ){
         ruta(Año = input$anio)
-      } else if(input$producto == ""){
+      } else if(input$producto == "todo"){
         ruta(Año = input$anio, Mes = input$mes)
-      } else if(input$mes == "" ){
+      } else if(input$mes == "todo" ){
         ruta(Año = input$anio, Producto = input$producto)
-      } else if(input$anio == "" && input$mes == ""){
+      } else if(input$anio == "todo" && input$mes == "todo"){
         ruta(Producto = input$producto)
       } else{
         ruta(Año = input$anio, Mes = input$mes,Producto = input$producto)
       }
     } else if (input$importancia == "Incluir"){
       # Comprobar si solo se ha seleccionado un producto
-      if (input$producto != "" && input$anio == "" && input$mes == "") {
+      if (input$producto != "todo" && input$anio == "todo" && input$mes == "todo") {
         ruta_importancia(Producto = input$producto)
-      } else if (input$mes != "" && input$anio == "") {
+      } else if (input$mes != "todo" && input$anio == "todo") {
         validate(
-          need(input$anio != "", "Debe seleccionar un año.")
+          need(input$anio != "todo", "Debe seleccionar un año.")
         )
-      } else if(input$anio == "" && input$producto == "" && input$mes == ""){
+      } else if(input$anio == "todo" && input$producto == "todo" && input$mes == "todo"){
         ruta_importancia()
-      } else if(input$producto == "" && input$mes == "" ){
+      } else if(input$producto == "todo" && input$mes == "todo" ){
         ruta_importancia(Año = input$anio)
-      } else if(input$producto == ""){
+      } else if(input$producto == "todo"){
         ruta_importancia(Año = input$anio, Mes = input$mes)
-      } else if(input$mes == "" ){
+      } else if(input$mes == "todo" ){
         ruta_importancia(Año = input$anio, Producto = input$producto)
-      } else if(input$anio == "" && input$mes == ""){
+      } else if(input$anio == "todo" && input$mes == "todo"){
         ruta_importancia(Producto = input$producto)
       } else{
         ruta_importancia(Año = input$anio, Mes = input$mes,Producto = input$producto)

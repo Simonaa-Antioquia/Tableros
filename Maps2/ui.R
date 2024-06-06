@@ -71,24 +71,30 @@ ui <- fluidPage(
   div(
       fluidRow(
         column(2,
-               selectInput("anio", "Año", c("Todos los años" = "", sort(as.character(unique(abastecimiento_medellin$anio)))))),
+               selectInput("anio", "Año", c("Todos los años" = "todo", sort(as.character(unique(abastecimiento_medellin$anio)))))),
+        column(3,
+               selectInput("mes", "Mes", c("Todos los meses" = "todo", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, "Diciembre" = 12), selected="")),
         column(2,
-               selectInput("mes", "Mes", c("Todos los meses" = "", sort(as.numeric(unique(abastecimiento_medellin$mes)))))),
-        column(2,
-               selectInput("producto", "Producto",c("Todos los productos" = "", sort(as.character(unique(abastecimiento_medellin$producto)))))),
-        column(6,
-                checkboxGroupInput("ruta", "Rutas a cerrar:",
-                                 c("Antioquia" = 99,
-                                   "Norte" = 1,
-                                   "Nororiente" = 2,
-                                   "Suroccidente" = 3,
-                                   "Suroriente" = 4,
-                                   "Noroccidente" = 5,
-                                   "Sur" = 6,
-                                   "Choco" = 7), inline = TRUE))
+               selectInput("producto", "Producto",c("Todos los productos" = "todo", sort(as.character(unique(abastecimiento_medellin$producto)))))),
+        column(5,
+                checkboxGroupInput(
+                  inputId = "ruta",
+                  label = "Rutas a cerrar:",
+                  choiceNames = list(
+                    tags$span("Antioquia", style = "color: #0D8D38;font-weight: bold"),
+                    tags$span("Norte", style = "color: #0088BB;font-weight: bold"), 
+                    tags$span("Nororiente", style = "color: #85A728;font-weight: bold"), 
+                    tags$span("Suroccidente", style = "color: #F39F06;font-weight: bold"),
+                    tags$span("Suroriente", style = "color: #F2E203;font-weight: bold"),
+                    tags$span("Noroccidente", style = "color: #08384D;font-weight: bold"), 
+                    tags$span("Sur", style = "color: #BE7E11;font-weight: bold"), 
+                    tags$span("Choco", style = "color: #006A75;font-weight: bold")
+                  ),
+                  choiceValues = c(99,1,2,3,4,5,6,7),
+                  inline = TRUE))
       ),
     fluidRow(
-      column(9,  
+      column(7,  
              leafletOutput("plot"),
              actionButton("descargar", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
@@ -98,7 +104,7 @@ ui <- fluidPage(
              actionButton("go", "Reporte", icon = icon("file-alt")),
              actionButton("reset", "Restrablecer",icon = icon("refresh"))
       ),
-      column(3, 
+      column(5, 
            div(
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
