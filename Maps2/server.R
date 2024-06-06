@@ -120,7 +120,7 @@ server <- function(input, output, session) {
     })
 
  output$mensaje1 <- renderText({
-    return(paste0("La ruta ",resultado()$ruta_imp," es la más importante para el abastecimiento de Antioquia, representando el",resultado()$por_ruta,"% del total del volumen de ingreso a las principales centrales de abasto."))
+    return(paste0("La ruta ",resultado()$ruta_imp," es la más importante para el abastecimiento de Antioquia, representando el ",resultado()$por_ruta,"% del total del volumen de ingreso a las principales centrales de abasto."))
  })
  
 output$mensaje2 <- renderText({
