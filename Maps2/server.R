@@ -126,6 +126,10 @@ server <- function(input, output, session) {
 output$mensaje2 <- renderText({
     return(paste0("Un hipotético cierre de las rutas seleccionadas podría reducir el abastecimiento de alimentos en un ",resultado()$por_perdido,"%, al dejar de ingresar ",resultado()$ton_perdido," toneladas a las principales centrales de abasto de Medellín."))
  })
+
+output$mensaje3 <- renderText({
+    return(paste0("Las rutas del abastecimiento de Antioquia por orden de importancia en el periodo y para el producto seleccionado son:"))
+ })
  
  # Aqui tomamos screen 
  observeEvent(input$go, {
