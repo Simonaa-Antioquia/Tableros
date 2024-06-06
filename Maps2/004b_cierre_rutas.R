@@ -35,8 +35,9 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   ton_original <- sum(df$suma_kg)/1000
 
   df <- df %>% group_by(id_ruta_externa) %>% mutate(ton_ruta = sum(suma_kg)/1000)
-
-  ruta_imp <- df$nombre[which.max(df$ton_ruta)]
+  aux <- df[df$nombre != "Antioquia",]
+  ruta_imp <- aux$nombre[which.max(aux$ton_ruta)]
+ #ruta_imp <- df$nombre[which.max(df$ton_ruta)]
   max_ton_ruta <- max(df$ton_ruta)
 
   aux_rutas <- df[!(duplicated(df[c("id_ruta_externa","nombre")])),c("id_ruta_externa","nombre","ton_ruta")]
