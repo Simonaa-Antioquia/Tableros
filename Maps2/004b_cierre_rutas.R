@@ -42,7 +42,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   max_ton_ruta <- max(df$ton_ruta)
 
   aux_rutas <- df[!(duplicated(df[c("id_ruta_externa","nombre")])),c("id_ruta_externa","nombre","ton_ruta")]
-  aux_rutas <- aux_rutas[order(aux_rutas$ton_ruta, decreasing = FALSE), ]
+  aux_rutas <- aux_rutas[order(aux_rutas$ton_ruta, decreasing = TRUE), ]
 
   for(i in 1:nrow(aux_rutas)) {
     if(i == 1){
