@@ -81,7 +81,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
       labs(x = "Año", y = " ") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
-      theme(text = element_text(family = "Prompt", size = 16),
+      theme(text = element_text( size = 16),
             axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
       scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha), by = 1))
     tipo <-2
@@ -96,7 +96,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
       labs(x = "Año", y = " ") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
-      theme(text = element_text(family = "Prompt", size = 16),
+      theme(text = element_text(size = 16),
             axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
       scale_x_date( date_labels = "%Y-%m")
     tipo<-4
@@ -109,7 +109,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
         labs(x = "Año", y = " ") +
         theme_minimal()  +
         scale_color_manual(values = col_palette) +
-        theme(text = element_text(family = "Prompt", size = 16),
+        theme(text = element_text(size = 16),
               axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
         scale_x_continuous(breaks = unique(df$fecha))+
         scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha), by = 1))
@@ -123,7 +123,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
         geom_point(aes(text = tooltip_text), size = 1e-8) +
         labs(x = "Año", y = " ") +
         theme_minimal()+
-        theme(text = element_text(family = "Prompt", size = 16),
+        theme(text = element_text( size = 16),
               axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
         scale_x_date(date_breaks = "6 month", date_labels = "%Y-%m") 
       tipo <-3
