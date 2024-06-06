@@ -67,7 +67,14 @@ server <- function(input, output, session) {
     #ruta()$grafico
     
     #ruta()$grafico
-    resultado()$grafico
+    res <- resultado
+    if (nrow(res$df) == 0) {
+      validate("No hay datos disponibles"
+      )
+    } else {
+      res$grafico
+    }
+    #resultado()$grafico
   })
 
   output$descargar <- downloadHandler(
@@ -102,15 +109,36 @@ server <- function(input, output, session) {
     })
 
  output$mensaje1 <- renderText({
-    return(paste0("La ruta ",resultado()$ruta_imp," es la más importante para el abastecimiento de Antioquia, representando el ",resultado()$por_ruta,"% del total del volumen de ingreso a las principales centrales de abasto."))
+   res <- resultado
+    if (nrow(res$df) == 0) {
+      validate("No hay datos disponibles"
+      )
+    } else {
+      values$mensaje1 <- return(paste0("La ruta ",resultado()$ruta_imp," es la más importante para el abastecimiento de Antioquia, representando el ",resultado()$por_ruta,"% del total del volumen de ingreso a las principales centrales de abasto."))
+    }
+   return(values$mensaje1)
  })
  
 output$mensaje2 <- renderText({
-    return(paste0("Un hipotético cierre de las rutas seleccionadas podría reducir el abastecimiento de alimentos en un ",resultado()$por_perdido,"%, al dejar de ingresar ",resultado()$ton_perdido," toneladas a las principales centrales de abasto de Medellín."))
+  res <- resultado
+    if (nrow(res$df) == 0) {
+      validate("No hay datos disponibles"
+      )
+    } else {
+      values$mensaje2 <- return(paste0("Un hipotético cierre de las rutas seleccionadas podría reducir el abastecimiento de alimentos en un ",resultado()$por_perdido,"%, al dejar de ingresar ",resultado()$ton_perdido," toneladas a las principales centrales de abasto de Medellín."))
+    }
+   return(values$mensaje2)
  })
 
 output$mensaje3 <- renderText({
-    return(paste0("Las rutas del abastecimiento de Antioquia por orden de importancia en el periodo y para el producto seleccionado son: ",resultado()$rutas_ordenadas,"."))
+  res <- resultado
+    if (nrow(res$df) == 0) {
+      validate("No hay datos disponibles"
+      )
+    } else {
+      values$mensaje3 <-  return(paste0("Las rutas del abastecimiento de Antioquia por orden de importancia en el periodo y para el producto seleccionado son: ",resultado()$rutas_ordenadas,"."))
+    }
+   return(values$mensaje3)
  })
  
  # Aqui tomamos screen 
