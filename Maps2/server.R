@@ -128,7 +128,7 @@ output$mensaje2 <- renderText({
  })
 
 output$mensaje3 <- renderText({
-    return(paste0("Las rutas del abastecimiento de Antioquia por orden de importancia en el periodo y para el producto seleccionado son:"))
+    return(paste0("Las rutas del abastecimiento de Antioquia por orden de importancia en el periodo y para el producto seleccionado son: ",resultado()$rutas_ordenadas,"."))
  })
  
  # Aqui tomamos screen 
