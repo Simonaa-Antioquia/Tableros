@@ -59,7 +59,13 @@ server <- function(input, output, session) {
     #ruta()$grafico
     
     #ruta()$grafico
-    resultado()$grafico
+    res <- resultado()
+    if (nrow(res$datos) == 0) {
+      validate("No hay datos disponibles")
+    } else {
+      res$grafico
+    }
+    #resultado()$grafico
   })
   
   output$descargar <- downloadHandler(
@@ -103,12 +109,24 @@ server <- function(input, output, session) {
     })
  
  output$mensaje1 <- renderText({
-    return(paste0("Durante el periodo seleccionado y para el producto específico, se recorrieron en promedio ", resultado()$av_km," kilómetros."))
- })
+   res <- resultado()
+    if (nrow(res$datos) == 0) {
+      validate("No hay datos disponibles")
+    } else {
+     values$mensaje1 <- return(paste0("Durante el periodo seleccionado y para el producto específico, se recorrieron en promedio ", resultado()$av_km," kilómetros."))
+    }
+    return(values$mensaje1)
+})
 
  output$mensaje2 <- renderText({
-    return(paste0("Durante el periodo seleccionado y para el producto específico, se recorrieron la distancia mínima recorrida fue ", resultado()$min_km," kilómetros y máxima ", resultado()$max_km," kilómetros."))
- })       
+   res <- resultado()
+    if (nrow(res$datos) == 0) {
+      validate("No hay datos disponibles")
+    } else {
+      values$mensaje2 <- return(paste0("Durante el periodo seleccionado y para el producto específico, se recorrieron la distancia mínima recorrida fue ", resultado()$min_km," kilómetros y máxima ", resultado()$max_km," kilómetros."))
+    }
+    return(values$mensaje2)
+})       
  
  # Aqui tomamos screen 
  observeEvent(input$go, {
