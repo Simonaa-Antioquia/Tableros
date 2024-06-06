@@ -49,6 +49,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL) {
   
   av_km <- round(mean(df$distance), digits = 2)
   max_km <- round(max(df$distance), digits = 2)
+  min_km <- round(min(df$distance), digits = 2)
 
 if (!is.null(Año) & !is.null(Mes)) {
     if(!is.null(Producto)) {
@@ -84,6 +85,7 @@ if (!is.null(Año) & !is.null(Mes)) {
     datos=df,
     av_km = av_km,
     max_km = max_km,
+    min_km = min_km,
     mpio_import = mpio_import
   ))
 }
