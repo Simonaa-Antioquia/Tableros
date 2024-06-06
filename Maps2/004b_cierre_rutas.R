@@ -38,7 +38,8 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   aux <- df[df$nombre != "Antioquia",]
   ruta_imp <- aux$nombre[which.max(aux$ton_ruta)]
  #ruta_imp <- df$nombre[which.max(df$ton_ruta)]
-  max_ton_ruta <- max(df$ton_ruta)
+  max_ton_ruta <- max(aux$ton_ruta)
+  #max_ton_ruta <- max(df$ton_ruta)
 
   aux_rutas <- df[!(duplicated(df[c("id_ruta_externa","nombre")])),c("id_ruta_externa","nombre","ton_ruta")]
   aux_rutas <- aux_rutas[order(aux_rutas$ton_ruta, decreasing = TRUE), ]
