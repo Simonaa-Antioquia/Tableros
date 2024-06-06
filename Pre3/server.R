@@ -133,7 +133,7 @@ server <- function(input, output, session) {
       } else {
         values$mensaje1 <- paste0("El precio promedio de ", input$producto, 
                                   " en Medellín para el periodo de tiempo seleccionado fue: $", 
-                                  format(resultado()$precio_medellin, big.mark = ","), " pesos.")
+                                  format(resultado()$precio_medellin, big.mark = "."), ".")
         return(values$mensaje1)
       }
     }, error = function(e) {
