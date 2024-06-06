@@ -60,7 +60,7 @@ library(knitr)
 \end{flushright}
 
 \section*{Parámetros con los cuales se generó el informe:}
-```{r, warning=FALSE}
+```{r, warning=FALSE, message=FALSE}
 # Cargar el paquete knitr
 library(knitr)
 library(kableExtra)
