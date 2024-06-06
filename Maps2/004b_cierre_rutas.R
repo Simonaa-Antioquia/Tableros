@@ -32,6 +32,8 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     df <- df %>% dplyr::filter(producto == Producto)
   }
 
+  df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
+
   ton_original <- sum(df$suma_kg)
 
   df <- df %>% group_by(id_ruta_externa) %>% mutate(ton_ruta = sum(suma_kg))
@@ -66,7 +68,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   if(nrow(df)==0){
     map <-  validate("No hay datos disponibles")
   } else {
-    df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
+    
     
     map <- leaflet() %>%
       addTiles()
