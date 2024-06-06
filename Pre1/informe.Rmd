@@ -13,6 +13,7 @@ params:
   tipo: NA
   anio: NA
   alimento: NA
+  base: NA
 output:
   pdf_document:
     latex_engine: xelatex
@@ -29,6 +30,7 @@ header-includes:
 - \usepackage{graphicx}
 - \definecolor{mygreen}{RGB}{26,73,34}
 - \definecolor{gray}{RGB}{128,128,128}
+- \definecolor{green2}{RGB}{13,141,56}
 - "\\setmainfont{Prompt-Regular.ttf}"
 - \pagestyle{fancy}
 - \fancyfoot{} 
@@ -36,6 +38,7 @@ header-includes:
 - \usepackage{adjustbox}
 - \setlength{\headheight}{2cm}
 - \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
+- \renewcommand{\headrule}{\color{mygreen}\hrule width\headwidth height\headrulewidth} 
 - \usepackage{eso-pic}
 ---
 
@@ -62,15 +65,17 @@ library(kableExtra)
 library(xtable)
 
 # Label para tipo: 
+opciones_tiempo <- c("Mensual" = "mensual", "Diaria" = "diario")
 opciones_tipo <- c("Precio promedio" = "precio_prom", "Cambio porcentual" = "cambio_pct", "Cambio porcentual intranual"="cambio_pct_anual")
 opciones_Mes <- c("Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5, "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11, "Diciembre" =12)
 
+tiempo_label <- ifelse(is.na(params$tipo), "", names(opciones_tiempo)[which(opciones_tiempo == params$base)])
 tipo_label <- ifelse(is.na(params$tipo), "", names(opciones_tipo)[which(opciones_tipo == params$tipo)])
 mes_label <- ifelse(is.na(params$mes) | !(params$mes %in% opciones_Mes), "Todos los meses", names(opciones_Mes)[which(opciones_Mes == params$mes)])
 
 df <- data.frame(
-  "Parametro" = c("Variable", "Año", "Alimento"),
-  "Valor" = c(tipo_label, ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio), ifelse(is.na(params$alimento) | params$alimento == "todo", "Todos los productos", params$alimento))
+  "Parametro" = c("Temporalidad","Variable", "Año", "Alimento"),
+  "Valor" = c(tiempo_label,tipo_label, ifelse(is.na(params$anio) | params$anio == "todo", "Todos los años", params$anio), ifelse(is.na(params$alimento) | params$alimento == "todo", "Todos los productos", params$alimento))
 )
 
 
@@ -94,12 +99,12 @@ tabla_kable
 <!-- Titulo del tablaro -->
 \fontsize{20}{20} \selectfont \textcolor{mygreen}{Comportamiento de los precios en el tiempo}\
 <!-- Subtitulo -->
-\fontsize{15}{15} \selectfont \textcolor{mygreen}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín}\
+\fontsize{15}{15} \selectfont \textcolor{green2}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín}\
 <!-- Subtitulo2 -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 <!-- Grafica -->
 
-```{r, out.width = "80%", fig.align = "center",warning=FALSE, message=FALSE}
+```{r, out.width = "75%", fig.align = "center",warning=FALSE, message=FALSE}
 print(params$plot)
 ```
 

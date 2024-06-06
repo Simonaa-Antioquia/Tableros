@@ -19,13 +19,13 @@ server <- function(input, output, session) {
   
     resultado<-reactive({
     if(input$anio == "todo" && input$producto == "todo"){
-      graficar_variable(data, variable=input$variable)
+      graficar_variable(base=input$base, variable=input$variable)
     } else if(input$producto == "todo"){
-      graficar_variable(data, variable=input$variable,  fecha = input$anio)
+      graficar_variable(base=input$base, variable=input$variable,  fecha = input$anio)
     } else if(input$anio == "todo"){
-      graficar_variable(data,variable=input$variable, input$producto)
+      graficar_variable(base=input$base,variable=input$variable, input$producto)
     } else{
-      graficar_variable(data,variable=input$variable, input$producto, input$anio)
+      graficar_variable(base=input$base,variable=input$variable, input$producto, input$anio)
     }
   })
   
@@ -70,7 +70,7 @@ values <- reactiveValues(subtitulo = NULL)
     fecha_max <- resultado$fecha_max
     fecha_min <- resultado$fecha_min
     values$subtitulo <-(paste0("El precio promedio",ifelse(input$producto=="todo"," de ''todos los productos''",paste0(" de ", input$producto)) ," fue de $", promedio,
-                  ". El mes con el precio más alto fue ", fecha_max, " y el más bajo fue ", fecha_min))
+                  ". La fecha con el precio más alto fue ", fecha_max, " y la más baja fue ", fecha_min))
     return(values$subtitulo)
   })
   
@@ -120,7 +120,7 @@ values <- reactiveValues(subtitulo = NULL)
         mensaje3 = values$mensaje3,
         tipo = input$variable,
         anio = input$anio,
-        #mes = input$mes,
+        base = input$base,
         alimento = input$producto
       ))
       
