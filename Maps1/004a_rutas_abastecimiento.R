@@ -171,7 +171,7 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
                                   color = df$colour[i],
                                   stroke = 0.05,
                                   opacity = 0.8,
-                                  label = paste0("Municipio de origen: ",df$mpio_origen[i]," "," "," - "," "," Importancia: ",df$importancia*100,"%"),
+                                  label = paste0("Municipio de origen: ",df$mpio_origen[i]," "," "," - "," "," Importancia: ",df$importancia[i]*100,"%"),
                                   labelOptions = labelOptions(noHide = F, direction = "top"))
     }
  }
