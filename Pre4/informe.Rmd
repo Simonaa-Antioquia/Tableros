@@ -44,7 +44,7 @@ header-includes:
 ---
 
 
-```{r setup, include=FALSE, warning=FALSE}
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
 # Instalamos librerias
 #tinytex::install_tinytex()
 #tinytex::tlmgr_install("caption")

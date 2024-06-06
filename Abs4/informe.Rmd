@@ -50,7 +50,6 @@ library(knitr)
 \end{flushright}
 
 \section*{Parámetros con los cuales se generó el informe:}
-
 ```{r,message=FALSE,warning=FALSE}
   # Cargar el paquete knitr
   library(knitr)
