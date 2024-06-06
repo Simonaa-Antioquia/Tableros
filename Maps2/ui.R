@@ -78,7 +78,7 @@ ui <- fluidPage(
                selectInput("producto", "Producto",c("Todos los productos" = "todo", sort(as.character(unique(abastecimiento_medellin$producto)))))),
         column(5,
                 checkboxGroupInput("ruta", "Rutas a cerrar:",
-                                 c("Antioquia" = 99,
+                                 c(tags$span("Antioquia" = 99, style = "color: red;"),
                                    "Norte" = 1,
                                    "Nororiente" = 2,
                                    "Suroccidente" = 3,
