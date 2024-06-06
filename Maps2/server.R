@@ -68,7 +68,7 @@ server <- function(input, output, session) {
     
     #ruta()$grafico
     res <- resultado
-    if (nrow(res$df) == 0) {
+    if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles"
       )
     } else {
@@ -110,7 +110,7 @@ server <- function(input, output, session) {
 
  output$mensaje1 <- renderText({
    res <- resultado
-    if (nrow(res$df) == 0) {
+    if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles"
       )
     } else {
@@ -121,7 +121,7 @@ server <- function(input, output, session) {
  
 output$mensaje2 <- renderText({
   res <- resultado
-    if (nrow(res$df) == 0) {
+    if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles"
       )
     } else {
@@ -132,7 +132,7 @@ output$mensaje2 <- renderText({
 
 output$mensaje3 <- renderText({
   res <- resultado
-    if (nrow(res$df) == 0) {
+    if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles"
       )
     } else {
