@@ -26,6 +26,7 @@ col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203
                  "#08384D", "#094B5C", "#00596C", "#006A75", "#007A71", "#00909C", "#0088BB", "#007CC3", "#456ABB")
 
 
+
 #####
 # FUNCION PARA VISUALIZAR LOS RESULTADOS 
 # FUNCION 2 
