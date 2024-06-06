@@ -82,23 +82,15 @@ ui <- fluidPage(
                   label = "Rutas a cerrar:",
                   choiceNames = list(
                     tags$span("Antioquia", style = "color: #0D8D38;font-weight: bold"),
-                    tags$span("Norte", style = "color: red;"), 
-                    tags$span("Nororiente", style = "color: blue;"), 
-                    tags$span("Suroccidente", style = "font-weight: bold;"),
-                    tags$span("Suroriente", style = "color: red;"),
-                    tags$span("Noroccidente", style = "color: red;"), 
-                    tags$span("Sur", style = "color: blue;"), 
-                    tags$span("Choco", style = "font-weight: bold;")
+                    tags$span("Norte", style = "color: #0088BB;font-weight: bold"), 
+                    tags$span("Nororiente", style = "color: #85A728;font-weight: bold"), 
+                    tags$span("Suroccidente", style = "color: #F39F06;font-weight: bold"),
+                    tags$span("Suroriente", style = "color: #F2E203;font-weight: bold"),
+                    tags$span("Noroccidente", style = "color: #08384D;font-weight: bold"), 
+                    tags$span("Sur", style = "color: #BE7E11;font-weight: bold"), 
+                    tags$span("Choco", style = "color: #006A75;font-weight: bold")
                   ),
                   choiceValues = c(99,1,2,3,4,5,6,7),
-                           #      c(tags$span("Antioquia" = 99, style = "color: red;"),
-                           #        "Norte" = 1,
-                           #        "Nororiente" = 2,
-                           #        "Suroccidente" = 3,
-                           #        "Suroriente" = 4,
-                           #        "Noroccidente" = 5,
-                           #        "Sur" = 6,
-                           #        "Choco" = 7),
                   inline = TRUE))
       ),
     fluidRow(
