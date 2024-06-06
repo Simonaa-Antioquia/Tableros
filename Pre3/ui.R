@@ -18,7 +18,7 @@ source("001f_precios_diferencias_municipios_funciones.R")
 ui <- fluidPage(
   tags$head(
     tags$title("Diferencia de precios entre ciudades"),  # Añade esta línea
-    tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),  # Importa la fuente Prompt
+    tags$link(rel = "stylesheet", type = "text/css", href = "https://github.com/PlasaColombia-Antioquia/Tableros/tree/8d5220f3bec2898e21495993520e1d8637e6b5d4/Pre3"),  # Importa la fuente Prompt
     tags$style(HTML("
       .main-header {
         font-family: 'Prompt', sans-serif;

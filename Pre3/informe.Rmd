@@ -36,6 +36,7 @@ header-includes:
 - \usepackage{adjustbox}
 - \setlength{\headheight}{2cm}
 - \fancyhead[C]{\includegraphics[width=\textwidth]{www/logo_3.png}}
+- \renewcommand{\headrule}{\color{mygreen}\hrule width\headwidth height\headrulewidth} 
 - \usepackage{eso-pic}
 ---
 
@@ -74,7 +75,7 @@ alimento_label <- ifelse(is.na(params$alimento) | params$tipo == 1, "Todos los p
 
 # Crear el data frame
 df <- data.frame(
-  Parametro = c("Función", "Año", "Mes", "Alimento"),
+  Parametro = c("Función:", "Año:", "Mes:", "Alimento:"),
   Valor = c(tipo_label, anio_label, mes_label, alimento_label)
 )
 
@@ -93,7 +94,7 @@ tabla_kable <- df %>%
     linesep = "",  # No agregar ninguna línea separadora
     escape = FALSE
   ) %>%
-  kable_styling(full_width = FALSE, latex_options = "HOLD_position", position = "left", bootstrap_options = "striped")  # Estilo de la tabla con bordes blancos y cuadrícula completa
+  kable_styling(full_width = TRUE, latex_options = "HOLD_position", position = "left", bootstrap_options = "striped")  # Estilo de la tabla con bordes blancos y cuadrícula completa
 
 # Imprimir la tabla con knitr::kable
 tabla_kable
