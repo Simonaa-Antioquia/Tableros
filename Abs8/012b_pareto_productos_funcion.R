@@ -108,11 +108,23 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
     p<-print("No hay datos disponibles")
   }
   
-  porcent_prod<-round((length(df_filtrado$producto)/length(df$producto))*100, digits = 1)
-  acumulado<-round(max(df_filtrado$acumulado_total*100), digits = 1)
+  
+  # Encontrar el índice del valor más cercano a 0.8 (hacia arriba)
+  index <- which.min(abs(df_filtrado$acumulado_total - 0.8))
+  
+  # Si el valor es menor que 0.8, tomar el siguiente valor
+  if(nrow(df_filtrado)!=0){if (df_filtrado$acumulado_total[index] < 0.8) {
+    index <- index + 1
+  }}else{
+    ("")
+  }
+  
+  # Obtener el valor más cercano a 0.8 (hacia arriba)
+  acumulado <- round(df_filtrado$acumulado_total[index] * 100, digits = 1)
   df<-df%>%
     select(-graficar,-origen)
-  prod_neces<-length(df_filtrado$producto)
+  prod_neces<-nrow(df_filtrado[df_filtrado$acumulado_total <= acumulado/100+0.001, ])
+  porcent_prod<-round((prod_neces/length(df$producto))*100, digits = 1)
   
   return(list(
     grafico_plano=plot,
@@ -127,9 +139,9 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
 }
 
 #algo<-"Neto_entra"
-#pareto_graf(pareto = algo,Mes = 2,año = 2013, sitio = "Arauca")
+#pareto_graf(pareto = algo,Mes = 4,año = 2023, sitio = "Bogotá")
 #pareto_graf(pareto = algo,año = 2013, sitio = "Antioquia")
 #pareto_graf(pareto = algo, sitio = "Villavicencio")
-#pareto_graf(pareto = algo,Mes = 1,año = 2013)
+#pareto_graf(pareto = algo,Mes = 2,año = 2024)
 #pareto_graf(pareto = algo,año = 2013)
 #pareto_graf(pareto = algo)

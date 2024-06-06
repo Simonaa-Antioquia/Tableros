@@ -108,15 +108,19 @@ server <- function(input, output, session) {
   output$subtitulo <- renderText({
     res<-resultado()
     if(nrow(res$datos)==0){
-      validate(
-        values$subtitulo <- "No hay datos disponibles"
+     (
+        values$subtitulo<-  "No hay datos disponibles"
       )
     }else{res <- resultado() 
     req(res)
     porcent_prod <- round(res$porcent_prod,digits = 1)
     acumulado <- res$acumulado
-    num_productos <- res$num_productos
-    values$subtitulo <- (paste0("El ",acumulado,"% del volumen total que ",ifelse(input$algo=="Neto_entra", " ingresa ",ifelse(input$algo == "Neto_sale"," sale ",ifelse(input$algo == "Neto_entra_local"," ingresa - local "," ingresa - externo "))), "se concentran en ", num_productos," productos (",porcent_prod,"% del total de productos)"))}
+    prod_neces <- res$prod_neces
+    values$subtitulo <- (paste0("Aproximadamente el 80% del volumen total que ",
+                                ifelse(input$algo=="Neto_entra", " ingresa ",
+                                       ifelse(input$algo == "Neto_sale"," sale ",
+                                              ifelse(input$algo == "Neto_entra_local"," ingresa local "," ingresa externo "))),
+                                "se concentran en ", prod_neces," productos (",porcent_prod,"% del total de productos)"))}
     return(values$subtitulo)
   })
   
