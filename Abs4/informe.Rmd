@@ -54,8 +54,11 @@ library(knitr)
 ```{r,message=FALSE,warning=FALSE}
   # Cargar el paquete knitr
   library(knitr)
-  library(kableExtra)
   library(xtable)
+suppressPackageStartupMessages({
+  library(dplyr)
+  library(kableExtra)
+})
 
   # Label para tipo: 
 
@@ -90,7 +93,7 @@ tabla_kable
 \fontsize{20}{20} \selectfont \textcolor{mygreen}{Destino de la producción de alimentos de origen antioqueño}\
 \fontsize{10}{10} \selectfont \textcolor{green2}{Descubre las principales ciudades receptores de alimentos con origen Antioquia según el SIPSA.}\
 <!-- Grafica -->
-```{r, out.width = "60%", fig.align = "center", warning=FALSE}
+```{r, out.width = "60%", fig.align = "center", warning=FALSE, message=FALSE}
 print(params$plot)
 ```
 

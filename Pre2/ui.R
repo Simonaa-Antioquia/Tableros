@@ -87,6 +87,13 @@ ui <- fluidPage(
                     tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.",
                     tags$br(),"La información solo se muestra precios promedio en el centro de acopio de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
+  
+  br(),
+  br(),
+  br(),
+  br(),
+  br(),
+  
   tags$div(
     tags$img(src = 'logo_2.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
