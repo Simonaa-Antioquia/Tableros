@@ -32,9 +32,9 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     df <- df %>% dplyr::filter(producto == Producto)
   }
 
-  ton_original <- sum(df$suma_kg)
+  ton_original <- sum(df$suma_kg)/1000
 
-  df <- df %>% group_by(id_ruta_externa) %>% mutate(ton_ruta = sum(suma_kg))
+  df <- df %>% group_by(id_ruta_externa) %>% mutate(ton_ruta = sum(suma_kg)/1000)
 
   ruta_imp <- df$nombre[which.max(df$ton_ruta)]
   max_ton_ruta <- max(df$ton_ruta)
@@ -59,7 +59,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     }
   }
 
-  ton_sin_rutas <- sum(df$suma_kg)
+  ton_sin_rutas <- sum(df$suma_kg)/1000
   por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)
   ton_perdido = ton_original -  ton_sin_rutas
   
