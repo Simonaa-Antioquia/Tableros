@@ -37,10 +37,10 @@ plot_data <- function(tipo, anio = NULL) {
     p_plano <- ggplot(data, aes_string(x = "date_col", y = "IHH")) +
       geom_line(color = "#2E7730") +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
-      labs(x = "Año", y = "Variedad en la oferta") +
+      labs(x = "Año", y = " ") +
       theme_minimal() +  # Usar un tema minimalista
       scale_color_manual(values = "#2E7730") +  # Establecer el color de la línea
-      theme(text = element_text(family = "Prompt", size = 16)) + # Establecer la fuente y el tamaño del texto
+      theme(text = element_text( size = 16)) + # Establecer la fuente y el tamaño del texto
       scale_x_continuous(breaks = seq(min(data$date_col), max(data$date_col), by = 1))  # Establecer las marcas del eje x
       
   } else {
@@ -58,10 +58,10 @@ plot_data <- function(tipo, anio = NULL) {
     p_plano <- ggplot(data, aes_string(x = "date_col", y = "IHH")) +
       geom_line(color = "#2E7730") +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
-      labs(x = "Año", y = "Variedad en la oferta") +
+      labs(x = "Año", y = " ") +
       theme_minimal() +  # Usar un tema minimalista
       scale_color_manual(values = "#2E7730") +  # Establecer el color de la línea
-      theme(text = element_text(family = "Prompt", size = 16)) # Establecer la fuente y el tamaño del texto
+      theme(text = element_text( size = 16)) # Establecer la fuente y el tamaño del texto
       }
   
 
