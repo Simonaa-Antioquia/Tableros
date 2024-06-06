@@ -109,9 +109,9 @@ ui <- fluidPage(
              wellPanel(textOutput("mensaje1"),
                        style = "background-color: #0D8D38; color: #FFFFFF;"),
              wellPanel(textOutput("mensaje2"),
-                     style = "background-color: #005A45; color: #FFFFFF;")#,
-             #wellPanel(textOutput("mensaje3"),
-              #         style = "background-color: #094735; color: #FFFFFF;")
+                     style = "background-color: #005A45; color: #FFFFFF;"),
+             wellPanel(textOutput("mensaje3"),
+                     style = "background-color: #094735; color: #FFFFFF;")
         ))
     ),
            tags$div(
