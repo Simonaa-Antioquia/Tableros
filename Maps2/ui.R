@@ -81,7 +81,7 @@ ui <- fluidPage(
                   inputId = "ruta",
                   label = "Rutas a cerrar:",
                   choiceNames = list(
-                    tags$span("Antioquia", style = "color: red;"),
+                    tags$span("Antioquia", style = "color: #0D8D38;"),
                     tags$span("Norte", style = "color: red;"), 
                     tags$span("Nororiente", style = "color: blue;"), 
                     tags$span("Suroccidente", style = "font-weight: bold;"),
