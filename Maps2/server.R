@@ -69,8 +69,7 @@ server <- function(input, output, session) {
     #ruta()$grafico
     res <- resultado()
     if (nrow(res$datos) == 0) {
-      validate("No hay datos disponibles"
-      )
+      validate("No hay datos disponibles")
     } else {
       res$grafico
     }
@@ -111,8 +110,7 @@ server <- function(input, output, session) {
  output$mensaje1 <- renderText({
    res <- resultado()
     if (nrow(res$datos) == 0) {
-      validate("No hay datos disponibles"
-      )
+      validate("No hay datos disponibles")
     } else {
       values$mensaje1 <- return(paste0("La ruta ",resultado()$ruta_imp," es la más importante para el abastecimiento de Antioquia, representando el ",resultado()$por_ruta,"% del total del volumen de ingreso a las principales centrales de abasto."))
     }
@@ -122,8 +120,7 @@ server <- function(input, output, session) {
 output$mensaje2 <- renderText({
   res <- resultado()
     if (nrow(res$datos) == 0) {
-      validate("No hay datos disponibles"
-      )
+      validate("No hay datos disponibles")
     } else {
       values$mensaje2 <- return(paste0("Un hipotético cierre de las rutas seleccionadas podría reducir el abastecimiento de alimentos en un ",resultado()$por_perdido,"%, al dejar de ingresar ",resultado()$ton_perdido," toneladas a las principales centrales de abasto de Medellín."))
     }
@@ -133,8 +130,7 @@ output$mensaje2 <- renderText({
 output$mensaje3 <- renderText({
   res <- resultado()
     if (nrow(res$datos) == 0) {
-      validate("No hay datos disponibles"
-      )
+      validate("No hay datos disponibles")
     } else {
       values$mensaje3 <-  return(paste0("Las rutas del abastecimiento de Antioquia por orden de importancia en el periodo y para el producto seleccionado son: ",resultado()$rutas_ordenadas,"."))
     }
