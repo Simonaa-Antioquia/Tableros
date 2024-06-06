@@ -86,20 +86,18 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
   df_filtrado$tooltip_text1 <- paste0("Producto: ", df_filtrado$producto, "<br>Cantidad: ", round(df_filtrado$total_sum,1))
   df_filtrado$tooltip_text2 <- paste0("Producto: ", df_filtrado$producto, "<br>Porcentaje: ", round(df_filtrado$acumulado_total*100,1),"%")
   if(nrow(df) > 0){
-  plot <- ggplot(df_filtrado, aes(x = reorder(producto, -total_sum), y = total_sum)) +
-    geom_bar(stat = "identity", fill = "#0D8D38", aes(text = tooltip_text1)) +
-    geom_line(aes(y = acumulado_total * total_sum_total), color = "#F39F06", group = 1) +
-    geom_point(aes(y = acumulado_total * total_sum_total, text = tooltip_text2), color = "#F39F06", group = 1) +
-    scale_y_continuous(sec.axis = sec_axis(~./max(df$total_sum), name = "")) +
-    xlab("") + 
-    ylab("Miles de toneladas") +
-    theme_bw() +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1),  # Rota los valores del eje x a 90 grados
-          panel.border = element_blank(),  # Elimina la caja alrededor del gráfico
-          axis.line = element_blank(),  # Elimina las líneas de los ejes
-          panel.grid.major = element_blank(),  # Elimina las líneas de la cuadrícula principal
-          panel.grid.minor = element_blank())  # Elimina las líneas de la cuadrícula secundaria
-  
+    plot <- ggplot(df_filtrado, aes(x = reorder(producto, -total_sum), y = total_sum)) +
+      geom_bar(stat = "identity", fill = "#0D8D38", aes(text = tooltip_text1)) +
+      geom_line(aes(y = acumulado_total * total_sum_total), color = "#F39F06", group = 1) +
+      geom_point(aes(y = acumulado_total * total_sum_total, text = tooltip_text2), color = "#F39F06", group = 1) +
+      xlab("") + 
+      ylab("Miles de toneladas") +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1),  # Rota los valores del eje x a 90 grados
+            panel.border = element_blank(),  # Elimina la caja alrededor del gráfico
+            axis.line = element_blank(),  # Elimina las líneas de los ejes
+            panel.grid.major = element_blank(),  # Elimina las líneas de la cuadrícula principal
+            panel.grid.minor = element_blank())  # Elimina las líneas de la cuadrícula secundaria
   
   
   p<-plotly::ggplotly(plot, tooltip = "text")
@@ -125,6 +123,8 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
     select(-graficar,-origen)
   prod_neces<-nrow(df_filtrado[df_filtrado$acumulado_total <= acumulado/100+0.001, ])
   porcent_prod<-round((prod_neces/length(df$producto))*100, digits = 1)
+  plot<-plot+
+    geom_text(aes(y = acumulado_total * total_sum_total, label = scales::percent(round(acumulado_total,2))), hjust = -0.1, color = "#F39F06", angle=0, size = 3)
   
   return(list(
     grafico_plano=plot,
@@ -143,5 +143,5 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
 #pareto_graf(pareto = algo,año = 2013, sitio = "Antioquia")
 #pareto_graf(pareto = algo, sitio = "Villavicencio")
 #pareto_graf(pareto = algo,Mes = 2,año = 2024)
-#pareto_graf(pareto = algo,año = 2013)
+#pareto_graf(pareto = algo,año = 2013)$grafico_plano
 #pareto_graf(pareto = algo)
