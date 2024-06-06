@@ -48,7 +48,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     if(i == 1){
       rutas_ordenadas <- aux_rutas$nombre[i]
     } else {
-      rutas_ordenadas <- paste0(rutas_ordenadas", ",aux_rutas$nombre[i])
+      rutas_ordenadas <- paste0(rutas_ordenadas,", ",aux_rutas$nombre[i])
     }
   }
 
