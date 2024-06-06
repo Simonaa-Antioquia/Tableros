@@ -31,15 +31,15 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   if (!is.null(Producto)) {
     df <- df %>% dplyr::filter(producto == Producto)
   }
-  
-  df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
 
-  ton_original <- sum(df$suma_kg)
+  ton_original <- sum(df$suma_kg)/1000
 
-  df <- df %>% group_by(id_ruta_externa) %>% mutate(ton_ruta = sum(suma_kg))
-
-  ruta_imp <- df$nombre[which.max(df$ton_ruta)]
-  max_ton_ruta <- max(df$ton_ruta)
+  df <- df %>% group_by(id_ruta_externa) %>% mutate(ton_ruta = sum(suma_kg)/1000)
+  aux <- df[df$nombre != "Antioquia",]
+  ruta_imp <- aux$nombre[which.max(aux$ton_ruta)]
+ #ruta_imp <- df$nombre[which.max(df$ton_ruta)]
+  max_ton_ruta <- max(aux$ton_ruta)
+  #max_ton_ruta <- max(df$ton_ruta)
 
   aux_rutas <- df[!(duplicated(df[c("id_ruta_externa","nombre")])),c("id_ruta_externa","nombre","ton_ruta")]
   aux_rutas <- aux_rutas[order(aux_rutas$ton_ruta, decreasing = TRUE), ]
@@ -61,11 +61,14 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     }
   }
 
-  ton_sin_rutas <- sum(df$suma_kg)
+  ton_sin_rutas <- sum(df$suma_kg)/1000
+  por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)
+  ton_perdido = ton_original -  ton_sin_rutas
   
   if(nrow(df)==0){
     map <-  validate("No hay datos disponibles")
   } else {
+    df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
     
     map <- leaflet() %>%
       addTiles()
@@ -80,9 +83,6 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
                                   labelOptions = labelOptions(noHide = F, direction = "top"))
     }
   }
-
-  por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)
-  ton_perdido = ton_original -  ton_sin_rutas
   
   return(list(
     grafico=map,
