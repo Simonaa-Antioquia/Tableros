@@ -31,8 +31,6 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   if (!is.null(Producto)) {
     df <- df %>% dplyr::filter(producto == Producto)
   }
-  
-  df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
 
   ton_original <- sum(df$suma_kg)
 
@@ -62,10 +60,13 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   }
 
   ton_sin_rutas <- sum(df$suma_kg)
+  por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)
+  ton_perdido = ton_original -  ton_sin_rutas
   
   if(nrow(df)==0){
     map <-  validate("No hay datos disponibles")
   } else {
+    df <- df[!(duplicated(df[c("codigo_mpio_destino","codigo_mpio_origen")])),]
     
     map <- leaflet() %>%
       addTiles()
@@ -80,9 +81,6 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
                                   labelOptions = labelOptions(noHide = F, direction = "top"))
     }
   }
-
-  por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)
-  ton_perdido = ton_original -  ton_sin_rutas
   
   return(list(
     grafico=map,
