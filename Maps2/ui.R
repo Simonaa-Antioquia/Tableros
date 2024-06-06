@@ -77,15 +77,29 @@ ui <- fluidPage(
         column(2,
                selectInput("producto", "Producto",c("Todos los productos" = "todo", sort(as.character(unique(abastecimiento_medellin$producto)))))),
         column(5,
-                checkboxGroupInput("ruta", "Rutas a cerrar:",
-                                 c(tags$span("Antioquia" = 99, style = "color: red;"),
-                                   "Norte" = 1,
-                                   "Nororiente" = 2,
-                                   "Suroccidente" = 3,
-                                   "Suroriente" = 4,
-                                   "Noroccidente" = 5,
-                                   "Sur" = 6,
-                                   "Choco" = 7), inline = TRUE))
+                checkboxGroupInput(
+                  inputId = "ruta",
+                  label = "Rutas a cerrar:",
+                  choiceNames = list(
+                    tags$span("Antioquia", style = "color: red;"),
+                    tags$span("Norte", style = "color: red;"), 
+                    tags$span("Nororiente", style = "color: blue;"), 
+                    tags$span("Suroccidente", style = "font-weight: bold;"),
+                    tags$span("Suroriente", style = "color: red;"),
+                    tags$span("Noroccidente", style = "color: red;"), 
+                    tags$span("Sur", style = "color: blue;"), 
+                    tags$span("Choco", style = "font-weight: bold;")
+                  ),
+                  choiceValues = c(99,1,2,3,4,5,6,7),
+                           #      c(tags$span("Antioquia" = 99, style = "color: red;"),
+                           #        "Norte" = 1,
+                           #        "Nororiente" = 2,
+                           #        "Suroccidente" = 3,
+                           #        "Suroriente" = 4,
+                           #        "Noroccidente" = 5,
+                           #        "Sur" = 6,
+                           #        "Choco" = 7),
+                  inline = TRUE))
       ),
     fluidRow(
       column(7,  
