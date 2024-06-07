@@ -52,7 +52,7 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
     }
   }
 
-  por_ruta = round(((ton_original - max_ton_ruta)/ton_original)*100, digits = 2)
+  por_ruta = round((max_ton_ruta/ton_original)*100, digits = 2)
   
   if (!is.null(Rutas)) {
     for(i in 1:length(Rutas)){
