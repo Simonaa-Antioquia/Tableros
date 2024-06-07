@@ -6,6 +6,7 @@ params:
   plot: NA
   subtitulo: NA
   mensaje2: NA
+  mensaje3: NA
   precio_max: NA
   mes_max: NA
   distancia_max: NA
@@ -85,9 +86,9 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Relación entre volúmenes y precios de los alimentos}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Relación entre volúmenes y precios de los alimentos}\
 <!-- Subtitulo -->
-\fontsize{15}{15} \selectfont \textcolor{mygreen}{Evolución del precio promedio por Kg en relación al volumen de ingreso a las centrales de abasto de Medellín}\
+\fontsize{12}{12} \selectfont \textcolor{mygreen}{Evolución del precio promedio por Kg en relación al volumen de ingreso a las centrales de abasto de Medellín}\
 <!-- Subtitulo2 -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 <!-- Grafica -->
@@ -95,7 +96,7 @@ tabla_kable
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje2`\
-
+\fontsize{10}{10} \selectfont `r params$mensaje3`\
 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{La información solo se muestra para los precios en el centro de acopio de Medellín.}\

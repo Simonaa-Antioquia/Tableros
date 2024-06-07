@@ -108,10 +108,11 @@ server <- function(input, output, session) {
     return(values$mensaje2)
   })
   
+  values <- reactiveValues(mensaje3 = NULL)
   output$mensaje3 <- renderText({
-    #resultado <- resultado()
-    #promedio_camb_an<-resultado$promedio_camb_an
-    return("Poner mensaje")
+    resultado <- resultado()
+    values$mensaje3<-resultado$mensaje3
+    return(values$mensaje3)
   })
   
   # Aqui tomamos screen 
@@ -132,6 +133,7 @@ server <- function(input, output, session) {
         plot = grafico_plano(),#+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)),# Accede al gráfico 'grafico_plano'
         subtitulo = values$subtitulo,
         mensaje2 = values$mensaje2,
+        mensaje3 = values$mensaje3,
         anio = input$anio,
         alimento = input$producto
       ))
