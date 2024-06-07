@@ -62,7 +62,8 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL,Rutas = NULL) {
   }
 
   ton_sin_rutas <- sum(df$suma_kg)/1000
-  por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)
+  #por_perdido = round(((ton_original -  ton_sin_rutas)/ton_original)*100, digits = 2)
+  por_perdido = round((ton_sin_rutas/ton_original)*100, digits = 2)
   ton_perdido = ton_original -  ton_sin_rutas
   
   if(nrow(df)==0){
