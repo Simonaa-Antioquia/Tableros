@@ -128,7 +128,7 @@ server <- function(input, output, session) {
     tryCatch({
       # Intenta ejecutar este código
       if (input$tipo == 1) {
-        values$mensaje1 <- paste0("El precio promedio en Medellín para el periodo de tiempo seleccionado fue: $", format(resultado()$precio_medellin, big.mark = ","), " pesos.")
+        values$mensaje1 <- paste0("El precio promedio en Medellín para el periodo de tiempo seleccionado fue: $", format(resultado()$precio_medellin, big.mark = "."), " .")
         return(values$mensaje1)
       } else {
         values$mensaje1 <- paste0("El precio promedio de ", input$producto, 

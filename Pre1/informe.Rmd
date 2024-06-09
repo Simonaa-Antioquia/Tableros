@@ -5,6 +5,7 @@ params:
   porcentaje_max: NA
   plot: NA
   subtitulo: NA
+  mensaje1: NA
   mensaje2: NA
   mensaje3: NA
   promedio: NA
@@ -96,19 +97,19 @@ tabla_kable
 ```
 
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Comportamiento de los precios en el tiempo}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Comportamiento de los precios en el tiempo}\
 <!-- Subtitulo -->
-\fontsize{15}{15} \selectfont \textcolor{green2}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín}\
 <!-- Subtitulo2 -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 <!-- Grafica -->
 
-```{r, out.width = "75%", fig.align = "center",warning=FALSE, message=FALSE}
+```{r, out.width = "85%", fig.align = "center",warning=FALSE, message=FALSE}
 print(params$plot)
 ```
 
+\fontsize{10}{10} \selectfont `r params$mensaje1`\
 \fontsize{10}{10} \selectfont `r params$mensaje2`\
-
 \fontsize{10}{10} \selectfont `r params$mensaje3`\
 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\

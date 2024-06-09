@@ -9,7 +9,8 @@
 rm(list=ls())
 # Paquetes 
 ################################################################################-
-library(corrplot); library(shiny)
+library(corrplot); library(shiny); library(lubridate);library(shinythemes);library(plotly);
+library(shinydashboard)
 options(scipen = 999)
 source("001b_indices_precios_funciones.R")
 ################################################################################-
@@ -43,7 +44,8 @@ ui <- fluidPage(
         font-family: 'Prompt', sans-serif;
         font-size: 15px;
       }
-    "))
+    ")),
+      tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
   tags$h1("Relación entre volúmenes y precios de los alimentos", class = "main-header"),
   tags$h1("Evolución del precio promedio por Kg en relación al volumen de ingreso a las centrales de abasto de Medellín", class = "main-header_2"),
@@ -83,9 +85,17 @@ ui <- fluidPage(
       )
     ),
     tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
+                    tags$br(),"",
                     tags$br(),"Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.",
                     tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.",
-                    tags$br(),"La información solo se muestra precios promedio en el centro de acopio de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
+                    tags$br(),"La información solo se muestra precios promedio en el centro de acopio de Medellín.", class = "sub-header2"),
+             tags$div(style = "text-align: left;", 
+                      tags$p("La elasticidad se calcula utilizando la siguiente fórmula, donde %P representa el cambio porcentual del precio y %Q el cambio porcentual de la cantidad demandada, ambos respecto al periodo anterior. Esta medida nos ayuda a entender cómo varía el precio ante cambios en la cantidad demandada:", class = "sub-header2", style = "margin-top: 3px;"),
+                      tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),
+                      tags$div(id = "mathjax-output", HTML("$$\\text{Elasticidad} = \\frac{\\%P}{\\%Q}$$"))
+             ),
+             style = "margin-top: 20px;")
+    
   ),
   
   br(),

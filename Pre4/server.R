@@ -99,10 +99,10 @@ server <- function(input, output, session) {
     if(nrow(resultado$datos)==0){
       validate("No hay datos disponibles")
     }else{if (input$producto != "todo") {
-      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo para ", input$producto, ", siendo $", format(resultado()$precio_min, big.mark = ","), " más económico que en Medellín durante el mismo período de tiempo."))
+      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo para ", input$producto, ", siendo $", format(resultado()$precio_min, big.mark = "."), " más económico que en Medellín durante el mismo período de tiempo."))
       return(values$mensaje2)
     } else {
-      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo para comprar alimentos, siendo $", format(resultado()$precio_min, big.mark = ","), " más económico que en Medellín durante el mismo período de tiempo."))
+      values$mensaje2<-(paste0(resultado()$ciudad_min, " ofreció el precio más bajo para comprar alimentos, siendo $", format(resultado()$precio_min, big.mark = "."), " más económico que en Medellín durante el mismo período de tiempo."))
       return(values$mensaje2)
     }}
   })
@@ -115,7 +115,7 @@ server <- function(input, output, session) {
     }else{if (input$producto != "todo") {
       values$mensaje3<-( paste0("El precio promedio de ", input$producto, 
                                 " en Medellín para el periodo de tiempo seleccionado fue: $", 
-                                format(resultado()$precio_medellin, big.mark = ","), " pesos."))
+                                format(resultado()$precio_medellin, big.mark = "."), " ."))
       return(values$mensaje3)
     } else {
       values$mensaje3<-(paste0("El precio promedio en Medellín para el periodo de tiempo seleccionado fue: $", format(resultado()$precio_medellin, big.mark = "."),"."))
