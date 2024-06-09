@@ -141,7 +141,7 @@ output$mensaje1 <- renderText({
   }else {
   porcentaje_max <- res$porcentaje_max_1
   dpto_max <- res$dpto_max
-  values$mensaje1 <- (paste0("Antioquia envia el ", res$porcentaje_max_1, " % de su producción* a Medellín."))}}
+  values$mensaje1 <- (paste0("El ", res$porcentaje_max_1, " % del volumen total",ifelse(input$producto == "todo"," de aliemntos que ingresan",paste0(" de ",input$producto," que ingresa"))," a las principales centrales de abasto de Medellín, reportan como origen territorios de Antioquia."))}}
   return(values$mensaje1)
   })
   

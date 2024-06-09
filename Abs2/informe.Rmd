@@ -83,19 +83,19 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Antioquia y su importancia en la recepción de alimentos}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Antioquia y su importancia en la recepción de alimentos}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Descubre la importancia de Antioquia como receptor de alimentos desde otros departamentos del país.}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Descubre la importancia de Antioquia como receptor de alimentos desde otros departamentos del país.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
-```{r, out.width = "70%", fig.align = "center", warning=FALSE, message=FALSE}
+```{r, out.width = "90%", fig.align = "center", warning=FALSE, message=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\
 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Esta visualización muestra el porcentaje de alimentos enviados a Antioquia desde cada departamento, incluyendo productos de origen local. Permite apreciar la importancia de Antioquia como receptor de alimentos provenientes de otros territorios del país}\newline 
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{* Producción se refiere a los productos cuyo origen es Antioquia.}\newline
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Los departamentos en color gris indican la ausencia de reportes de ingresos de productos provenientes de esas áreas en las principales centrales de abasto.}\newline
 
 \AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo_2.png}}
 

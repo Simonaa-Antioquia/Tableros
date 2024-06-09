@@ -84,12 +84,12 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Contribución de Antioquia al Abastecimiento Nacional}\newline
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Contribución de Antioquia al Abastecimiento Nacional}\newline
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Análisis de la participación de Antioquia en el abastecimiento de alimentos en otros departamentos del país}\newline
+\fontsize{12}{12} \selectfont \textcolor{green2}{Análisis de la participación de Antioquia en el abastecimiento de alimentos en otros departamentos del país}\newline
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`
-```{r, out.width = "70%", fig.align = "center", warning=FALSE, message=FALSE}
+```{r, out.width = "95%", fig.align = "center", warning=FALSE, message=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje2`
@@ -97,6 +97,7 @@ print(params$plot)
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Esta visualización muestra la contribución de Antioquia al abastecimiento de otros departamentos. Los porcentajes representan la proporción del volumen que se registra en las principales centrales de abasto de cada departamento con origen Antioquia en relación con el total del volumen recibido.}\newline
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{La comparación se realiza entre ciudades, para una mejor comprensión visual se considera todo el departamento.}\newline
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Los departamentos en color gris indican la ausencia de reportes de ingresos de productos provenientes de Antioquia.}\newline
 
 \AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo_2.png}}
 

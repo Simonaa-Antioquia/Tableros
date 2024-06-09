@@ -98,10 +98,9 @@ ui <- fluidPage(
                     "Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
                     tags$br(),"Esta visualización muestra la contribución de Antioquia al abastecimiento de otros departamentos. Los porcentajes representan la proporción del volumen que se registra en las principales centrales de abasto de cada departamento con origen Antioquia en relación con el total del volumen recibido.",
                     tags$br(),"La comparación se realiza entre ciudades, para una mejor comprensión visual se considera todo el departamento.",
+                    tags$br(),"Los departamentos en color gris indican la ausencia de reportes de ingresos de productos provenientes de Antioquia.",
                     class = "sub-header2"), style = "margin-top: 20px;")
   ),
-  br(),
-  br(),
   br(),
   br(),
   br(),

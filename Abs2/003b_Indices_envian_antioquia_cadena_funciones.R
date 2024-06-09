@@ -148,7 +148,7 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
   
   p_plano <-ggplot() +
     geom_sf(data = mapa, aes(fill = columna_porcentaje)) +
-    scale_fill_gradient(low = "#0D8D38", high = "#F2E203", na.value = "white", name = "Porcentaje") +
+    scale_fill_gradient(low = "#F2E203", high = "#0D8D38", na.value = "#C5C7C6", name = "Porcentaje") +
     labs(title = " ") +
     theme_minimal() +
     theme(

@@ -125,10 +125,10 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
                 fillOpacity = 0.8, 
                 color = "#D5D5D5", 
                 weight = 1,
-                popup = ~ifelse(is.na(columna_porcentaje),"",paste0("<strong>Departamento: </strong>", tools::toTitleCase(tolower(mapa$dpto_cnmbr)),
-                                                                    "<br><strong>Toneladas: </strong>", formatC((toneladas), format = "f", big.mark = ".",decimal.mark = ",", digits = 0),
-                                                                    "<br><strong>Porcentaje que representa para el dpto: </strong>", round(columna_porcentaje,digits = 1),"%", 
-                                                                    "<br><strong>Porcentaje que representa para Antioquia:</strong>", round(represent_ant*100, digits = 1),"%")),
+                popup = ~ifelse(is.na(columna_porcentaje),"",paste0("<strong>Departamento:</strong>", tools::toTitleCase(tolower(mapa$dpto_cnmbr)),
+                                                                    "<br><strong>Toneladas:</strong>", formatC((toneladas), format = "f", big.mark = ".",decimal.mark = ",", digits = 0),
+                                                                    "<br><strong>Porcentaje que recibe ",tools::toTitleCase(tolower(mapa$dpto_cnmbr)),":</strong>", round(columna_porcentaje,digits = 1),"%", 
+                                                                    "<br><strong>Porcentaje de lo que envía Antioquia:</strong>", round(represent_ant*100, digits = 1),"%")),
                 highlightOptions = highlightOptions(color = "white", 
                                                     weight = 2,
                                                     bringToFront = FALSE)) %>%
@@ -137,7 +137,7 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
   
   p_plano <-ggplot() +
     geom_sf(data = mapa, aes(fill = columna_porcentaje)) +
-    scale_fill_gradient(low = "#0D8D38", high = "#F2E203", na.value = "white", name = "Porcentaje") +
+    scale_fill_gradient(low = "#F2E203", high = "#0D8D38", na.value = "#C5C7C6", name = "Porcentaje") +
     labs(title = " ") +
     theme_minimal() +
     theme(
