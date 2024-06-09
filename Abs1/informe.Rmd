@@ -87,11 +87,11 @@ tabla_kable <- df %>%
 tabla_kable
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Municipios proveedores de alimentos para Antioquia}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Municipios proveedores de alimentos para Antioquia}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Descubre los principales municipios proveedores de alimentos que ingresan a Antioquia según el SIPSA.}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Descubre los principales municipios proveedores de alimentos que ingresan a Antioquia según el SIPSA.}\
 <!-- Grafica -->
-```{r, out.width = "80%",warning=FALSE,message=FALSE}
+```{r, out.width = "90%",warning=FALSE,message=FALSE}
 print(params$plot)
 ```
 

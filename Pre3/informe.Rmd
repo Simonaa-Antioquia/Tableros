@@ -101,14 +101,13 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Análisis de precios de alimentos por ciudad}\newline
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Análisis de precios de alimentos por ciudad}\newline
 <!-- Subtitulo -->
-\fontsize{15}{15} \selectfont \textcolor{mygreen}{Descubre las diferencias de precios de alimentos en ciudades, comparadas con Medellín}\newline
+\fontsize{12}{12} \selectfont \textcolor{mygreen}{Descubre las diferencias de precios de alimentos en ciudades, comparadas con Medellín}\newline
 <!-- Subtitulo2 -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`
 <!-- Grafica -->
-
-```{r, out.width = "80%", fig.align = "center",warning=FALSE, message=FALSE}
+```{r, out.width = "85%", fig.align = "center",warning=FALSE, message=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\newline
