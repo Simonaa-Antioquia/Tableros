@@ -110,7 +110,7 @@ server <- function(input, output, session) {
     if (nrow(resultado_data$datos) == 0) {
       validate("No hay información disponible")
     } else {
-      values$mensaje1<- (paste0("El ", round(resultado_data$porcentaje_max, digits = 1), "% de los productos procedentes de municipios de Antioquia tienen como destino los principales centros de acopio de ", resultado_data$lugar_max, "."))
+      values$mensaje1<- (paste0("El ", round(resultado_data$porcentaje_max, digits = 1), "% de los productos procedentes de municipios de Antioquia tienen como destino los principales centros de abasto de ", resultado_data$lugar_max, "."))
     }
     return(values$mensaje1)
   })

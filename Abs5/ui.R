@@ -90,7 +90,7 @@ ui <- fluidPage(
     ),
     tags$div(tags$p(" ",
                     tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
-                    tags$br(),"Solo se muestran los productos que tienen al menos un 1% de la composición.", class = "sub-header2"), style = "margin-top: 20px;")
+                    tags$br(),"Solo se muestran los productos que representan al menos un 0,5% del volumen total de ingresos a las principales centrales de abasto de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
   tags$div(
     tags$img(src = 'logo_2.png', style = "width: 100vw;"),

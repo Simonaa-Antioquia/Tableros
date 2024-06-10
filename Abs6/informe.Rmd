@@ -90,21 +90,20 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Antioquia en los mercados: Principales productos por volumen}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Antioquia en los mercados: Principales productos por volumen}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Principales productos de Antioquia en otros mercados: volumen y composición de la 
+\fontsize{12}{12} \selectfont \textcolor{green2}{Principales productos de Antioquia en otros mercados: volumen y composición de la 
 canasta.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 
-```{r, out.width = "70%", fig.align = "center", warning=FALSE}
+```{r, out.width = "90%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\
-
 \fontsize{10}{10} \selectfont `r params$mensaje2`\
 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{Solo se muestran los productos que tienen al menos un 1\% de la composición.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Solo se muestran los productos que representan al menos un 0,5\% del volumen total de productos de origen antioqueño reportado en las centrales de abasto del SIPSA.}\
 
 \AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo_2.png}}

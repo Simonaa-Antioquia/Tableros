@@ -93,9 +93,9 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Balance de Alimentos: Productos de origen local vs. externo}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Balance de Alimentos: Productos de origen local vs. externo}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Compara volúmenes de alimentos locales y externos que ingresan a las principales centrales de abasto de Medellín.}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Compara volúmenes de alimentos locales y externos que ingresan a las principales centrales de abasto de Medellín.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 ```{r, out.width = "70%", fig.align = "center", warning=FALSE}

@@ -87,20 +87,19 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Principales alimentos en centrales de abasto de Medellín, por volumen de ingreso}\
+\fontsize{15}{15} \selectfont \textcolor{mygreen}{Principales alimentos en centrales de abasto de Medellín, por volumen de ingreso}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Visualiza los alimentos más destacados en las centrales de abasto de Medellín, basado en su volumen de entrada}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Visualiza los alimentos más destacados en las centrales de abasto de Medellín, basado en su volumen de entrada}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
-```{r, out.width = "70%", fig.align = "center", warning=FALSE}
+```{r, out.width = "90%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\
-
 \fontsize{10}{10} \selectfont `r params$mensaje2`\
 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\
-\fontsize{8}{8} \selectfont \textcolor{mygreen}{Solo se muestran los productos que tienen al menos un 1\% de la composición.}\
+\fontsize{8}{8} \selectfont \textcolor{mygreen}{Solo se muestran los productos que representan al menos un 0,5\% del volumen total de ingresos a las principales centrales de abasto de Medellín.}\
 
 
 \AddToShipoutPictureBG*{\includegraphics[width=\paperwidth,height=3cm,keepaspectratio]{www/logo_2.png}}

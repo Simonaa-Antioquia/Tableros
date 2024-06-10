@@ -83,21 +83,24 @@ entran_prod<-function(año = NULL, Mes = NULL, depto = NULL){
     p_plano <- NULL
   } else {
   
-    df$tooltip_text <- paste("Producto:", df$producto , "<br> Porcentaje:", round(df$columna_porcentaje*100, digits = 1), "%", "<br> Toneladas:", formatC(df$toneladas_r, format = "f", digits = 0, big.mark = ","))
+    df$tooltip_text <- paste("Producto:", df$producto , "<br> Porcentaje:", round(df$columna_porcentaje*100, digits = 1), "%", "<br> Toneladas:", formatC(df$toneladas_r, format = "f", digits = 0, big.mark = "."))
   
-  p <- hchart(df, "treemap", hcaes(x = producto, value = round(columna_porcentaje*100), color = round(columna_porcentaje*100))) %>%
-    hc_title(text = "") %>%
-    hc_colorAxis(minColor = low_color, maxColor = high_color) %>%
-    hc_tooltip(pointFormat = '{point.tooltip_text}')
+    p <- hchart(df, "treemap", hcaes(x = producto, value = round(columna_porcentaje*100), color = round(columna_porcentaje*100))) %>%
+      hc_title(text = "") %>%
+      hc_subtitle(text = "") %>% 
+      hc_colorAxis(minColor = low_color, maxColor = high_color) %>%
+      hc_tooltip(pointFormat = '{point.tooltip_text}')%>%
+      hc_caption(text = "Porcentaje", align = "center", verticalAlign = "bottom", y = -10)
+    
   
 
   p_plano<-ggplot(df, aes(area = columna_porcentaje, fill = columna_porcentaje,
-                          label = producto,subgroup = grupo_alimento)) +
+                          label = producto)) +
     geom_treemap() +
-    geom_treemap_subgroup_border(colour = "white", size = 5) +
-    geom_treemap_subgroup_text(place = "topleft", grow = FALSE,
-                               alpha = 0.3, colour = "black",
-                               fontface = "italic", size = 15) +
+    #geom_treemap_subgroup_border(colour = "white", size = 5) +
+    #geom_treemap_subgroup_text(place = "topleft", grow = FALSE,
+     #                          alpha = 0.3, colour = "black",
+      #                         fontface = "italic", size = 15) +
     geom_treemap_text(colour = "white", place = "centre",
                       size = 15, grow = FALSE)+
     scale_fill_gradient(low = low_color, high = high_color) +  # Usa un gradiente de colores
@@ -118,7 +121,7 @@ entran_prod<-function(año = NULL, Mes = NULL, depto = NULL){
 }
 
 
-#entran_prod(año=2013,Mes =  1,depto =  "Antioquia")
+#entran_prod(año=2013,Mes =  1,depto =  "Antioquia")$grafico_plano
 #entran_prod(2013,,"Antioquia")
 #entran_prod(depto =  "Antioquia")
 #entran_prod()

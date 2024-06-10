@@ -218,7 +218,7 @@ importancia <- function(Año = NULL, Mes = NULL, municipios = 10, Producto = NUL
     # Ahora puedes usar col_palette en tu gráfico
     p_plano<-ggplot(df, aes(x = forcats::fct_reorder(mpio_destino, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill = mpio_destino,text = tooltip_text)) +
       geom_bar(stat = "identity") +
-      geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 1)), hjust = 0.1) +
+      geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 0.1)), hjust = 0.1) +
       coord_flip() +
       labs(x = "", y = "", title = "") +
       scale_fill_manual(values = col_palette) +  # Agregar la paleta de colores

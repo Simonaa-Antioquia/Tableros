@@ -89,10 +89,10 @@ tabla_kable
 ```
 
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Destino de la producción de alimentos de origen antioqueño}\
-\fontsize{10}{10} \selectfont \textcolor{green2}{Descubre las principales ciudades receptores de alimentos con origen Antioquia según el SIPSA.}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Destino de la producción de alimentos de origen antioqueño}\
+\fontsize{12}{11} \selectfont \textcolor{green2}{Descubre las principales ciudades receptores de alimentos con origen Antioquia según el SIPSA.}\
 <!-- Grafica -->
-```{r, out.width = "60%", fig.align = "center", warning=FALSE, message=FALSE}
+```{r, out.width = "95%", fig.align = "center", warning=FALSE, message=FALSE}
 print(params$plot)
 ```
 
