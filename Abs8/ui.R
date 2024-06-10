@@ -101,7 +101,7 @@ ui <- fluidPage(
     column(12,
            style = "margin-top: 2px;",
            tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
-                           tags$br(),"Se muestran los alimentos que reunen aproximadamente el 85% del acumulado.",
+                           tags$br(),"Para efectos visuales solo se muestra en el tablero los alimentos que representan aproximadamente el 85% del volumen total acumulado.",
                            tags$br(),"Entradas locales: Productos reportados con origen de territorios del departamento de Antioquia.",
                            tags$br(),"Entradas externas: Productos reportados con origen fuera del departamento de  Antioquia."
                            , class = "sub-header2"), style = "margin-top: 20px;")

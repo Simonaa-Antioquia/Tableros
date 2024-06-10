@@ -85,12 +85,25 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
   
   df_filtrado$tooltip_text1 <- paste0("Producto: ", df_filtrado$producto, "<br>Cantidad: ", round(df_filtrado$total_sum,1))
   df_filtrado$tooltip_text2 <- paste0("Producto: ", df_filtrado$producto, "<br>Porcentaje: ", round(df_filtrado$acumulado_total*100,1),"%")
+  
+  index <- which.min(abs(df_filtrado$acumulado_total - 0.8))
+  # Si el valor es menor que 0.8, tomar el siguiente valor
+  if(nrow(df_filtrado)!=0){if (df_filtrado$acumulado_total[index] < 0.8) {
+    index <- index + 1
+  }}else{
+    ("")
+  }
+  
+  # Obtener el valor más cercano a 0.8 (hacia arriba)
+  acumulado <- (df_filtrado$acumulado_total[index])
+  posicion_80 <- min(df_filtrado$producto[df_filtrado$acumulado_total == acumulado])  # Encuentra el valor mínimo donde se alcanza el 80%
   if(nrow(df) > 0){
     plot <- ggplot(df_filtrado, aes(x = reorder(producto, -total_sum), y = total_sum)) +
       geom_bar(stat = "identity", fill = "#0D8D38", aes(text = tooltip_text1)) +
       geom_line(aes(y = acumulado_total * total_sum_total), color = "#F39F06", group = 1) +
       geom_point(aes(y = acumulado_total * total_sum_total, text = tooltip_text2), color = "#F39F06", group = 1) +
       xlab("") + 
+      geom_vline(xintercept = posicion_80, color = "#00909C", linetype = "dashed") +  # Agrega la línea vertical
       ylab("Miles de toneladas") +
       theme_bw() +
       theme(axis.text.x = element_text(angle = 90, hjust = 1),  # Rota los valores del eje x a 90 grados
@@ -98,7 +111,6 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
             axis.line = element_blank(),  # Elimina las líneas de los ejes
             panel.grid.major = element_blank(),  # Elimina las líneas de la cuadrícula principal
             panel.grid.minor = element_blank())  # Elimina las líneas de la cuadrícula secundaria
-  
   
   p<-plotly::ggplotly(plot, tooltip = "text")
   
@@ -124,7 +136,7 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
   prod_neces<-nrow(df_filtrado[df_filtrado$acumulado_total <= acumulado/100+0.001, ])
   porcent_prod<-round((prod_neces/length(df$producto))*100, digits = 1)
   plot<-plot+
-    geom_text(aes(y = acumulado_total * total_sum_total, label = scales::percent(round(acumulado_total,2))), hjust = -0.1, color = "#F39F06", angle=0, size = 3)
+    geom_text(aes(y = acumulado_total * total_sum_total, label = scales::percent(round(acumulado_total,3))), hjust = 1, color = "#000000", angle=90, size = 3)
   
   return(list(
     grafico_plano=plot,
@@ -139,7 +151,7 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
 }
 
 #algo<-"Neto_entra"
-#pareto_graf(pareto = algo,Mes = 4,año = 2023, sitio = "Bogotá")
+#pareto_graf(pareto = algo,Mes = 4,año = 2023, sitio = "Bogotá")$grafico_plano
 #pareto_graf(pareto = algo,año = 2013, sitio = "Antioquia")
 #pareto_graf(pareto = algo, sitio = "Villavicencio")
 #pareto_graf(pareto = algo,Mes = 2,año = 2024)

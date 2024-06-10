@@ -96,12 +96,12 @@ tabla_kable
 ```
 
 <!-- Titulo del tablaro -->
-\fontsize{15}{15} \selectfont \textcolor{mygreen}{Análisis de Pareto del flujo de alimentos en Antioquia}\
-\fontsize{10}{10} \selectfont \textcolor{green2}{Productos principales por volumen en flujo de alimentos en Antioquia.}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Análisis de Pareto del flujo de alimentos en Antioquia}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Productos principales por volumen en flujo de alimentos en Antioquia.}\
 <!-- Subtitulo -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 <!-- Grafica -->
-```{r, out.width = "70%", fig.align = "center", warning=FALSE,message=FALSE}
+```{r, out.width = "80%", fig.align = "center", warning=FALSE,message=FALSE}
 print(params$plot)
 ```
 
