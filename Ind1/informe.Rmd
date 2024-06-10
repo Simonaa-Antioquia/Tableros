@@ -91,12 +91,12 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{Índice de diversidad de alimentos}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Índice de diversidad de alimentos}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Análisis de varidad de los alimentos que ingresan a las pricipales centrales de abasto de Antioquia.}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Análisis de variedad de los alimentos que ingresan a las principales centrales de abasto de Antioquia.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
-```{r, out.width = "70%", fig.align = "center", warning=FALSE}
+```{r, out.width = "85%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\

@@ -37,7 +37,7 @@ plot_data <- function(tipo, anio = NULL) {
     p_plano <- ggplot(data, aes_string(x = "date_col", y = "IHH")) +
       geom_line(color = "#2E7730") +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
-      labs(x = "Año", y = " ") +
+      labs(x = "Fecha", y = " ") +
       theme_minimal() +  # Usar un tema minimalista
       scale_color_manual(values = "#2E7730") +  # Establecer el color de la línea
       theme(text = element_text( size = 16)) + # Establecer la fuente y el tamaño del texto
@@ -58,11 +58,16 @@ plot_data <- function(tipo, anio = NULL) {
     p_plano <- ggplot(data, aes_string(x = "date_col", y = "IHH")) +
       geom_line(color = "#2E7730") +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
-      labs(x = "Año", y = " ") +
+      labs(x = "Fecha", y = " ") +
       theme_minimal() +  # Usar un tema minimalista
       scale_color_manual(values = "#2E7730") +  # Establecer el color de la línea
-      theme(text = element_text( size = 16)) # Establecer la fuente y el tamaño del texto
-      }
+      theme(text = element_text( size = 16))   # Establecer la fuente y el tamaño del texto
+      
+    if (!is.null(anio)) {
+      p_plano<-p_plano+scale_x_date(date_breaks = "1 months", date_labels = "%b")#+  # Configurar el eje X
+    #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+        }
+    }
   
 
   data<-data%>%select(-tooltip_text)
@@ -83,7 +88,7 @@ plot_data <- function(tipo, anio = NULL) {
 # Informacion Anual
 #plot_data(1)
 # Informmacion mensual - total
-#plot_data(0)
+#plot_data(0)$plot
 # Informacion mensual - por año
 #plot_data(0,2013)
 
