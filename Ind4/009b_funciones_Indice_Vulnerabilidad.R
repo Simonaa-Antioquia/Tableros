@@ -81,7 +81,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
     p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text), size = 1e-8) +
-      labs(x = "Año", y = " ") +
+      labs(x = "Fecha", y = " ") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
       theme(text = element_text( size = 16),
@@ -98,7 +98,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
     p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text), size = 1e-8) +
-      labs(x = "Año", y = " ") +
+      labs(x = "Fecha", y = " ") +
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
       theme(text = element_text(size = 16),
@@ -117,7 +117,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
       p_plano<- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
         geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text), size = 1e-8) +
-        labs(x = "Año", y = " ") +
+        labs(x = "Fecha", y = " ") +
         theme_minimal()  +
         scale_color_manual(values = col_palette) +
         theme(text = element_text(size = 16),
@@ -133,7 +133,7 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
       p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
         geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text), size = 1e-8) +
-        labs(x = "Año", y = " ") +
+        labs(x = "Fecha", y = " ") +
         theme_minimal()+
         scale_color_manual(values = col_palette) +
         theme(text = element_text(size = 12),

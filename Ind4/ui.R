@@ -120,10 +120,8 @@ ui <- fluidPage(
            tags$div(
              tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", 
                     tags$br()," El cálculo del índice de vulnerabilidad combina dos medidas: el índice de Herfindahl-Hirschman, que evalúa la concentración de la producción de alimentos en diferentes municipios, y la distancia desde cada municipio hasta Medellín.", 
-                    tags$p(HTML("El primer componente de este índice se calcula utilizando el índice de Herfindahl-Hirschman, que mide la concentración de productores siguiendo  H<sub>ti</sub> = &sum;<sub>i=1</sub><sup>N</sup>P<sub>itm</sub><sup>2</sup>,
-                    donde P<sub>itm</sub> es la participación que tiene cada municipio (como productor) en el total de kilogramos que ingresan a Medellín en una fecha determinada. El segundo componente, denotado como  
-                    D<sub>i</sub> , es la distancia ponderada por la participación entre Medellín y el municipio, que luego se reescala, obteniendo valores de 0 a 1, donde 0 es Medellín y 1 es el municipio más lejano del cual llegan alimentos a Medellín (incluso puede ser otro país). Finalmente, el índice 
-                    de vulnerabilidad se obtiene siguiendo: V<sub>it</sub> = (H<sub>it</sub> + D<sub>i</sub>)/2."), class = "sub-header2", style = "margin-top: 3px;")
+                    tags$p(HTML("Para calcular el índice de vulnerabilidad se combinan el índice de Herfindahl-Hirschman y la distancia a Medellín. El índice de Herfindahl-Hirschman, H<sub>ti</sub> = &sum;<sub>i=1</sub><sup>N</sup>P<sub>itm</sub><sup>2</sup>, mide la concentración de los municipios de origen de alimentos; un valor más alto implica menos municipios proveedores.
+                                La distancia ponderada por volumen y reescalada, DiD_{i}Di, representa la lejanía de los municipios respecto a Medellín, con valores de 0 a 1, donde 1 representa la mayor distancia entre Medellín y el municipio que envia el alimento. Finalmente, El índice de vulnerabilidad se obtiene promediando H<sub>it<sub> y y D<sub>i<sub>, asi: V<sub>it = (H<sub>it</sub> + D<sub>i</sub>)/2."), class = "sub-header2", style = "margin-top: 3px;")
              ),
            )),
     
