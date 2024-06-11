@@ -89,9 +89,9 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
   }
     df_graf$tooltip_text <- paste("Fecha: ", format(as.Date(df_graf$mes_y_ano), "%B-%Y"), 
                                   case_when(
-                                    variable == "precio_prom" ~ paste("<br>Precio promedio: ", formatC(df_graf$precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)),
-                                    variable == "cambio_pct" ~ paste("<br>Cambio porcentual: ", df_graf$cambio_pct),
-                                    variable == "cambio_pct_anual" ~ paste("<br>Cambio porcentual año anterior: ", df_graf$cambio_pct_anual)
+                                    variable == "precio_prom" ~ paste0("<br>Precio promedio: $", formatC(df_graf$precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)),
+                                    variable == "cambio_pct" ~ paste0("<br>Cambio porcentual: ", df_graf$cambio_pct),
+                                    variable == "cambio_pct_anual" ~ paste0("<br>Cambio porcentual año anterior: ", df_graf$cambio_pct_anual)
                                   ),
                                   case_when(
                                     variable == "precio_prom" ~ "",

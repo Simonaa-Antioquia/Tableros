@@ -116,7 +116,7 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
                             ifelse(abs(prom_elast) < 1, "el precio es menos sensible a los cambios en las cantidades",
                                    ifelse(abs(prom_elast) == 0, "el precio no cambia con la cantidad demandada",
                                           "el precio cambia proporcionalmente con la cantidad demandada"))),
-                     " (Da click en la leyende ''Elasticidad'' para ver los datos).")
+                     " (Haz clic en la leyenda 'Elasticidad' para visualizar los datos).")
   
   return(
     list(

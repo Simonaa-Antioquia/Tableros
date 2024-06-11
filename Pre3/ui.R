@@ -88,7 +88,7 @@ ui <- fluidPage(
                actionButton("descargar", "Gráfica", icon = icon("download")),
                downloadButton("descargarDatos", "Datos"),
                #actionButton("github", "GitHub", icon = icon("github")),
-               shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+               shiny::a("GitHub", href="https://github.com/Simonaa-Antioquia/Tableros/tree/26016cc3f1bdd2dd28b3cb0841c74042579620d3/Pre3", target="_blank",
                         class = "btn btn-default shiny-action-button", icon("github")),
                downloadButton("report", "Generar informe"),
                actionButton("reset", "Restrablecer",icon = icon("refresh"))
@@ -117,6 +117,11 @@ ui <- fluidPage(
         
       )
     ),
+    br(),
+    br(),
+    br(),
+    br(),
+    br(),
     fluidRow(
       tags$div(
         tags$img(src = 'logo_2.png', style = "width: 100vw; margin: 0;"),

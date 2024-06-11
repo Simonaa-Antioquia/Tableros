@@ -83,7 +83,7 @@ ui <- fluidPage(
              downloadButton("descargar", "Gráfica"),
              downloadButton("descargarDatos", "Datos"),
              #actionButton("github", "GitHub", icon = icon("github")),
-             shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros/tree/8d5220f3bec2898e21495993520e1d8637e6b5d4/Pre4", target="_blank",
+             shiny::a("GitHub", href="https://github.com/Simonaa-Antioquia/Tableros/tree/cedda4a1d5d12a0ed8618b3b6539d9072412b947/Pre4", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
              downloadButton("report", "Generar informe"),
              actionButton("reset", "Restablecer", icon = icon("refresh"))#,
@@ -101,8 +101,10 @@ ui <- fluidPage(
     tags$div(tags$p("Fuente:Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
                     tags$br(),"Para los productos fríjol verde, tomate, aguacate, banano, guayaba, mandarina, naranja, piña, arracacha, papa negra y yuca, los precios reportados corresponden a la variedad predominante en el mercado al momento de la recolección de la información.",
                     tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.",
-                    tags$br(),"La comparación se realiza entre ciudades, para una mejor comprensión visual se considera todo el departamento.", class = "sub-header2"), style = "margin-top: 20px;")
+                    tags$br(),"La comparación se realiza entre ciudades, para una mejor comprensión visual se considera todo el departamento.",
+                    tags$br(),"Los departamentos en color gris indican la ausencia de reportes de precios.",class = "sub-header2"), style = "margin-top: 20px;")
   ),
+  br(),
   br(),
   br(),
   br(),

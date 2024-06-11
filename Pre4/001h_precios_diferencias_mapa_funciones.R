@@ -137,7 +137,7 @@ mapa_dif<-function(Anio = NULL, Mes = NULL, Producto = NULL){
     
     mapa2 <- ggplot() +
       geom_sf(data = mapa, aes(fill = comp)) +
-      scale_fill_gradient2(low = "#1A4922", mid = "white", high = "#F39F06", midpoint = 0, na.value = "white", name = "Porcentaje") +
+        scale_fill_gradient2(low = "#1A4922", mid = "white", high = "#F39F06", midpoint = 0, na.value = "#C5C7C6", name = "Diferencia del precio") +
       labs(title = " ") +
       theme_minimal() +
       theme(

@@ -72,7 +72,7 @@ ui <- fluidPage(
                actionButton("descargar", "Gráfica", icon = icon("download")),
                downloadButton("descargarDatos", "Datos"),
                #actionButton("github", "GitHub", icon = icon("github")),
-               shiny::a("GitHub", href="https://github.com/PlasaColombia-Antioquia/Tableros.git", target="_blank",
+               shiny::a("GitHub", href="https://github.com/Simonaa-Antioquia/Tableros/tree/cedda4a1d5d12a0ed8618b3b6539d9072412b947/Pre1", target="_blank",
                         class = "btn btn-default shiny-action-button", icon("github")),
                downloadButton("report", "Generar informe"),
                actionButton("reset", "Restablecer", icon = icon("refresh"))
@@ -92,6 +92,7 @@ ui <- fluidPage(
                       tags$br(),"De acuerdo con el SIPSA, el valor reportado corresponde al precio mayorista por kilogramo de producto de primera calidad en la Central Mayorista de Antioquia.",
                       class = "sub-header2"), style = "margin-top: 20px;")
     ),
+    br(),
     br(),
     br(),
     br(),

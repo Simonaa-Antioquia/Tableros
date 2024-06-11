@@ -107,7 +107,7 @@ tabla_kable
 <!-- Subtitulo2 -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`
 <!-- Grafica -->
-```{r, out.width = "85%", fig.align = "center",warning=FALSE, message=FALSE}
+```{r, out.width = "83%", fig.align = "center",warning=FALSE, message=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\newline
