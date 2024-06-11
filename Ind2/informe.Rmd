@@ -102,9 +102,9 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{índice de diversidad de origen de los alimentos}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{índice de diversidad de origen de los alimentos}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Análisis de la variedad de territorios conectados por el flujo de alimentos desde su origen hasta los pricipales centros de abasto de Antioquia.}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Análisis de la variedad de territorios conectados por el flujo de alimentos desde su origen hasta los pricipales centros de abasto de Antioquia.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 ```{r, out.width = "90%", fig.height=2, fig.align = "center", warning=FALSE}

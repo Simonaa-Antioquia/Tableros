@@ -109,7 +109,7 @@ ui <- fluidPage(
                       tags$script(HTML('MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathjax-output"])')),
                       tags$div(id = "mathjax-output", HTML("$$IHH = \\sum_{i=1}^{n} s_i^2$$"))
              ),
-             tags$p("Donde Si es la participación que tiene cada producto en el volumen total de alimentos que ingresan a las principales centrales de abasto de Antioquia", class = "sub-header2", style = "margin-top: 3px;"),
+             tags$p(HTML("Donde S<sub>i</sub> es la participación que tiene cada producto en el volumen total de alimentos que ingresan a las principales centrales de abasto de Antioquia."), class = "sub-header2", style = "margin-top: 3px;"),
            ) 
     )
   ),

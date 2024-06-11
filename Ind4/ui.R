@@ -70,29 +70,29 @@ ui <- fluidPage(
     style = "margin-bottom: 20px;"
   ),
   div(
-      fluidRow(
-        column(4,
-               selectInput("tipo", "Seleccione el tipo:", 
-                           choices = list("Índice de vulnerabilidad anual" = 1, 
-                                          "Índice de vulnerabilidad anual por producto" = 2, 
-                                          "Índice de vulnerabilidad mensual" = 3, 
-                                          "Índice de vulnerabilidad mensual por producto" = 4))
-        ),
-        column(4,
-               conditionalPanel(
-                 condition = "input.tipo == 2 || input.tipo == 4",
-                 selectInput("producto", "Seleccione los productos:", 
-                             choices = c("Todos los productos"= NULL, unique(indice_v_anual_producto$producto)), multiple = TRUE)
-               )
-        ),
-        column(4,
-               conditionalPanel(
-                 condition = "input.tipo == 3 || input.tipo == 4",
-                 selectInput("anio", "Seleccione el año:", 
-                             choices = c("Todos los años" = "todo", unique(indice_v_mensual$anio)))
-               )
-        )
+    fluidRow(
+      column(4,
+             selectInput("tipo", "Seleccione el tipo:", 
+                         choices = list("Índice de vulnerabilidad anual" = 1, 
+                                        "Índice de vulnerabilidad anual por producto" = 2, 
+                                        "Índice de vulnerabilidad mensual" = 3, 
+                                        "Índice de vulnerabilidad mensual por producto" = 4))
+      ),
+      column(4,
+             conditionalPanel(
+               condition = "input.tipo == 2 || input.tipo == 4",
+               selectInput("producto", "Seleccione los productos:", 
+                           choices = c("Todos los productos"= NULL, unique(indice_v_anual_producto$producto)), multiple = TRUE)
+             )
+      ),
+      column(4,
+             conditionalPanel(
+               condition = "input.tipo == 3 || input.tipo == 4",
+               selectInput("anio", "Seleccione el año:", 
+                           choices = c("Todos los años" = "todo", unique(indice_v_mensual$anio)))
+             )
       )
+    )
   ),
   fluidRow(
     column(8,
@@ -125,12 +125,12 @@ ui <- fluidPage(
                     D<sub>i</sub> , es la distancia ponderada por la participación entre Medellín y el municipio, que luego se reescala, obteniendo valores de 0 a 1, donde 0 es Medellín y 1 es el municipio más lejano del cual llegan alimentos a Medellín (incluso puede ser otro país). Finalmente, el índice 
                     de vulnerabilidad se obtiene siguiendo: V<sub>it</sub> = (H<sub>it</sub> + D<sub>i</sub>)/2."), class = "sub-header2", style = "margin-top: 3px;")
              ),
-             )),
-  
-  fluidRow(
-    tags$div(
-      tags$img(src = 'logo_2.png', style = "width: 100%; margin: 0;"),  
-      style = "width: 100%; margin:0;"  
-    )
-  ) 
-))
+           )),
+    
+    fluidRow(
+      tags$div(
+        tags$img(src = 'logo_2.png', style = "width: 100%; margin: 0;"),  
+        style = "width: 100%; margin:0;"  
+      )
+    ) 
+  ))

@@ -102,9 +102,9 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{20}{20} \selectfont \textcolor{mygreen}{índice de diversidad de destino de los alimentos}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{índice de diversidad de destino de los alimentos}\
 <!-- Subtitulo -->
-\fontsize{10}{10} \selectfont \textcolor{green2}{Análisis de la variedad de territorios conectados por el flujo de alimentos desde Antioquia hacia otras plazas en SIPSA.}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Análisis de la variedad de territorios conectados por el flujo de alimentos desde Antioquia hacia otras plazas en SIPSA.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 ```{r, out.width = "80%", fig.height=2, fig.align = "center", warning=FALSE}

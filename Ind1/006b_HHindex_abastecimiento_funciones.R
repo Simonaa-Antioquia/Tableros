@@ -23,6 +23,11 @@ IHH_mensual<-readRDS("IHH_mensual_abastecimiento.rds")%>%
   mutate(mes_y_ano = floor_date(as.Date(as.yearmon(mes_y_ano, "%Y-%m"), frac = 1), "month"))
 
 
+mapeo_meses <- c("ene" = "enero", "feb" = "febrero", "mar" = "marzo", "abr" = "abril", 
+                 "may" = "mayo", "jun" = "junio", "jul" = "julio", "ago" = "agosto", 
+                 "sep" = "septiembre", "oct" = "octubre", "nov" = "noviembre", "dic" = "diciembre")
+
+
 # Función para producir un gráfico de tiempo
 plot_data <- function(tipo, anio = NULL) {
   # Elegir el data frame correcto y el título
@@ -38,20 +43,24 @@ plot_data <- function(tipo, anio = NULL) {
       geom_line(color = "#2E7730") +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
       labs(x = "Fecha", y = " ") +
-      theme_minimal() +  # Usar un tema minimalista
-      scale_color_manual(values = "#2E7730") +  # Establecer el color de la línea
-      theme(text = element_text( size = 16)) + # Establecer la fuente y el tamaño del texto
-      scale_x_continuous(breaks = seq(min(data$date_col), max(data$date_col), by = 1))  # Establecer las marcas del eje x
-      
+      theme_minimal() +  
+      scale_color_manual(values = "#2E7730") + 
+      theme(text = element_text( size = 16)) + 
+      scale_x_continuous(
+        breaks = data$year
+      ) +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1)) 
+    
   } else {
     data <- IHH_mensual
     data <- rename(data, date_col = mes_y_ano)
     data$IHH <- data$IHH *100
-    data$tooltip_text <- paste("Año: ", data$year , "<br> IHH:" , round(data$IHH,1))
+    data$tooltip_text <- paste("Año: ", data$year ,"<br> Mes:" , data$month_completo, "<br> IHH:" , round(data$IHH,1))
+    data$month_completo <- mapeo_meses[data$month]
     
     # Si se especificó un año, filtrar los datos para ese año
     if (!is.null(anio)) {
-    data$tooltip_text <- paste("Año: ", data$year , "<br> Mes:" , data$month,  "<br> IHH:" , round(data$IHH,1))
+    data$tooltip_text <- paste("Año: ", data$year , "<br> Mes:" , data$month_completo,  "<br> IHH:" , round(data$IHH,1))
       data <- data %>% filter(year == anio)
     }
     # Crear un gráfico de tiempo
@@ -61,7 +70,10 @@ plot_data <- function(tipo, anio = NULL) {
       labs(x = "Fecha", y = " ") +
       theme_minimal() +  # Usar un tema minimalista
       scale_color_manual(values = "#2E7730") +  # Establecer el color de la línea
-      theme(text = element_text( size = 16))   # Establecer la fuente y el tamaño del texto
+      theme(text = element_text( size = 12))+
+      scale_x_date(date_breaks = "4 month", date_labels = "%Y-%m") +  # Establecer el formato de fecha
+      theme(axis.text.x = element_text(angle = 90, hjust = 1))
+    # Establecer la fuente y el tamaño del texto
       
     if (!is.null(anio)) {
       p_plano<-p_plano+scale_x_date(date_breaks = "1 months", date_labels = "%b")#+  # Configurar el eje X

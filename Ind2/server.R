@@ -125,19 +125,19 @@ output$subtitulo <- renderText({
   anio <- componentes[1]
   mes <- componentes[2]
   dia <- componentes[3]
-  nombres_meses <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+  nombres_meses <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", 
+                     "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
   mes <- nombres_meses[as.integer(mes)]
   producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
   
   if (tipo == 2) {
-    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en el" ,anio," con un índice máximo de" , max_IHH, " para el producto ",producto_max_vulnerabilidad ))
+    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en el" ,anio," con un índice máximo de" , max_IHH, " para el producto ",producto_max_vulnerabilidad ))
   } else if (tipo == 3) {
-    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en ",mes, " del año ",anio, "con un índice máximo de", max_IHH ))
+    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en ",mes, " del año ",anio, "con un índice máximo de", max_IHH ))
   } else if (tipo == 4) {
-    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en ",mes, " del año ",anio, " con un índice máximo ", max_IHH, "para el producto" ,producto_max_vulnerabilidad))
+    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en ",mes, " del año ",anio, " con un índice máximo ", max_IHH, "para el producto" ,producto_max_vulnerabilidad))
   } else {
-    values$subtitulo <-(paste("La menor variedad de territorios conectados por el flujo de alimentos desde otras plazas hacia Antioquia se registró en el ",anio," con un índice máximo de", max_IHH ))
+    values$subtitulo <-(paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en el ",anio," con un índice máximo de", max_IHH ))
   }
   return(values$subtitulo)
 })

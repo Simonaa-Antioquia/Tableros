@@ -133,8 +133,8 @@ output$subtitulo <- renderText({
     anio <- componentes[1]
     mes <- componentes[2]
     dia <- componentes[3]
-    nombres_meses <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+    nombres_meses <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", 
+                       "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
     mes <- nombres_meses[as.integer(mes)]
     
     if (tipo == 2) {

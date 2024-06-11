@@ -26,6 +26,8 @@ IHH_mensual_producto <- readRDS("base_IHH_mensual_producto_importanciadelosmunic
 IHH_mensual_total <- readRDS("base_IHH_mensual_total_importanciadelosmunicipios.rds") %>%
   mutate(mes_y_ano = as.Date(mes_y_ano, format = "%Y-%m-%d"))
 
+nombres_meses <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
+
 
 # FUNCIONES  
 # Temporal (serie de tiempo)
@@ -78,12 +80,14 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
       theme_minimal() +
       scale_color_manual(values = col_palette) +
       theme(text = element_text(size = 16),
-            axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
+            axis.text.x = element_text(size = 10, angle = 90, hjust = 1),
+            axis.text.y = element_text(size = 8)) +
       scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha), by = 1))
 }else if (tipo == 4){
+   df$mes_nombre <- nombres_meses[df$month]
     df <- rename(df, fecha = mes_y_ano)
     df <- df[df$producto %in% productos_seleccionados, ]
-    df$tooltip_text <- paste("Año: ", df$year ,"<br> Mes:",df$month, "<br> Producto:",df$producto, "<br> IHH:" , round(df$IHH,1))
+    df$tooltip_text <- paste("Año: ", df$year ,"<br> Mes:",df$mes_nombre, "<br> Producto:",df$producto, "<br> IHH:" , round(df$IHH,1))
     p_plano <- ggplot(df, aes(x = fecha, y = IHH, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
@@ -91,8 +95,16 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
       theme(text = element_text(size = 16),
-            axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
-      scale_x_date( date_labels = "%Y-%m")
+            axis.text.x = element_text(size = 8, angle = 90, hjust = 1)) +
+      scale_x_date(date_labels = "%Y-%m", date_breaks = "12 months")
+    
+    if ( anio_seleccionado != "") {
+      p_plano<-p_plano+scale_x_date(date_breaks = "1 months", date_labels = "%b")#+  # Configurar el eje X
+      #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+    }
+    
+    
+    
   } else if (tipo == 1)  {
        df <- rename(df, fecha = year) 
        df$tooltip_text <- paste("Año: ", df$fecha , "<br> IHH:" , round(df$IHH,1))
@@ -107,17 +119,24 @@ grafica_indice_mun <- function(tipo, anio_seleccionado = "", productos_seleccion
          scale_x_continuous(breaks = seq(min(df$fecha), max(df$fecha), by = 1))
        
     }else if (tipo == 3){
+      df$mes_nombre <- nombres_meses[df$month]
       df <- rename(df, fecha = mes_y_ano)
-      df$tooltip_text <- paste("Año:", df$year ,"<br> Mes:",df$month, "<br> IHH:" , round(df$IHH,1))
+      df$tooltip_text <- paste("Año:", df$year ,"<br> Mes:",df$mes_nombre, "<br> IHH:" , round(df$IHH,1))
       p_plano <- ggplot(df, aes(x = fecha, y = IHH)) +
         geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text),size = 1e-8) +
         labs(x = "Fecha", y = " ") +
         theme_minimal()  +
         scale_color_manual(values = col_palette) +
-        theme(text = element_text(size = 16),
+        theme(text = element_text(size = 12),
               axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
-        scale_x_date(date_breaks = "6 month", date_labels = "%Y-%m")
+        scale_x_date(date_breaks = "4 month", date_labels = "%Y-%m")
+      
+      if ( anio_seleccionado != "") {
+        p_plano<-p_plano+scale_x_date(date_breaks = "1 months", date_labels = "%b")#+  # Configurar el eje X
+        #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+      }
+      
     }
     
   

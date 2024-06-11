@@ -29,6 +29,9 @@ indice_v_mensual_producto <- readRDS("base_indice_mensual_productos.rds")
 indice_v_mensual_producto$mes_y_ano <- as.Date(indice_v_mensual_producto$mes_y_ano)
 
 
+
+nombres_meses <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
+
 # LINEA DE TIEMPO 
 
 col_palette <- c("#1A4922", "#2E7730", "#0D8D38", "#85A728", "#AEBF22", "#F2E203", "#F1B709", "#F39F06", "#BE7E11",
@@ -88,8 +91,10 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
 
   }else if (tipo == 4){
     df <- rename(df, fecha = mes_y_ano)
+    df$mes_nombre <- nombres_meses[df$mes]
     df <- df[df$producto %in% productos_seleccionados, ]
-    df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,1))
+    df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes_nombre, "<br> Producto:",df$producto, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,1))
+
     p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text), size = 1e-8) +
@@ -97,9 +102,15 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
       theme_minimal() +
       scale_color_manual(values = col_palette) + 
       theme(text = element_text(size = 16),
-            axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
-      scale_x_date( date_labels = "%Y-%m")
+            axis.text.x = element_text(size = 8, angle = 90, hjust = 1)) +
+      scale_x_date(date_labels = "%Y-%m", date_breaks = "12 months")
     tipo<-4
+    
+    if ( anio_seleccionado != "") {
+      p_plano<-p_plano+scale_x_date(date_breaks = "1 months", date_labels = "%b")#+  # Configurar el eje X
+      #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+    }
+    
   } else if (tipo == 1) {
       df <- rename(df, fecha = anio) 
       df$tooltip_text <- paste("Año: ", df$fecha ,  "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,1))
@@ -117,16 +128,23 @@ grafica_indice <- function(tipo, anio_seleccionado = "", productos_seleccionados
       
     }else if (tipo == 3){
       df <- rename(df, fecha = mes_y_ano)
-      df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,1))
+      df$mes_nombre <- nombres_meses[df$mes]
+      df$tooltip_text <- paste("Año: ", df$anio , "<br> Mes:",df$mes_nombre, "<br> I.Vulnerabilidad:" , round(df$indice_vulnerabilidad,1))
       p_plano <- ggplot(df, aes(x = fecha, y = indice_vulnerabilidad)) +
         geom_line(color = "#2E7730") +
         geom_point(aes(text = tooltip_text), size = 1e-8) +
         labs(x = "Año", y = " ") +
         theme_minimal()+
-        theme(text = element_text( size = 16),
+        scale_color_manual(values = col_palette) +
+        theme(text = element_text(size = 12),
               axis.text.x = element_text(size = 10, angle = 90, hjust = 1)) +
-        scale_x_date(date_breaks = "6 month", date_labels = "%Y-%m") 
+        scale_x_date(date_breaks = "4 month", date_labels = "%Y-%m")
       tipo <-3
+      
+      if ( anio_seleccionado != "") {
+        p_plano<-p_plano+scale_x_date(date_breaks = "1 months", date_labels = "%b")#+  # Configurar el eje X
+        #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+      }
         
       }
   # Calcular el valor máximo del índice de vulnerabilidad
