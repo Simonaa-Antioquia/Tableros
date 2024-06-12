@@ -95,7 +95,7 @@ ui <- fluidPage(
     )
   ),
   fluidRow(
-    column(8,
+    column(12,
            div(
              plotly::plotlyOutput("grafico",height = "400px"),
              downloadButton("descargar_", "Gráfica", icon = icon("download")),
@@ -106,11 +106,11 @@ ui <- fluidPage(
              downloadButton("report", "Generar informe")
            )),
     
-    column(4, 
-           div(
-             wellPanel(textOutput("mensaje1"),
-                       style = "background-color: #0D8D38; color: #FFFFFF;")
-           ))
+#    column(4, 
+#           div(
+#             wellPanel(textOutput("mensaje1"),
+#                       style = "background-color: #0D8D38; color: #FFFFFF;")
+#           ))
   ),
   
   
@@ -121,7 +121,7 @@ ui <- fluidPage(
              tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", 
                     tags$br()," El cálculo del índice de vulnerabilidad combina dos medidas: el índice de Herfindahl-Hirschman, que evalúa la concentración de la producción de alimentos en diferentes municipios, y la distancia desde cada municipio hasta Medellín.", 
                     tags$p(HTML("Para calcular el índice de vulnerabilidad se combinan el índice de Herfindahl-Hirschman y la distancia a Medellín. El índice de Herfindahl-Hirschman, H<sub>ti</sub> = &sum;<sub>i=1</sub><sup>N</sup>P<sub>itm</sub><sup>2</sup>, mide la concentración de los municipios de origen de alimentos; un valor más alto implica menos municipios proveedores.
-                                La distancia ponderada por volumen y reescalada, DiD_{i}Di, representa la lejanía de los municipios respecto a Medellín, con valores de 0 a 1, donde 1 representa la mayor distancia entre Medellín y el municipio que envia el alimento. Finalmente, El índice de vulnerabilidad se obtiene promediando H<sub>it<sub> y y D<sub>i<sub>, asi: V<sub>it = (H<sub>it</sub> + D<sub>i</sub>)/2."), class = "sub-header2", style = "margin-top: 3px;")
+                                La distancia ponderada por volumen y reescalada, D<sub>i</sub>, representa la lejanía de los municipios respecto a Medellín, con valores de 0 a 1, donde 1 representa la mayor distancia entre Medellín y el municipio que envía el alimento. Finalmente, El índice de vulnerabilidad se obtiene promediando H<sub>it</sub> y y D<sub>i</sub>, así: V<sub>it</sub> = (H<sub>it</sub> + D<sub>i</sub>)/2."), class = "sub-header2", style = "margin-top: 3px;")
              ),
            )),
     

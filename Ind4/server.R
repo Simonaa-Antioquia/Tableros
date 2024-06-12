@@ -138,13 +138,13 @@ output$subtitulo <- renderText({
     mes <- nombres_meses[as.integer(mes)]
     
     if (tipo == 2) {
-      values$subtitulo <-(paste("En el ", fecha_max_vulnerabilidad, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad, " para el producto ",producto_max_vulnerabilidad ))
+      values$subtitulo <-(paste("En el ", fecha_max_vulnerabilidad, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad, " para el producto ",producto_max_vulnerabilidad,"." ))
       } else if (tipo == 3) {
-        values$subtitulo <- (paste("En  ", mes, " del ", anio, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad ))
+        values$subtitulo <- (paste("En  ", mes, " del ", anio, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad,"." ))
     } else if (tipo == 4) {
-      values$subtitulo <- (paste("En",mes, "del", anio, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad, " para el producto ",producto_max_vulnerabilidad))
+      values$subtitulo <- (paste("En",mes, "del", anio, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad, " para el producto ",producto_max_vulnerabilidad,"."))
       } else {
-        values$subtitulo <- (paste("En el ", fecha_max_vulnerabilidad, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad))
+        values$subtitulo <- (paste("En el ", fecha_max_vulnerabilidad, " se registró el índice de vulnerabilidad más alto, con un valor de " , max_vulnerabilidad,"."))
       } 
     return(values$subtitulo)
   })
