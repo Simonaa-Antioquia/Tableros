@@ -122,9 +122,9 @@ output$subtitulo <- renderText({
       porcentaje_max <- res$porcentaje_max
       dpto_max <- res$dpto_max
       if (input$producto == "todo") {
-        values$subtitulo <- (paste0("Antioquia es uno de los principales receptores de ", dpto_max," Con un procentaje de ", porcentaje_max ,"%."))
+        values$subtitulo <- (paste0("Antioquia es uno de los principales receptores de ", dpto_max," con un procentaje de ", porcentaje_max ,"%."))
       } else if (input$producto != "todo") {
-        values$subtitulo <- (paste0("Antioquia es uno de los principales receptores de ", dpto_max," Con un procentaje de ", porcentaje_max ,"%."))
+        values$subtitulo <- (paste0("Antioquia es uno de los principales receptores de ", dpto_max," con un procentaje de ", porcentaje_max ,"%."))
       }
     }
   }
@@ -141,7 +141,7 @@ output$mensaje1 <- renderText({
   }else {
   porcentaje_max <- res$porcentaje_max_1
   dpto_max <- res$dpto_max
-  values$mensaje1 <- (paste0("El ", res$porcentaje_max_1, " % del volumen total",ifelse(input$producto == "todo"," de aliemntos que ingresan",paste0(" de ",input$producto," que ingresa"))," a las principales centrales de abasto de Medellín, reportan como origen territorios de Antioquia."))}}
+  values$mensaje1 <- (paste0("El ", res$porcentaje_max_1, "% del volumen total",ifelse(input$producto == "todo"," de alimentos que reportan como origen los territorios de Antioquia",paste0(" de ",input$producto," que reportan como origen los territorios de Antioquia"))," llega a las principales centrales de abasto de Medellín."))}}
   return(values$mensaje1)
   })
   

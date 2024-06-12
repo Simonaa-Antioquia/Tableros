@@ -137,7 +137,7 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
   
     graf <- ggplot(df, aes(x =  forcats::fct_reorder(municipio_r, as.numeric(all_of(columna_porcentaje))), y = as.numeric(all_of(columna_porcentaje)), fill =  mpio_origen, text = tooltip_text)) +
     geom_bar(stat = "identity") +
-    geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 0.1)), hjust = 0.1) +
+    geom_text(aes(label = scales::percent(as.numeric(all_of(columna_porcentaje)), accuracy = 0.1)), hjust = 1.2) +
     coord_flip() +
     labs(x = " ", y = "Porcentaje", title = " ") +
     scale_fill_manual(values = col_palette) +  # Agregar la paleta de colores
@@ -152,7 +152,7 @@ importancia <- function(tipo, Año = NULL, Mes = NULL, municipios = 10, Producto
   
   porcentaje_max<-round(max(df$columna_porcentaje)*100,1)
   lugar_max<-df$mpio_origen[which.max(df$columna_porcentaje)]
-  
+  df<-df%>%select(-tooltip_text)
   return(
     list(
       grafico_plano = graf,
