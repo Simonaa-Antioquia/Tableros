@@ -137,13 +137,13 @@ output$subtitulo <- renderText({
     mes <- nombres_meses[as.integer(mes)]
     
     if (tipo == 2) {
-      values$subtitulo <- (paste("La menor variedad de territorios conectado por el flujo de alimentos desde Antioquia hacia otras plazas fue en el ", anio ,"  donde se registró un índice máximo de " , max_vulnerabilidad, " para el producto: ",producto_max_vulnerabilidad))
+      values$subtitulo <- (paste0("La menor variedad de territorios conectado por el flujo de alimentos desde Antioquia hacia otras plazas fue en el ", anio ," donde se registró un índice máximo de " , max_vulnerabilidad, " para el producto: ",producto_max_vulnerabilidad,"."))
       } else if (tipo == 3) {
-        values$subtitulo <- (paste( "La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ", mes, " del ",anio, " donde se registró un índice máximo de ", max_vulnerabilidad))
+        values$subtitulo <- (paste0( "La menor variedad de territorios conectado por el flujo de alimentos desde Antioquia hacia otras plazas fue en ", mes, " del ",anio, " donde se registró un índice máximo de ", max_vulnerabilidad,"."))
     } else if (tipo == 4) {
-      values$subtitulo <- (paste("La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en ", mes , " del ", anio, " donde se registró un índice máximo de ", max_vulnerabilidad, " para el producto: ",  producto_max_vulnerabilidad))
+      values$subtitulo <- (paste0("La menor variedad de territorios conectado por el flujo de alimentos desde Antioquia hacia otras plazas fue en ", mes , " del ", anio, " donde se registró un índice máximo de ", max_vulnerabilidad, " para el producto: ",  producto_max_vulnerabilidad,"."))
     } else {
-      values$subtitulo <- (paste("La menor variedad de territorios conectadopor el flujo de alimentos desde Antioquia hacia otras plazas fue en el",anio, " donde se registró un índice máximo de " , max_vulnerabilidad))
+      values$subtitulo <- (paste0("La menor variedad de territorios conectado por el flujo de alimentos desde Antioquia hacia otras plazas fue en el",anio, " donde se registró un índice máximo de " , max_vulnerabilidad,"."))
     }
     return(values$subtitulo)
   })

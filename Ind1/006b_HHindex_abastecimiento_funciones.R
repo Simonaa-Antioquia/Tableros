@@ -55,8 +55,9 @@ plot_data <- function(tipo, anio = NULL) {
     data <- IHH_mensual
     data <- rename(data, date_col = mes_y_ano)
     data$IHH <- data$IHH *100
-    data$tooltip_text <- paste("Año: ", data$year ,"<br> Mes:" , data$month_completo, "<br> IHH:" , round(data$IHH,1))
     data$month_completo <- mapeo_meses[data$month]
+    data$tooltip_text <- paste("Año: ", data$year ,"<br> Mes:" , data$month_completo, "<br> IHH:" , round(data$IHH,1))
+    
     
     # Si se especificó un año, filtrar los datos para ese año
     if (!is.null(anio)) {

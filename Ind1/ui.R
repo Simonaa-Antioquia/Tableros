@@ -16,7 +16,7 @@ source("006b_HHindex_abastecimiento_funciones.R")
 
 ui <- fluidPage(
   tags$head(
-    tags$title("índice de concentración alimentaria"),
+    tags$title("Índice de concentración alimentaria"),
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
     tags$style(HTML("
     

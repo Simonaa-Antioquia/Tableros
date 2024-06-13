@@ -102,16 +102,15 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{14}{14} \selectfont \textcolor{mygreen}{índice de diversidad de origen de los alimentos}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Índice de diversidad de origen de los alimentos}\
 <!-- Subtitulo -->
 \fontsize{12}{12} \selectfont \textcolor{green2}{Análisis de la variedad de territorios conectados por el flujo de alimentos desde su origen hasta los pricipales centros de abasto de Antioquia.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
-```{r, out.width = "90%", fig.height=2, fig.align = "center", warning=FALSE}
+```{r, out.width = "95%", fig.height=4, fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\
-
 \fontsize{10}{10} \selectfont `r params$mensaje2`\
 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline

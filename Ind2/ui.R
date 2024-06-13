@@ -19,7 +19,7 @@ productos <- unique(IHH_anual_producto$producto)
 ui <- fluidPage(
   #theme = shinythemes::shinytheme("default"),
   tags$head(
-    tags$title("Indice concentración del origen de los alimentos - Indice"),
+    tags$title("Índice concentración del origen de los alimentos - Índice"),
     tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),
     tags$style(HTML("
         .main-header {
@@ -56,7 +56,7 @@ ui <- fluidPage(
     ")),
     tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
-  tags$h1("índice de diversidad de origen de los alimentos", class = "main-header"),
+  tags$h1("Índice de diversidad de origen de los alimentos", class = "main-header"),
   tags$h1("Análisis de la variedad de territorios conectados por el flujo de alimentos desde su origen hasta los pricipales centros de abasto de Antioquia.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),

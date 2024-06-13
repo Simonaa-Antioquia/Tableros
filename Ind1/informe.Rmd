@@ -96,11 +96,10 @@ tabla_kable
 \fontsize{12}{12} \selectfont \textcolor{green2}{Análisis de variedad de los alimentos que ingresan a las principales centrales de abasto de Antioquia.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
-```{r, out.width = "80%", fig.align = "center", warning=FALSE}
+```{r, out.width = "90%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\
-
 \fontsize{10}{10} \selectfont `r params$mensaje2`\
 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline
