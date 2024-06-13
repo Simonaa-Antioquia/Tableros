@@ -5,6 +5,7 @@ params:
  producto: NA
  subtitulo: NA
  plot: NA
+ mensaje1: NA
 output:
   pdf_document:
     latex_engine: xelatex
@@ -98,9 +99,10 @@ tabla_kable
 \fontsize{12}{12} \selectfont \textcolor{green2}{Compara volúmenes de alimentos locales y externos que ingresan a las principales centrales de abasto de Medellín.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
-```{r, out.width = "70%", fig.align = "center", warning=FALSE}
+```{r, out.width = "90%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
+\fontsize{10}{10} \selectfont `r params$mensaje1`\newline
 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{El balance de alimentos se define como la diferencia en volumen entre los alimentos que ingresan a las principales centrales de abasto de Medellín con origen en Antioquia y el total de alimentos reportados en las centrales. La fórmula para calcular el balance de alimentos es $N_{it} = P_{a} - D_{a}$, donde $N_{it}$ es el balance de alimentos, $P_{a}$ es el volumen de alimentos que se originan en Antioquia y $D_{a}$ es el volumen total de alimentos que llegan al centro de acopio de Medellín.}\newline

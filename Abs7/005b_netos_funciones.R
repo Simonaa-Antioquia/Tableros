@@ -63,7 +63,10 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
   # Filtrar los productos seleccionados solo para las opciones 2 y 4
   if (tipo %in% c(2)) {
     df <- df[df$producto %in% productos_seleccionados, ]
-    df$tooltip_text <- paste("Año: ", df$anio , "<br> Volumen de salidas (mil t):" , round(df$sale_kg, digits = 1),"mil", "<br> Volumen de ingreso (mil t):",round(df$ingresa_kg, digits = 1),"mil", "<br> Balance Alimentos:",round(df$total_importado, digits = 1),"mil")
+    df$tooltip_text <- paste("Año: ", df$anio , 
+                             "<br> Volumen de salidas (mil t):" , formatC(df$sale_kg, format = "f", digits = 1),"mil",
+                             "<br> Volumen de ingreso (mil t):", formatC(df$ingresa_kg, format = "f", digits = 1),"mil", 
+                             "<br> Balance Alimentos:",formatC(df$total_importado,format = "f", digits = 1),"mil")
     p_plano <- ggplot(df, aes(x = anio, y = total_importado, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
@@ -74,7 +77,10 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
     
   } else if(tipo %in% c(4)) {
     df <- df[df$producto %in% productos_seleccionados, ]
-    df$tooltip_text <- paste("Año: ", df$anio , "<br>Mes:",df$mes, "<br> Volumen de salidas (mil t):" , round(df$sale_kg, digits = 1),"mil", "<br> Volumen de ingreso (mil t):",round(df$ingresa_kg, digits = 1),"mil", "<br> Balance Alimentos:",round(df$total_importado, digits = 1),"mil")
+    df$tooltip_text <- paste("Fecha: ", df$anio , "<br>Mes:",df$mes, 
+                             "<br> Volumen de salidas (mil t):" , formatC(df$sale_kg, format = "f",digits = 1),"mil", 
+                             "<br> Volumen de ingreso (mil t):",formatC(df$ingresa_kg, format = "f",digits = 1),"mil", 
+                             "<br> Balance Alimentos:", formatC(df$total_importado, format = "f", digits = 1),"mil")
     p_plano <-ggplot(df, aes(x = anio, y = total_importado, color = producto)) +
       geom_line() +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
@@ -83,7 +89,10 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
       scale_color_manual(values = col_palette) +  
       theme_minimal()  
   }else if(tipo %in% c(3)){
-    df$tooltip_text <- paste("Año: ", df$anio , "<br>Mes:",df$mes, "<br> Volumen de salidas (mil t):" , round(df$sale_kg, digits = 1),"mil", "<br> Volumen de ingreso (mil t):",round(df$ingresa_kg, digits = 1),"mil", "<br> Balance Alimentos:",round(df$total_importado, digits = 1),"mil")
+    df$tooltip_text <- paste("Fecha: ", df$anio , "<br>Mes:",df$mes, 
+                             "<br> Volumen de salidas (mil t):" , formatC(df$sale_kg, format = "f",digits = 1),"mil",
+                             "<br> Volumen de ingreso (mil t):",  formatC(df$ingresa_kg, format = "f",digits = 1),"mil", 
+                             "<br> Balance Alimentos:",formatC(df$total_importado, format = "f", digits = 1),"mil")
     p_plano<-ggplot(df, aes(x = anio, y = total_importado)) +
       geom_line(colour = "#1A4922") +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
@@ -92,7 +101,10 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
       scale_color_manual(values = col_palette) +  
       theme_minimal()  
   }else {
-    df$tooltip_text <- paste("Año: ", df$anio , "<br> Volumen de salidas (mil t):" , round(df$sale_kg, digits = 1),"mil", "<br> Volumen de ingreso (mil t):",round(df$ingresa_kg, digits = 1),"mil", "<br> Balance Alimentos:",round(df$total_importado, digits = 1),"mil")
+    df$tooltip_text <- paste("Año: ", df$anio , 
+                             "<br> Volumen de salidas (mil t):" , formatC(df$sale_kg, format = "f", digits = 1),"mil", 
+                             "<br> Volumen de ingreso (mil t):", formatC(df$ingresa_kg, format = "f", digits = 1),"mil", 
+                             "<br> Balance Alimentos:", formatC(df$total_importado, format = "f", digits = 1),"mil")
     p_plano <-ggplot(df, aes(x = anio, y = total_importado)) +
       geom_line(colour = "#1A4922") +
       geom_point(aes(text = tooltip_text),size = 1e-8) +
@@ -102,9 +114,13 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
       theme_minimal()  
   }
   
-  min_ton<-round(min(df$total_importado)*-1)
+  min_ton<-formatC((min(df$total_importado)*-1), format = "f", digits = 1)
   fecha_min <- df$anio[which.min(df$total_importado)]
   df<-df%>%select(-tooltip_text)
+  max_balance <- formatC(max(df$total_importado), format = "f", digits = 1)
+  producto_max_balance <- as.character(df$producto)[which.max(df$total_importado)]
+  anio_max <- as.character(df$anio)[which.max(df$total_importado)]
+  mes_max <- as.character(df$mes)[which.max(df$total_importado)]
   
   p <- plotly::ggplotly(p_plano, tooltip = "text")
   return(list(
@@ -112,7 +128,11 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
     grafico_plano = p_plano,
     datos = df,
     fecha_min=fecha_min,
-    min_ton=min_ton
+    min_ton=min_ton,
+    max_balance = max_balance,
+    producto_max_balance = producto_max_balance,
+    anio_max = anio_max,
+    mes_max = mes_max
   ))
   
 }

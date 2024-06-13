@@ -99,7 +99,7 @@ tabla_kable
 <!-- Titulo del tablaro -->
 \fontsize{14}{14} \selectfont \textcolor{mygreen}{Comportamiento de los precios en el tiempo}\
 <!-- Subtitulo -->
-\fontsize{12}{12} \selectfont \textcolor{green2}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín.}\
 <!-- Subtitulo2 -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 <!-- Grafica -->

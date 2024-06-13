@@ -81,7 +81,7 @@ output$descargar_ <- downloadHandler(
   )
   
 # En el servidor
-  values <- reactiveValues(subtitulo = NULL)
+  values <- reactiveValues(subtitulo = NULL, mensaje1 = NULL)
   
   output$subtitulo <- renderText({
     resultado <- resultado()
@@ -93,24 +93,54 @@ output$descargar_ <- downloadHandler(
     anio <- componentes[1]
     mes <- componentes[2]
     dia <- componentes[3]
-    nombres_meses <- c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", 
-                       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+    nombres_meses <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", 
+                       "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
     mes <- nombres_meses[as.integer(mes)]  
   if (input$tipo == 1 | input$tipo==2){
     values$subtitulo <- paste0("Hubo mayor diferencia en volumen de entradas y el volumen de salidas de alimentos en el año ",anio, " ingresando ", min_ton, " mil toneladas más de las que salieron.")
   } else if (input$tipo == 3 | input$tipo == 4){
-    values$subtitulo <- paste0("Hubo mayor diferencia en volumen de entradas y el volumen de salidas de alimentos en el ",mes, " del ",anio, " ingresando ", min_ton, " mil toneladas más de las que salieron.") 
+    values$subtitulo <- paste0("Hubo mayor diferencia en volumen de entradas y el volumen de salidas de alimentos en  ",mes, " del ",anio, " ingresando ", min_ton, " mil toneladas más de las que salieron.") 
   }
   return(values$subtitulo)
     })
-  
-  
-  
   
 # Borrar filtros
   observeEvent(input$reset, {
     updateSelectInput(session, "tipo", selected = 1)
   })
+  
+# Mensaje 
+
+  values <- reactiveValues(mensaje1 = NULL)
+  output$mensaje1 <- renderText({
+    resultado_data <- resultado()
+    # FECHA
+    mes_max <- as.integer(resultado_data$mes_max)
+    anio <- resultado_data$anio_max
+    anio <- as.integer(substr(resultado_data$anio_max, 1, 4))  # Extrae el año
+    #componentes <- strsplit(resultado_data$fecha_max, "-")[[1]]
+    #anio <- componentes[1]
+    #mes <- componentes[2]
+    #dia <- componentes[3]
+    nombres_meses <- c("enero", "febrero", "marzo", "abril", "mayo", "junio", 
+                       "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre")
+    mes <- nombres_meses[as.integer(mes_max)] 
+    if (nrow(resultado_data$datos) == 0) {
+      validate("No hay información disponible")
+    } else {
+      if (input$tipo == 1){
+        values$mensaje1 <- paste0("La menor dependencia de Antioquia hacia otros departamentos se dio en el año " ,anio, ", cuando el balance general alcanzó un máximo de ",resultado_data$max_balance,".")
+      } else if (input$tipo == 2){
+        values$mensaje1<- paste0(" La menor dependencia de Antioquia hacia otros departamentos se dio en el año ", anio, " cuando el balance general alcanzó un máximo de ",resultado_data$max_balance," para el producto ",resultado_data$producto_max_balance,".")
+      } else if (input$tipo == 3){
+        values$mensaje1 <- paste0("La menor dependencia de Antioquia hacia otros departamentos se dio en ",mes, " del ", anio, " cuando el balance general alcanzó un máximo de ", resultado_data$max_balance,".")
+      } else if (input$tipo ==4){
+        values$mensaje1 <- paste0("La menor dependencia de Antioquia hacia otros departamentos se dio en ",mes, " del ", anio, " cuando el balance general alcanzó un máximo de ", resultado_data$max_balance," para el producto ", resultado_data$producto_max_balance,".")
+      }
+    }
+    return(values$mensaje1)
+  })  
+  
   
   # Generamos el Informe
   output$report <- downloadHandler(
@@ -125,7 +155,8 @@ output$descargar_ <- downloadHandler(
         tipo = input$tipo,
         producto = input$producto_seleccionado,
         subtitulo = values$subtitulo,
-        plot = grafico_plano()
+        plot = grafico_plano(),
+        mensaje1 = values$mensaje1
       ))  
     },
     contentType = 'application/pdf'

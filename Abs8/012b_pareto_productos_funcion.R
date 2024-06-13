@@ -84,7 +84,7 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
   num_productos <- nrow(df_filtrado)
   
   df_filtrado$tooltip_text1 <- paste0("Producto: ", df_filtrado$producto, "<br>Cantidad: ", round(df_filtrado$total_sum,1))
-  df_filtrado$tooltip_text2 <- paste0("Producto: ", df_filtrado$producto, "<br>Porcentaje: ", round(df_filtrado$acumulado_total*100,1),"%")
+  df_filtrado$tooltip_text2 <- paste0("Producto: ", df_filtrado$producto, "<br>Porcentaje acumulado: ", round(df_filtrado$acumulado_total*100,1),"%")
   
   index <- which.min(abs(df_filtrado$acumulado_total - 0.8))
   # Si el valor es menor que 0.8, tomar el siguiente valor
@@ -97,23 +97,25 @@ pareto_graf<-function(pareto,año=NULL, Mes=NULL, sitio=NULL){
   # Obtener el valor más cercano a 0.8 (hacia arriba)
   acumulado <- (df_filtrado$acumulado_total[index])
   posicion_80 <- min(df_filtrado$producto[df_filtrado$acumulado_total == acumulado])  # Encuentra el valor mínimo donde se alcanza el 80%
-  if(nrow(df) > 0){
-    plot <- ggplot(df_filtrado, aes(x = reorder(producto, -total_sum), y = total_sum)) +
-      geom_bar(stat = "identity", fill = "#0D8D38", aes(text = tooltip_text1)) +
-      geom_line(aes(y = acumulado_total * total_sum_total), color = "#F39F06", group = 1) +
-      geom_point(aes(y = acumulado_total * total_sum_total, text = tooltip_text2), color = "#F39F06", group = 1) +
-      xlab("") + 
-      geom_vline(xintercept = posicion_80, color = "#00909C", linetype = "dashed") +  # Agrega la línea vertical
-      ylab("Miles de toneladas") +
-      theme_bw() +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1),  # Rota los valores del eje x a 90 grados
-            panel.border = element_blank(),  # Elimina la caja alrededor del gráfico
-            axis.line = element_blank(),  # Elimina las líneas de los ejes
-            panel.grid.major = element_blank(),  # Elimina las líneas de la cuadrícula principal
-            panel.grid.minor = element_blank())  # Elimina las líneas de la cuadrícula secundaria
-  
+ if(nrow(df) > 0){
+  plot <- ggplot(df_filtrado, aes(x = reorder(producto, -total_sum), y = total_sum)) +
+    geom_bar(stat = "identity", fill = "#0D8D38", aes(text = tooltip_text1)) +
+    geom_line(aes(y = acumulado_total * total_sum_total), color = "#F39F06", group = 1) +
+    geom_point(aes(y = acumulado_total * total_sum_total, text = tooltip_text2), color = "#F39F06", group = 1) +
+    xlab("") + 
+    geom_vline(xintercept = posicion_80, color = "#00909C", linetype = "dashed") +
+    ylab("Miles de toneladas") +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1),
+          panel.border = element_blank(),
+          axis.line = element_blank(),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank()) +
+    labs(fill = "Barras: Amarillo", color = "Verde: Acumulado")
   p<-plotly::ggplotly(plot, tooltip = "text")
-  
+
+    
+
   }else{
     p<-print("No hay datos disponibles")
   }
