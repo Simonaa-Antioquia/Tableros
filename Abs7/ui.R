@@ -81,7 +81,7 @@ ui <- fluidPage(
              plotly::plotlyOutput("grafico",height = "400px"),
              downloadButton("descargar_", "Gráfica", icon = icon("download")),
              downloadButton("descargarDatos", "Datos"),
-             shiny::a("GitHub", href="https://github.com/Simonaa-Antioquia/Tableros/tree/c2c56ab9b48c258757d2e9ec724ac3b35e9efe55/Abs7", target="_blank",
+             shiny::a("GitHub", href="https://github.com/Simonaa-Antioquia/Tableros/tree/6d5307028a7922c6a94ecf6c501d6db97049cf42/Abs7", target="_blank",
                       class = "btn btn-default shiny-action-button", icon("github")),
              actionButton("reset", "Restablecer", icon = icon("refresh")),
              downloadButton("report", "Generar informe")
