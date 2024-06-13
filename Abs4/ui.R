@@ -56,7 +56,7 @@ ui <- fluidPage(
       }
     "))
   ),
-  tags$h1("Destino de alimentos de origen antioqueño", class = "main-header"),
+  tags$h1("Destino de los alimentos de origen antioqueño", class = "main-header"),
   tags$h1("Descubre las principales ciudades receptores de alimentos con origen Antioquia según el SIPSA.", class = "main-header_2"),
   #div(
   #  textOutput("subtitulo"),
