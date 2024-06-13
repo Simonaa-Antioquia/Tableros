@@ -103,14 +103,15 @@ tabla_kable
 <!-- Titulo del tablaro -->
 \fontsize{14}{14} \selectfont \textcolor{mygreen}{Índice de vulnerabilidad del abastecimiento de alimentos de Antioquia.} 
 <!-- Subtitulo -->
+
 \fontsize{12}{12} \selectfont \textcolor{green2}{Evaluación de la vulnerabilidad del abastecimiento por origen y distancia.} 
+
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo` 
 ```{r, out.width = "100%", fig.height=3, fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
-
-\fontsize{10}{10} \selectfont `r params$mensaje1`\newline
+\fontsize{10}{10} \selectfont `r params$mensaje1` 
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).}\newline
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{El cálculo del índice de vulnerabilidad combina dos medidas: el índice de Herfindahl-Hirschman, que evalúa la concentración de la producción de alimentos en diferentes municipios, y la distancia desde cada municipio hasta Medellín.}\newline
 \fontsize{8}{8} \selectfont \textcolor{mygreen}{Para calcular el índice de vulnerabilidad se combinan el índice de Herfindahl-Hirschman y la distancia a Medellín. El índice de Herfindahl-Hirschman, $H_{it} = \sum_{i=1}^{n}P_{itm}^{2}$ mide la concentración de los municipios de origen de alimentos; un valor más alto implica menos municipios proveedores. La distancia ponderada por volumen y reescalada, $D_{i}$,representa la lejanía de los municipios respecto a Medellín, con valores de 0 a 1, donde 1 representa la mayor distancia entre Medellín y el municipio que envía el alimento. Finalmente, El índice de vulnerabilidad se obtiene promediando $H_{it}$ y $D_{i}$, así $V_{it} = \frac{H_{it}+D_{i}}{2}$ } \newline
