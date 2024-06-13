@@ -99,7 +99,7 @@ ui <- fluidPage(
              style = "margin-top: 2px;",
              tags$div(
                tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2", style = "margin-top: 3px;"),
-               tags$p(HTML("El balance de alimentos se define como la diferencia en volumen entre los alimentos que ingresan a las principales centrales de abasto de Medellín con origen en Antioquia y el total de alimentos reportados en las centrales. La fórmula para calcular el balance de alimentos es <i>N<sub>it</sub> = P<sub>a</sub> - D<sub>a</sub></i>, donde <i>N<sub>it</sub> es el balance de alimentos, P<sub>a</sub> es el volumen de alimentos que se originan en Antioquia y D<sub>a</sub></i> es el volumen total de alimentos que llegan al centro de acopio de Medellín."), class = "sub-header2", style = "margin-top: 3px;"),
+               tags$p(HTML("El balance de alimentos se define como la diferencia en volumen entre los alimentos que ingresan a las principales centrales de abasto de Medellín con origen en Antioquia y el total de alimentos reportados en las centrales. La fórmula para calcular el balance de alimentos es <i>N<sub>it</sub> = P<sub>A</sub> - D<sub>A</sub></i>, donde <i>N<sub>it</sub> es el balance de alimentos, P<sub>A</sub> es el volumen de alimentos que se originan en Antioquia y D<sub>A</sub></i> es el volumen total de alimentos que llegan al centro de acopio de Medellín."), class = "sub-header2", style = "margin-top: 3px;"),
                tags$p("Un balance negativo es sinónimo de dependencia hacia otros departamentos del país.", class = "sub-header2", style = "margin-top: 3px;")
                )
       )),

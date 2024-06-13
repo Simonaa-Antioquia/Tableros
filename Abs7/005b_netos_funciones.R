@@ -77,7 +77,7 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
     
   } else if(tipo %in% c(4)) {
     df <- df[df$producto %in% productos_seleccionados, ]
-    df$tooltip_text <- paste("Fecha: ", df$anio , "<br>Mes:",df$mes, 
+    df$tooltip_text <- paste("Fecha: ", format(as.Date(df$anio), "%m-%Y") , "<br>Mes:",df$mes, 
                              "<br> Volumen de salidas (mil t):" , formatC(df$sale_kg, format = "f",digits = 1),"mil", 
                              "<br> Volumen de ingreso (mil t):",formatC(df$ingresa_kg, format = "f",digits = 1),"mil", 
                              "<br> Balance Alimentos:", formatC(df$total_importado, format = "f", digits = 1),"mil")
@@ -89,7 +89,7 @@ neto_grafica <- function(tipo, productos_seleccionados = "") {
       scale_color_manual(values = col_palette) +  
       theme_minimal()  
   }else if(tipo %in% c(3)){
-    df$tooltip_text <- paste("Fecha: ", df$anio , "<br>Mes:",df$mes, 
+    df$tooltip_text <- paste("Fecha: ", format(as.Date(df$anio), "%m-%Y") , "<br>Mes:",df$mes, 
                              "<br> Volumen de salidas (mil t):" , formatC(df$sale_kg, format = "f",digits = 1),"mil",
                              "<br> Volumen de ingreso (mil t):",  formatC(df$ingresa_kg, format = "f",digits = 1),"mil", 
                              "<br> Balance Alimentos:",formatC(df$total_importado, format = "f", digits = 1),"mil")
