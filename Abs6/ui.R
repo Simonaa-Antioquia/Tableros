@@ -93,6 +93,10 @@ ui <- fluidPage(
                     tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
                     tags$br(),"Solo se muestran los productos que representan al menos un 0,5% del volumen total de productos de origen antioqueño reportado en las centrales de abasto del SIPSA.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
+  br(),
+  br(),
+  br(),
+  br(),
   tags$div(
     tags$img(src = 'logo_2.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"

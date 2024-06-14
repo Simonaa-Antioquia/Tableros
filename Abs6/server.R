@@ -118,9 +118,9 @@ server <- function(input, output, session) {
       porcentaje_max <- resultado$porcentaje_max
       depto <- input$depto
       if(depto != "todo"){
-        values$subtitulo <- (paste0("El producto de origen antioqueño con mayor volumen reportado en la central de abasto de ", depto, " fue ", producto_max, " con un porcentaje de: ",porcentaje_max,"%"))
+        values$subtitulo <- (paste0("El producto de origen antioqueño con mayor volumen reportado en la central de abasto de ", depto, " fue ", producto_max, " con un porcentaje de: ",porcentaje_max,"%."))
       } else if (depto == "todo") {
-        values$subtitulo  <- (paste0("El producto de origen antioqueño con mayor volumen reportado fue ", producto_max, " con un porcentaje de: ",porcentaje_max,"%"))
+        values$subtitulo  <- (paste0("El producto de origen antioqueño con mayor volumen reportado fue ", producto_max, " con un porcentaje de: ",porcentaje_max,"%."))
       }
     }
     return(values$subtitulo)
