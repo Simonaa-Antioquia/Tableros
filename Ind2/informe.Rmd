@@ -107,7 +107,7 @@ tabla_kable
 \fontsize{12}{12} \selectfont \textcolor{green2}{Análisis de la variedad de territorios conectados por el flujo de alimentos desde su origen hasta los pricipales centros de abasto de Antioquia.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
-```{r, out.width = "95%", fig.height=4, fig.align = "center", warning=FALSE}
+```{r, out.width = "90%", fig.height=4, fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\

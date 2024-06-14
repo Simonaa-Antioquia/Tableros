@@ -131,13 +131,13 @@ output$subtitulo <- renderText({
   producto_max_vulnerabilidad <- resultado$producto_max_vulnerabilidad
   
   if (tipo == 2) {
-    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en el" ,anio," con un índice máximo de" , max_IHH, " para el producto ",producto_max_vulnerabilidad ))
+    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en el" ,anio," con un índice máximo de" , max_IHH, " para el producto ",producto_max_vulnerabilidad,"." ))
   } else if (tipo == 3) {
-    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en ",mes, " del año ",anio, "con un índice máximo de", max_IHH ))
+    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en ",mes, " del año ",anio, "con un índice máximo de", max_IHH,"." ))
   } else if (tipo == 4) {
-    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en ",mes, " del año ",anio, " con un índice máximo ", max_IHH, "para el producto" ,producto_max_vulnerabilidad))
+    values$subtitulo <- (paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en ",mes, " del año ",anio, " con un índice máximo ", max_IHH, "para el producto" ,producto_max_vulnerabilidad,"."))
   } else {
-    values$subtitulo <-(paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en el ",anio," con un índice máximo de", max_IHH ))
+    values$subtitulo <-(paste("La menor variedad de territorios conectados por el flujo de alimentos desde otros territorios hacia Antioquia se registró en el ",anio," con un índice máximo de", max_IHH,"." ))
   }
   return(values$subtitulo)
 })
@@ -150,13 +150,13 @@ output$subtitulo <- renderText({
   
 # Mensaje: MENSAJE 1  
   output$mensaje1 <- renderText({
-    values$mensaje1 <- ("El índice de Herfindahl-Hirschman permite midir la concentración de los orígenes de alimentos. Un índice más alto indica que hay menos municipios de origen para los alimentos que llegan a las principales plazas de abasto de Antioquia")
+    values$mensaje1 <- ("El índice de Herfindahl-Hirschman permite midir la concentración de los orígenes de alimentos. Un índice más alto indica que hay menos municipios de origen para los alimentos que llegan a las principales plazas de abasto de Antioquia.")
     values$mensaje1
     })
   
 # Mensaje: MENSAJE 2
   output$mensaje2 <- renderUI({
-    values$mensaje2 <-("Este índice puede aumentar si incrementa la participación de un municipio sobre el volumen total o disminuye el número de municipios de origen")
+    values$mensaje2 <-("Este índice puede aumentar si incrementa la participación de un municipio sobre el volumen total o disminuye el número de municipios de origen.")
     values$mensaje2
     })
   
