@@ -120,7 +120,7 @@ server <- function(input, output, session) {
                                 ifelse(input$algo=="Neto_entra", " ingresa ",
                                        ifelse(input$algo == "Neto_sale"," sale ",
                                               ifelse(input$algo == "Neto_entra_local"," ingresa local "," ingresa externo "))),
-                                "se concentran en ", prod_neces," productos (",porcent_prod,"% del total de productos)"))}
+                                "se concentran en ", prod_neces," productos (",porcent_prod,"% del total de productos)."))}
     return(values$subtitulo)
   })
   
@@ -145,7 +145,7 @@ server <- function(input, output, session) {
       if(prod_neces == 1){
         values$mensaje2 <- "Solo se cuenta con un alimento"
       } else {
-        values$mensaje2 <- paste0("Se necesitaron ", prod_neces, " alimentos para llegar al ", acumulado, "%")
+        values$mensaje2 <- paste0("Se necesitaron ", prod_neces, " alimentos para llegar al ", acumulado, "%.")
       }
     }
     values$mensaje2
