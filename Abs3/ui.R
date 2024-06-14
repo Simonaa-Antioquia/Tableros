@@ -59,7 +59,7 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("Contribución de Antioquia al Abastecimiento Nacional", class = "main-header"),
-  tags$h1("Análisis de la participación de Antioquia en el abastecimiento de alimentos en otros departamentos del país", class = "main-header_2"),
+  tags$h1("Análisis de la participación de Antioquia en el abastecimiento de alimentos en otros departamentos del país.", class = "main-header_2"),
   #div(
   # textOutput("subtitulo"),
   #  class = "sub-header2",
