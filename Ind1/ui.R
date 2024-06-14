@@ -101,8 +101,8 @@ ui <- fluidPage(
     column(12,
            style = "margin-top: 2px;",
            tags$div(
-             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", 
-                    tags$br(),"Este gráfico se calcula con base en el índice de Herfindahl-Hirschman"
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", 
+                    tags$br(),"Este gráfico se calcula con base en el índice de Herfindahl-Hirschman."
                     , class = "sub-header2", style = "margin-top: 3px;"),
              tags$div(style = "text-align: left;", 
                       tags$p("La fórmula del índice de Herfindahl-Hirschman es:", class = "sub-header2", style = "margin-top: 3px;"),

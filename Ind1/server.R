@@ -96,9 +96,9 @@ server <- function(input, output, session) {
     mes_max_IHH <- meses_es[match(tolower(mes_max_IHH), abrev_meses_es)]
     
     if (tipo == 1) {
-      values$subtitulo <- (paste("La menor variedad de alimentos registrada fue en el año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH))
+      values$subtitulo <- (paste("La menor variedad de alimentos registrada fue en el año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH,"."))
     } else if (tipo == 0) {
-      values$subtitulo <- (paste("La menor variedad de alimentos registrada fue en el mes", mes_max_IHH,"del año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH))
+      values$subtitulo <- (paste("La menor variedad de alimentos registrada fue en el mes", mes_max_IHH,"del año", anio_max_IHH, "donde se registró un índice máximo de", max_IHH,"."))
     }
     return(values$subtitulo)
   })
@@ -111,13 +111,13 @@ server <- function(input, output, session) {
   
   # Mensajes: Mensaje 1  
   output$mensaje1 <- renderText({
-    values$mensaje1 <- ("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los alimentos en Antioquia, un mayor índice refleja menos variedad de alimentos")
+    values$mensaje1 <- ("El índice de Herfindahl-Hirschman permite conocer el nivel de concentración de los alimentos en Antioquia, un mayor índice refleja menos variedad de alimentos.")
     values$mensaje1
   })
   
   # Mensajes: Mensaje 2
   output$mensaje2 <- renderUI({
-    values$mensaje2 <-("Este índice puede aumentar si un producto incrementa su participación en el volumen total o si disminuye el número de productos que ingresan
+    values$mensaje2 <-("Este índice puede aumentar si un producto incrementa su participación en el volumen total o si disminuye el número de productos que ingresan.
 ")
     values$mensaje2
   })
