@@ -123,7 +123,7 @@ server <- function(input, output, session) {
     if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles")
     } else {
-      values$mensaje2 <- return(paste0("Durante el periodo seleccionado y para el producto específico, se recorrieron la distancia mínima recorrida fue ", resultado()$min_km," kilómetros y máxima ", resultado()$max_km," kilómetros."))
+      values$mensaje2 <- return(paste0("Durante el periodo seleccionado y para el producto específico, la distancia mínima recorrida fue ", resultado()$min_km," kilómetros y máxima ", resultado()$max_km," kilómetros."))
     }
     return(values$mensaje2)
 })       
