@@ -55,7 +55,7 @@ ui <- fluidPage(
     tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
   tags$h1("Índice de diversidad de alimentos", class = "main-header"),
-  tags$h1("Análisis de variedad de los alimentos que ingresan a las principales centrales de abasto de Antioquia", class = "main-header_2"),
+  tags$h1("Análisis de variedad de los alimentos que ingresan a las principales centrales de abasto de Antioquia.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
