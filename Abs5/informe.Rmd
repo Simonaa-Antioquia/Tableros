@@ -87,12 +87,12 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{15}{15} \selectfont \textcolor{mygreen}{Principales alimentos en centrales de abasto de Medellín, por volumen de ingreso}\
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Principales alimentos en centrales de abasto de Medellín, por volumen de ingreso}\
 <!-- Subtitulo -->
-\fontsize{12}{12} \selectfont \textcolor{green2}{Visualiza los alimentos más destacados en las centrales de abasto de Medellín, basado en su volumen de entrada}\
+\fontsize{12}{12} \selectfont \textcolor{green2}{Visualiza los alimentos más destacados en las centrales de abasto de Medellín, basado en su volumen de entrada.}\
 <!-- Subtitulo dinamico -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
-```{r, out.width = "90%", fig.align = "center", warning=FALSE}
+```{r, out.width = "85%", fig.align = "center", warning=FALSE}
 print(params$plot)
 ```
 \fontsize{10}{10} \selectfont `r params$mensaje1`\

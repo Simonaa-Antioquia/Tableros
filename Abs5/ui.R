@@ -53,7 +53,7 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("Principales alimentos en centrales de abasto de Medellín, por porcentaje de volumen de ingreso", class = "main-header"),
-  tags$h1("Visualiza los alimentos más destacados en las centrales de abasto de Medellín, basado en su volumen de entrada", class = "main-header_2"),
+  tags$h1("Visualiza los alimentos más destacados en las centrales de abasto de Medellín, basado en su volumen de entrada.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -92,6 +92,11 @@ ui <- fluidPage(
                     tags$br(),"Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
                     tags$br(),"Solo se muestran los productos que representan al menos un 0,5% del volumen total de ingresos a las principales centrales de abasto de Medellín.", class = "sub-header2"), style = "margin-top: 20px;")
   ),
+  br(),
+  br(),
+  br(),
+  br(),
+  
   tags$div(
     tags$img(src = 'logo_2.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"

@@ -125,9 +125,9 @@ output$subtitulo <- renderText({
       porcentaje_max <- resultado$porcentaje_max
       depto <- input$depto
       if(depto != "todo"){
-        values$subtitulo <- (paste0("El Producto procedente de ", depto, "con mayor volumen reportado en las centrales de abasto de Medellín fue ", producto_max))
+        values$subtitulo <- (paste0("El Producto procedente de ", depto, "con mayor volumen reportado en las centrales de abasto de Medellín fue ", producto_max,"."))
       } else if (depto == "todo") {
-        values$subtitulo <- (paste0("El prodcuto con mayor volumen reportado en las centrales de abasto de Medellín fue ", producto_max))
+        values$subtitulo <- (paste0("El prodcuto con mayor volumen reportado en las centrales de abasto de Medellín fue ", producto_max,"."))
       }
     }
     return(values$subtitulo)
@@ -141,7 +141,7 @@ output$mensaje1 <- renderText({
     values$mensaje1
     })
   output$mensaje2 <- renderText({
-    values$mensaje2 <- ("Cada rectángulo en el gráfico representa un tipo de alimento, y el tamaño de cada rectángulo es  proporcional al volumen de ese alimento en comparación con los demás ingresados")
+    values$mensaje2 <- ("Cada rectángulo en el gráfico representa un tipo de alimento, y el tamaño de cada rectángulo es  proporcional al volumen de ese alimento en comparación con los demás ingresados.")
     values$mensaje2
     })
   
