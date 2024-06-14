@@ -299,7 +299,7 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
                   "2013 es el primer año con datos por lo que no se puede mostrar la variación intranual."))
   }else{
     last_month <- datos %>%
-      filter(date > max(date) - months(1))
+      filter(date > max(date) - 30)
     
     # Calcular el precio promedio
     precio_mes<-  formatC(mean(last_month$precio_prom, na.rm = TRUE), format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
