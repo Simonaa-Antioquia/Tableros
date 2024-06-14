@@ -98,6 +98,10 @@ ui <- fluidPage(
                     tags$br(),"Esta visualización muestra el ranking  de destinos de los alimentos con origen Antioquia, resaltando el porcentaje de volumen de productos que llegan a cada centro de abasto según SIPSA."
 , class = "sub-header2"), style = "margin-top: 20px;")
   ),
+br(),
+br(),
+br(),
+br(),
   tags$div(
     tags$img(src = 'logo_2.png', style = "width: 100vw;"),
     style = "position: absolute; bottom: 0; width: 100%;"
