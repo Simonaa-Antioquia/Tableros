@@ -48,7 +48,7 @@ ui <- fluidPage(
       "))
     ),
     tags$h1("Comportamiento de los precios en el tiempo", class = "main-header"),
-    tags$h1("Análisis histórico de precios de alimentos en las centrales de abasto de Medellín", class = "main-header_2"),
+    tags$h1("Análisis histórico de precios de alimentos en las centrales de abasto de Medellín.", class = "main-header_2"),
     div(
       textOutput("subtitulo"),
       class = "sub-header2",

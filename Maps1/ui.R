@@ -72,7 +72,7 @@ ui <- fluidPage(
     "))
   ),
   tags$h1("Rutas de los alimentos que ingresan a Medellín", class = "main-header"),
-  tags$h1("Visualiza las rutas que transitan los alimentos que ingresan a Medellín", class = "main-header_2"),
+  tags$h1("Visualiza las rutas que transitan los alimentos que ingresan a Medellín.", class = "main-header_2"),
     div(
     textOutput("subtitulo"),
     class = "sub-header2",
@@ -111,8 +111,12 @@ ui <- fluidPage(
         ))
     ),
            tags$div(
-             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA)", class = "sub-header2", style = "margin-top: 3px;"),
-             tags$p("Este mapa permite identificar las rutas de donde vienen los alimentos que abastecen la central mayorista y minorista de Medellín, permitiendo identificar la importancia de cada una para el abastecimiento total.", class = "sub-header2", style = "margin-top: 3px;"
+             tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).", class = "sub-header2", style = "margin-top: 1px;"),
+             tags$p("Este mapa permite identificar las rutas de donde vienen los alimentos que abastecen la central mayorista y minorista de Medellín, permitiendo identificar la importancia de cada una para el abastecimiento total.", class = "sub-header2", style = "margin-top: 1px;"
+             ),
+             tags$p("La importancia de cada municipio se calculó en función del porcentaje del volumen total de productos que llegan a Medellín provenientes de cada municipio.", class = "sub-header2", style = "margin-top: 1px;"
+             ),
+             tags$p("Las distancias se calcularon utilizando OpenRouteService.", class = "sub-header2", style = "margin-top: 1px;"
              )
            
     )

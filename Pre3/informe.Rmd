@@ -103,7 +103,7 @@ tabla_kable
 <!-- Titulo del tablaro -->
 \fontsize{14}{14} \selectfont \textcolor{mygreen}{Análisis de precios de alimentos por ciudad}\newline
 <!-- Subtitulo -->
-\fontsize{12}{12} \selectfont \textcolor{mygreen}{Descubre las diferencias de precios de alimentos en ciudades, comparadas con Medellín}\newline
+\fontsize{12}{12} \selectfont \textcolor{mygreen}{Descubre las diferencias de precios de alimentos en ciudades, comparadas con Medellín.}\newline
 <!-- Subtitulo2 -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`
 <!-- Grafica -->

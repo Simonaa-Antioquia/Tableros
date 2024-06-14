@@ -100,7 +100,7 @@ tabla_kable
 \fontsize{14}{14} \selectfont \textcolor{mygreen}{Comportamiento de los precios en el tiempo}
 
 <!-- Subtitulo -->
-\fontsize{12}{12} \selectfont \textcolor{mygreen}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín}
+\fontsize{12}{12} \selectfont \textcolor{mygreen}{Análisis histórico de precios de alimentos en las centrales de abasto de Medellín.}
 <!-- Grafica -->
 ```{r, out.width = "85%", fig.align = "center", warning=FALSE}
 print(params$plot)

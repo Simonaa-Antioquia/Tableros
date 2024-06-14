@@ -51,9 +51,9 @@ ruta <- function(Año = NULL,Mes = NULL,Producto = NULL) {
     }
   }
   
-  av_km <- round(mean(df$distance), digits = 2)
-  max_km <- round(max(df$distance), digits = 2)
-  min_km <- round(min(df$distance), digits = 2)
+  av_km <- round(mean(df$distance), digits = 1)
+  max_km <- round(max(df$distance), digits = 1)
+  min_km <- round(min(df$distance), digits = 1)
 
 if (!is.null(Año) & !is.null(Mes)) {
     if(!is.null(Producto)) {
@@ -175,9 +175,9 @@ ruta_importancia <- function(opcion1,Año = NULL, Mes = NULL,Producto = NULL) {
                                   labelOptions = labelOptions(noHide = F, direction = "top"))
     }
  }
-  av_km <- round(mean(df$distance), digits = 2)
-  max_km <- round(max(df$distance), digits = 2)
-  min_km <- round(min(df$distance), digits = 2)
+  av_km <- round(mean(df$distance), digits = 1)
+  max_km <- round(max(df$distance), digits = 1)
+  min_km <- round(min(df$distance), digits = 1)
 
   mpio_import <- df$mpio_origen[which.max(df$importancia)]
   

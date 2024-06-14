@@ -112,7 +112,7 @@ server <- function(input, output, session) {
     if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles")
     } else {
-      values$mensaje1 <- return(paste0("La ruta ",resultado()$ruta_imp," es la más importante para el abastecimiento de Antioquia, representando el ",resultado()$por_ruta,"% del total del volumen de ingreso a las principales centrales de abasto."))
+      values$mensaje1 <- return(paste0("La ruta externa al departamento más importante para el abastecimiento de Antioquia es ",resultado()$ruta_imp,", representando el ",resultado()$por_ruta,"% del total de volumen de ingreso a las principales centrales de abasto."))
     }
    return(values$mensaje1)
  })

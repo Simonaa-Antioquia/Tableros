@@ -48,7 +48,7 @@ ui <- fluidPage(
       tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML")
   ),
   tags$h1("Relación entre volúmenes y precios de los alimentos", class = "main-header"),
-  tags$h1("Evolución del precio promedio por Kg en relación al volumen de ingreso a las centrales de abasto de Medellín", class = "main-header_2"),
+  tags$h1("Evolución del precio promedio por Kg en relación al volumen de ingreso a las centrales de abasto de Medellín.", class = "main-header_2"),
   div(
     textOutput("subtitulo"),
     class = "sub-header2",

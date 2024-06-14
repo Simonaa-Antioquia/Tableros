@@ -101,7 +101,7 @@ tabla_kable
 
 ```
 <!-- Titulo del tablaro -->
-\fontsize{14}{14} \selectfont \textcolor{mygreen}{Índice de vulnerabilidad del abastecimiento de alimentos de Antioquia.} 
+\fontsize{14}{14} \selectfont \textcolor{mygreen}{Índice de vulnerabilidad del abastecimiento de alimentos de Antioquia} 
 <!-- Subtitulo -->
 
 \fontsize{12}{12} \selectfont \textcolor{green2}{Evaluación de la vulnerabilidad del abastecimiento por origen y distancia.} 

@@ -56,7 +56,7 @@ ui <- fluidPage(
   tags$div(
     class = "scrollable-content",
     tags$h1("Análisis de precios de alimentos por ciudad", class = "main-header"),
-    tags$h1("Descubre las diferencias de precios de alimentos en ciudades, comparadas con Medellín", class = "main-header_2"),
+    tags$h1("Descubre las diferencias de precios de alimentos en ciudades, comparadas con Medellín.", class = "main-header_2"),
     div(
       textOutput("subtitulo"),
       class = "sub-header2",

@@ -88,7 +88,7 @@ tabla_kable
 <!-- Titulo del tablaro -->
 \fontsize{14}{14} \selectfont \textcolor{mygreen}{Relación entre volúmenes y precios de los alimentos}\
 <!-- Subtitulo -->
-\fontsize{12}{12} \selectfont \textcolor{mygreen}{Evolución del precio promedio por Kg en relación al volumen de ingreso a las centrales de abasto de Medellín}\
+\fontsize{12}{12} \selectfont \textcolor{mygreen}{Evolución del precio promedio por Kg en relación al volumen de ingreso a las centrales de abasto de Medellín.}\
 <!-- Subtitulo2 -->
 \fontsize{10}{10} \selectfont `r params$subtitulo`\
 <!-- Grafica -->
