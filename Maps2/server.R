@@ -107,14 +107,14 @@ server <- function(input, output, session) {
       updateSelectInput(session, "producto", selected = NULL)
     })
 
- output$mensaje1 <- renderText({
+ output$mensaje3 <- renderText({
    res <- resultado()
     if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles")
     } else {
-      values$mensaje1 <- return(paste0("La ruta externa al departamento más importante para el abastecimiento de Antioquia es ",resultado()$ruta_imp,", representando el ",resultado()$por_ruta,"% del total de volumen de ingreso a las principales centrales de abasto."))
+      values$mensaje3 <- return(paste0("La ruta externa al departamento más importante para el abastecimiento de Antioquia es ",resultado()$ruta_imp,", representando el ",resultado()$por_ruta,"% del total de volumen de ingreso a las principales centrales de abasto."))
     }
-   return(values$mensaje1)
+   return(values$mensaje3)
  })
  
 output$mensaje2 <- renderText({
@@ -127,14 +127,14 @@ output$mensaje2 <- renderText({
    return(values$mensaje2)
  })
 
-output$mensaje3 <- renderText({
+output$mensaje1 <- renderText({
   res <- resultado()
     if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles")
     } else {
-      values$mensaje3 <-  return(paste0("Las rutas del abastecimiento de Antioquia por orden de importancia en el periodo y para el producto seleccionado son: ",resultado()$rutas_ordenadas,"."))
+      values$mensaje1 <-  return(paste0("Las rutas del abastecimiento de Antioquia por orden de importancia en el periodo y para el producto seleccionado son: ",resultado()$rutas_ordenadas,"."))
     }
-   return(values$mensaje3)
+   return(values$mensaje1)
  })
  
  # Aqui tomamos screen 
