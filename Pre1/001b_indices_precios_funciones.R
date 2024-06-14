@@ -282,7 +282,7 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
   precio_max <- formatC(max(datos$precio_prom, na.rm = TRUE), format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
   precio_min <- formatC(min(datos$precio_prom, na.rm = TRUE), format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
   producto_vol<-producto_vol
-  promedio_camb<-paste0("En promedio, los precios de los productos variaron un ",round(mean(datos$cambio_pct, na.rm = TRUE)), "%")
+  promedio_camb<-paste0("En promedio, los precios de los productos variaron un ",round(mean(datos$cambio_pct, na.rm = TRUE)), "%.")
   
   
   promedio_camb_an <- if(base=="mensual"){
@@ -296,7 +296,7 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
            paste0("En ", mes, " de ", ano, ", los precios subieron un ", cambio_max, "% comparado con ", mes, " del año anterior."),
            ifelse(fecha != 2013,
                   paste0("En ", mes, " de ", ano, ", los precios subieron un ", cambio_max, "% comparado con ", mes, " del año anterior."),
-                  "2013 es el primer año con datos por lo que no se puede mostrar la variación intranual"))
+                  "2013 es el primer año con datos por lo que no se puede mostrar la variación intranual."))
   }else{
     last_month <- datos %>%
       filter(date > max(date) - months(1))
@@ -304,7 +304,7 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
     # Calcular el precio promedio
     precio_mes<-  formatC(mean(last_month$precio_prom, na.rm = TRUE), format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
     
-     paste0("El precio promedio en el último mes es $", precio_mes ) 
+     paste0("El precio promedio en el último mes es $", precio_mes,"." ) 
     }
   return(
     list(

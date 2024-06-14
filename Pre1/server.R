@@ -70,7 +70,7 @@ values <- reactiveValues(subtitulo = NULL)
     fecha_max <- resultado$fecha_max
     fecha_min <- resultado$fecha_min
     values$subtitulo <-(paste0("El precio promedio",ifelse(input$producto=="todo"," de ''todos los productos''",paste0(" de ", input$producto)) ," fue de $", promedio,
-                  ". La fecha con el precio más alto fue ", fecha_max, " y la más baja fue ", fecha_min))
+                  ". La fecha con el precio más alto fue ", fecha_max, " y la más baja fue ", fecha_min,"."))
     return(values$subtitulo)
   })
   
