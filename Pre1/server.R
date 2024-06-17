@@ -38,7 +38,12 @@ server <- function(input, output, session) {
   
   
   output$grafico <- renderPlotly({
-    plotly::ggplotly(resultado()$grafico)
+    resultado<-resultado()
+    if(nrow(resultado$datos)>0){
+      plotly::ggplotly(resultado$grafico) 
+    }else{
+      validate("No hay datos disponibles")
+    }
   })
   
   output$vistaTabla <- renderTable({
@@ -66,11 +71,15 @@ values <- reactiveValues(subtitulo = NULL)
 
   output$subtitulo <- renderText({
     resultado <- resultado()
-    promedio <- formatC(resultado$promedio, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
+    if(nrow(resultado$datos)>0){
+      promedio <- formatC(resultado$promedio, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)
     fecha_max <- resultado$fecha_max
     fecha_min <- resultado$fecha_min
     values$subtitulo <-(paste0("El precio promedio",ifelse(input$producto=="todo"," de ''todos los productos''",paste0(" de ", input$producto)) ," fue de $", promedio,
                   ". La fecha con el precio más alto fue ", fecha_max, " y la más baja fue ", fecha_min,"."))
+    }else{
+      values$subtitulo <-"No hay datos disponibles"
+    }
     return(values$subtitulo)
   })
   
@@ -83,20 +92,32 @@ values <- reactiveValues(subtitulo = NULL)
   
   values <- reactiveValues(mensaje1 = NULL)
   output$mensaje1 <- renderText({
-    resultado <- resultado()
-    values$mensaje1<-resultado$producto_vol
+    resultado<-resultado()
+    if(nrow(resultado$datos)>0){
+      values$mensaje1<-resultado$producto_vol
+    }else{
+      values$mensaje1<-"No hay datos disponibles"
+    }
     return(values$mensaje1)
   })
   values <- reactiveValues(mensaje2 = NULL)
   output$mensaje2 <- renderText({
-    resultado <- resultado()
-    values$mensaje2<-resultado$promedio_camb
+    resultado<-resultado()
+    if(nrow(resultado$datos)>0){
+      values$mensaje2<-resultado$promedio_camb
+    }else{
+      values$mensaje2<-"No hay datos disponibles"
+    }
     return(values$mensaje2)
   })
   values <- reactiveValues(mensaje3 = NULL)
   output$mensaje3 <- renderText({
-    resultado <- resultado()
-    values$mensaje3<-resultado$promedio_camb_an
+    resultado<-resultado()
+    if(nrow(resultado$datos)>0){
+      values$mensaje3<-resultado$promedio_camb_an
+    }else{
+      values$mensaje3<-"No hay datos disponibles"
+    }
     return(values$mensaje3)
   })
   

@@ -87,7 +87,7 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
       complete(mes_y_ano = seq.Date(min(mes_y_ano, na.rm = TRUE), max(mes_y_ano, na.rm = TRUE), by = "month")) %>%
       mutate(cambio_pct_anual = round((precio_prom / lag(precio_prom, 12) - 1) * 100,1)) 
   }
-    df_graf$tooltip_text <- paste("Fecha: ", format(as.Date(df_graf$mes_y_ano), "%B-%Y"), 
+    if(nrow(df_graf)>1){df_graf$tooltip_text <- paste("Fecha: ", format(as.Date(df_graf$mes_y_ano), "%B-%Y"), 
                                   case_when(
                                     variable == "precio_prom" ~ paste0("<br>Precio promedio: $", formatC(df_graf$precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)),
                                     variable == "cambio_pct" ~ paste0("<br>Cambio porcentual: ", df_graf$cambio_pct),
@@ -97,7 +97,7 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
                                     variable == "precio_prom" ~ "",
                                     variable == "cambio_pct" ~ "%",
                                     variable == "cambio_pct_anual" ~ "%"
-                                  ))
+                                  ))}
   }else{
     df<-diario%>%
       rename(date=fecha)
@@ -151,7 +151,7 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
         complete(date = seq.Date(min(date, na.rm = TRUE), max(date, na.rm = TRUE), by = "day")) %>%
         mutate(cambio_pct_anual = round((precio_prom / lag(precio_prom, 365) - 1) * 100,1))
     }
-    df_graf$tooltip_text <- paste("Fecha: ", format(as.Date(df_graf$date), "%d-%m-%Y"), 
+    if(nrow(df_graf)>1){df_graf$tooltip_text <- paste("Fecha: ", format(as.Date(df_graf$date), "%d-%m-%Y"), 
                                   case_when(
                                     variable == "precio_prom" ~ paste("<br>Precio promedio: ", formatC(df_graf$precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)),
                                     variable == "cambio_pct" ~ paste("<br>Cambio porcentual: ", df_graf$cambio_pct),
@@ -161,25 +161,25 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
                                     variable == "precio_prom" ~ "",
                                     variable == "cambio_pct" ~ "%",
                                     variable == "cambio_pct_anual" ~ "%"
-                                  ))
+                                  ))}
     }
   # Si se proporciona un valor para fecha, filtra por año
   if (!is.null(fecha)) {
     df_graf <- df_graf %>%
       filter(anio == fecha)
   }
-  vaiable2<-ifelse(variable=="precio_prom", "Precio promedio",
-                   ifelse(variable=="cambio_pct", "Cambio porcentual","Cambio porcentual año anterior"))
-  titulo<-paste("Tendencia de", tolower(vaiable2),ifelse(is.null(alimento),"",paste("para", alimento) ))
+  #vaiable2<-ifelse(variable=="precio_prom", "Precio promedio",
+   #                ifelse(variable=="cambio_pct", "Cambio porcentual","Cambio porcentual año anterior"))
+  #titulo<-paste("Tendencia de", tolower(vaiable2),ifelse(is.null(alimento),"",paste("para", alimento) ))
   # Crea la gráfica
   
+  if(variable== "cambio_pct_anual"){
+    df_graf<-df_graf%>%drop_na(cambio_pct_anual)
+  }
   
-  
-  if(is.null(fecha)){
+  if(nrow(df_graf)>0){if(is.null(fecha)){
   if(base=="mensual"){
-    if(variable== "cambio_pct_anual"){
-      df_graf<-df_graf%>%drop_na(cambio_pct_anual)
-    }
+    
     p<-ggplot(df_graf, aes(x = mes_y_ano, y = !!sym(variable), group = 1)) +
     geom_line(aes(text = tooltip_text),color = "#0D8D38") +
     scale_x_date(date_labels = "%Y-%m", date_breaks = "12 month") +
@@ -211,9 +211,7 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
     # Convertir la columna de fecha a un formato de fecha y extraer el mes en español
     df_graf$mes_y_ano <- as.Date(df_graf$mes_y_ano, format = "%m-%Y")
     df_graf$mes <- factor(mes_en_espanol(df_graf$mes_y_ano), levels = c("ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"))
-    if(variable== "cambio_pct_anual"){
-      df_graf<-df_graf%>%drop_na(cambio_pct_anual)
-    }
+    
     p <- ggplot(df_graf, aes(x = mes, y = !!sym(variable), group = 1)) +
       geom_line(aes(text = tooltip_text),color = "#0D8D38") +
       scale_x_discrete() +
@@ -243,6 +241,12 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
   
   map<-plotly::ggplotly(p, tooltip = "text")
   datos<-df_graf%>%select(-tooltip_text)
+  }else{
+    map<-"No hay datos disponibles"
+    p<-"No hay datos disponibles"
+    datos<-df_graf
+  }
+  
   if(base=="mensual"){
     convertir_mes <- function(fecha) {
     meses_ingles <- c("January", "February", "March", "April", "May", "June", 
@@ -323,8 +327,8 @@ graficar_variable <- function(base, variable, alimento = NULL, fecha = NULL) {
   )
 }
 
-# n<-graficar_variable(data, "precio_prom")$grafico2
-#graficar_variable(base="diario",variable= "cambio_pct_anual", alimento = "Aguacate", fecha="2024")
+# n<-graficar_variable(base="diario", variable="cambio_pct_anual", fecha="2013")$grafico2
+#graficar_variable(base="diario",variable= "cambio_pct_anual", alimento = "Aguacate", fecha="2013")
 # Usa la función para graficar la variable "precio" para la ciudad "Bogota" y el producto "Arroz"
 
 # Define la función
