@@ -20,8 +20,7 @@ rm(list = ls())
 source("009b_funciones_Indice_Vulnerabilidad.R")
 productos <- unique(indice_v_anual_producto$producto)
 #webshot::install_phantomjs()
-
-
+Sys.setlocale("LC_TIME", "es_ES.UTF-8")
 ui <- fluidPage(
   tags$title("Índice de vulnerabilidad del abastecimientos de alimentos de antioquia"),
   tags$link(rel = "stylesheet", type = "text/css", href = "https://fonts.googleapis.com/css2?family=Prompt&display=swap"),

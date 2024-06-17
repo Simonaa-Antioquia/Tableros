@@ -13,7 +13,7 @@ options(scipen = 999)
 ################################################################################
 rm(list = ls())
 source("006b_HHindex_abastecimiento_funciones.R")
-
+Sys.setlocale("LC_TIME", "es_ES.UTF-8")
 ui <- fluidPage(
   tags$head(
     tags$title("Índice de concentración alimentaria"),

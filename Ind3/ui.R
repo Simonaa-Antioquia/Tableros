@@ -15,7 +15,7 @@ rm(list = ls())
 
 source("008b_funciones_participacion_destino.R")
 productos <- unique(IHH_anual_producto$producto)
-
+Sys.setlocale("LC_TIME", "es_ES.UTF-8")
 ui <- fluidPage(
   #theme = shinythemes::shinytheme("default"),
   tags$head(
