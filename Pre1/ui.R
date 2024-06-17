@@ -16,6 +16,8 @@ source("001b_indices_precios_funciones.R")
 ################################################################################-
 
 # Define la interfaz de usuario
+Sys.setlocale("LC_TIME", "es_ES.UTF-8")
+
 ui <- fluidPage(
   #titlePanel("Precios en el tiempo"),
   tags$div(
