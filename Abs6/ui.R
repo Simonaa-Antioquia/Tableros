@@ -62,13 +62,13 @@ ui <- fluidPage(
   div(class = "scrollable-content",
       fluidRow(
         column(4,
-               selectInput("año", "Selecciones el año:", c("Todos los años" = "todo", sort(unique(salen$anio))))),
+               selectInput("año", "Seleccione el año:", c("Todos los años" = "todo", sort(unique(salen$anio))))),
         column(4,
-               selectInput("mes", "Selecciones el mes:", c("Todos los meses" = "todo", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5,
+               selectInput("mes", "Seleccione el mes:", c("Todos los meses" = "todo", "Enero" = 1, "Febrero" = 2, "Marzo" = 3, "Abril" = 4, "Mayo" = 5,
                                                            "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11,
                                                            "Diciembre" = 12), selected="")),
         column(4,
-               selectInput("depto", "Selecciones el departamento", c("Total nacional" = "todo", sort(unique(salen$mpio_destino)))))
+               selectInput("depto", "Seleccione el departamento", c("Total nacional" = "todo", sort(unique(salen$mpio_destino)))))
       )),
   div(
     fluidRow(

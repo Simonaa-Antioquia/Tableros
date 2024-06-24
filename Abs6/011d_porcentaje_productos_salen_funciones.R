@@ -103,7 +103,7 @@ df$tooltip_text <- paste("Producto:", df$producto , "<br> Porcentaje:", round(df
     scale_fill_gradient(low = low_color, high = high_color) +  # Usa un gradiente de colores
     labs(title = "", fill = "Porcentaje")
   }
-  porcentaje_max<-round(max(df$columna_porcentaje)*100)
+  porcentaje_max<-round(max(df$columna_porcentaje)*100, digits = 1)
   producto_max<-df$producto[which.max(df$columna_porcentaje)]
   return(
     list(

@@ -152,7 +152,7 @@ server <- function(input, output, session) {
   })
   
   output$mensaje3 <- renderText({
-    values$mensaje3 <- "Este gráfico muestra la importancia que tiene cada alimento en las entradas (locales o externas) y las salidas de los alimentos de Antioquia."
+    values$mensaje3 <- "Este gráfico muestra la importancia que tiene cada alimento en las entradas (locales o externas) y las salidas de los alimentos de Antioquia. La línea amarilla indica la participación porcentual acumulada de los productos."
     values$mensaje3
   })
   

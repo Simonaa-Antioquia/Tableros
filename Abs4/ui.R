@@ -94,7 +94,7 @@ ui <- fluidPage(
       )
     ),
     tags$div(tags$p("Fuente: Cálculos propios a partir de datos del Sistema de Información de Precios y Abastecimiento del Sector Agropecuario (SIPSA).",
-                    tags$br(),"Solo se tienen en cuenta las principales ciudades con centros de acopio en las que se recolecta información para el SIPSA.",
+                    tags$br(),"Solo se tienen en cuenta las principales ciudades con centros de abasto en las que se recolecta información para el SIPSA.",
                     tags$br(),"Esta visualización muestra el ranking  de destinos de los alimentos con origen Antioquia, resaltando el porcentaje de volumen de productos que llegan a cada centro de abasto según SIPSA."
 , class = "sub-header2"), style = "margin-top: 20px;")
   ),

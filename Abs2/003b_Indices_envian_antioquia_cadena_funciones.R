@@ -131,9 +131,9 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
   df_sin_antioquia <- df[df$depto_origen != "ANTIOQUIA",]
   
   # Calcula el porcentaje máximo y el departamento correspondiente
-  porcentaje_max <- round(max(df_sin_antioquia$columna_porcentaje) * 100)
+  porcentaje_max <- round(max(df_sin_antioquia$columna_porcentaje) * 100, digits = 1)
   dpto_max <- df_sin_antioquia$depto_origen[which.max(df_sin_antioquia$columna_porcentaje)]
-  porcentaje_max_1 <- round(max(df$columna_porcentaje[which(df$depto_origen=="ANTIOQUIA")]) * 100) 
+  porcentaje_max_1 <- round(max(df$columna_porcentaje[which(df$depto_origen=="ANTIOQUIA")]) * 100, digits = 1) 
   #dpto_max_1 <- df$depto_origen[which.max(df$columna_porcenta)]
   #dpto_max_1 <- tolower(dpto_max_1)
   #words <- strsplit(dpto_max_1, " ")[[1]]
@@ -164,9 +164,9 @@ ant_en_col<-function(Año = NULL, Mes = NULL, Producto = NULL){
     grafico = p,
     grafico_plano = p_plano, 
     datos = df,
-    porcentaje_max = porcentaje_max,
+    porcentaje_max = round(porcentaje_max,digits = 1),
     dpto_max = dpto_max,
-    porcentaje_max_1=porcentaje_max_1
+    porcentaje_max_1=round(porcentaje_max_1,digits = 1)
     #dpto_max_1=dpto_max_1
   ))
 }

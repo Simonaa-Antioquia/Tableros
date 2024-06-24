@@ -151,8 +151,8 @@ col_en_ant<-function(Año = NULL, Mes = NULL, Producto = NULL){
   }
     
   mapa2<-mapa%>%filter(mpio_destino!="Medellín")
-  porcentaje_max<-round(max(mapa2$columna_porcentaje))
-      porcentaje_max_1 <- round(max(df$columna_porcentaje[which(df$mpio_destino=="Medellín")]) * 100) 
+  porcentaje_max<-round(max(mapa2$columna_porcentaje), digits = 1)
+      porcentaje_max_1 <- round(max(df$columna_porcentaje[which(df$mpio_destino=="Medellín")]) * 100, digits = 1) 
       # Encontrar el índice del valor máximo ignorando los NA
       indice_max <- which(mapa2$columna_porcentaje == max(mapa2$columna_porcentaje, na.rm = TRUE))
       # Convertir a formato de título

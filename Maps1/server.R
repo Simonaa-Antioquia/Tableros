@@ -113,7 +113,8 @@ server <- function(input, output, session) {
     if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles")
     } else {
-     values$mensaje1 <- return(paste0("Durante el periodo seleccionado y para el producto específico, se recorrieron en promedio ", resultado()$av_km," kilómetros."))
+      res$av_km <- format(res$av_km, decimal.mark = ",")
+       values$mensaje1 <- return(paste0("Durante el período seleccionado y para el producto específico, se recorrió un promedio de ", res$av_km," kilómetros."))
     }
     return(values$mensaje1)
 })
@@ -123,7 +124,9 @@ server <- function(input, output, session) {
     if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles")
     } else {
-      values$mensaje2 <- return(paste0("Durante el periodo seleccionado y para el producto específico, la distancia mínima recorrida fue ", resultado()$min_km," kilómetros y máxima ", resultado()$max_km," kilómetros."))
+      res$min_km <- format(res$min_km, decimal.mark = ",")
+      res$max_km <- format(res$min_km, decimal.mark = ",")
+      values$mensaje2 <- return(paste0("Durante el período seleccionado y para el producto específico, la distancia mínima recorrida fue ", res$min_km," kilómetros y máxima ", res$max_km," kilómetros."))
     }
     return(values$mensaje2)
 })       

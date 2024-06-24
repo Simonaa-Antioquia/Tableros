@@ -125,7 +125,7 @@ output$subtitulo <- renderText({
       porcentaje_max <- resultado$porcentaje_max
       depto <- input$depto
       if(depto != "todo"){
-        values$subtitulo <- (paste0("El Producto procedente de ", depto, "con mayor volumen reportado en las centrales de abasto de Medellín fue ", producto_max,"."))
+        values$subtitulo <- (paste0("El Producto procedente de ", depto, " con mayor volumen reportado en las centrales de abasto de Medellín fue ", producto_max,"."))
       } else if (depto == "todo") {
         values$subtitulo <- (paste0("El prodcuto con mayor volumen reportado en las centrales de abasto de Medellín fue ", producto_max,"."))
       }

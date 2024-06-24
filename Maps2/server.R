@@ -112,7 +112,7 @@ server <- function(input, output, session) {
     if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles")
     } else {
-      values$mensaje3 <- return(paste0("La ruta externa al departamento más importante para el abastecimiento de Antioquia es ",resultado()$ruta_imp,", representando el ",resultado()$por_ruta,"% del total de volumen de ingreso a las principales centrales de abasto."))
+      values$mensaje3 <- return(paste0("La ruta externa al departamento más importante para el abastecimiento de Antioquia es ",resultado()$ruta_imp,", representando el ",round(resultado()$por_ruta,digits = 1),"% del total de volumen de ingreso a las principales centrales de abasto."))
     }
    return(values$mensaje3)
  })
@@ -122,7 +122,7 @@ output$mensaje2 <- renderText({
     if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles")
     } else {
-      values$mensaje2 <- return(paste0("Un hipotético cierre de las rutas seleccionadas podría reducir el abastecimiento de alimentos en un ",resultado()$por_perdido,"%, al dejar de ingresar ", formatC(round(resultado()$ton_perdido), format = "f", big.mark = ",", digits = 1)," toneladas a las principales centrales de abasto de Medellín."))
+      values$mensaje2 <- return(paste0("Un hipotético cierre de las rutas seleccionadas podría reducir el abastecimiento de alimentos en un ",resultado()$por_perdido,"%, al dejar de ingresar ", formatC(round(resultado()$ton_perdido), format = "f", big.mark = ".", decimal.mark = ",",digits = 1)," toneladas a las principales centrales de abasto de Medellín."))
     }
    return(values$mensaje2)
  })
