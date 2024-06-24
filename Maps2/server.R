@@ -122,7 +122,8 @@ output$mensaje2 <- renderText({
     if (nrow(res$datos) == 0) {
       validate("No hay datos disponibles")
     } else {
-      values$mensaje2 <- return(paste0("Un hipotético cierre de las rutas seleccionadas podría reducir el abastecimiento de alimentos en un ",resultado()$por_perdido,"%, al dejar de ingresar ", formatC(round(resultado()$ton_perdido), format = "f", big.mark = ".", decimal.mark = ",",digits = 1)," toneladas a las principales centrales de abasto de Medellín."))
+      res$por_perdido <- round(res$por_perdido, digits = 1)
+      values$mensaje2 <- return(paste0("Un hipotético cierre de las rutas seleccionadas podría reducir el abastecimiento de alimentos en un ",res$por_perdido,"%, al dejar de ingresar ", formatC(round(resultado()$ton_perdido), format = "f", big.mark = ".", decimal.mark = ",",digits = 1)," toneladas a las principales centrales de abasto de Medellín."))
     }
    return(values$mensaje2)
  })
