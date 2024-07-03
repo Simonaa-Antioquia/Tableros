@@ -22,7 +22,7 @@ entran_prod<-function(año = NULL, Mes = NULL, depto = NULL){
     df<-df%>%filter(anio == año)%>%filter(mes == Mes)%>%filter(depto_origen==depto)%>%
       select(producto,grupo_alimento,porcentaje_producto_anio_mes_dpto, toneladas_total_producto_anio_mes_dpto)%>%
       unique()%>%
-      rename( columna_porcentaje = porcentaje_producto_anio_mes_dpto)
+      rename( columna_porcentaje = porcentaje_producto_anio_mes_dpto, toneladas_r = toneladas_total_producto_anio_mes_dpto)
   
     }
   
@@ -83,7 +83,7 @@ entran_prod<-function(año = NULL, Mes = NULL, depto = NULL){
     p_plano <- NULL
   } else {
   
-    df$tooltip_text <- paste("Producto:", df$producto , "<br> Porcentaje:", round(df$columna_porcentaje*100, digits = 1), "%", "<br> Toneladas:", formatC(df$toneladas_r, format = "f", digits = 0, big.mark = "."))
+    df$tooltip_text <- paste("Producto:", df$producto , "<br> Porcentaje:", round(df$columna_porcentaje*100, digits = 1), "%", "<br> Toneladas:", formatC(df$toneladas_r, format = "f", digits = 0, big.mark = ".", decimal.mark = ","))
   
     p <- hchart(df, "treemap", hcaes(x = producto, value = round(columna_porcentaje*100), color = round(columna_porcentaje*100))) %>%
       hc_title(text = "") %>%

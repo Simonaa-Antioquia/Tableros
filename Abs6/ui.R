@@ -68,7 +68,7 @@ ui <- fluidPage(
                                                            "Junio" = 6, "Julio" = 7, "Agosto" = 8, "Septiembre" = 9, "Octubre" = 10, "Noviembre" = 11,
                                                            "Diciembre" = 12), selected="")),
         column(4,
-               selectInput("depto", "Seleccione el departamento", c("Total nacional" = "todo", sort(unique(salen$mpio_destino)))))
+               selectInput("depto", "Seleccione la ciudad", c("Total nacional" = "todo", sort(unique(salen$mpio_destino)))))
       )),
   div(
     fluidRow(
