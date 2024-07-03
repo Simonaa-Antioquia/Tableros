@@ -46,17 +46,17 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
               elasticidad = mean(elasticidad, na.rm = TRUE))
   
   # Calcula el rango de las cantidades
-  rango_cantidades <- max(datos_producto$cantidad) - min(datos_producto$cantidad)
+  rango_cantidades <- max(datos_producto$cantidad, na.rm = TRUE) - min(datos_producto$cantidad, na.rm = TRUE)
   
   # Calcula el rango de la elasticidad
-  rango_elasticidad <- max(datos_producto$elasticidad) - min(datos_producto$elasticidad)
+  rango_elasticidad <- max(datos_producto$elasticidad, na.rm = TRUE) - min(datos_producto$elasticidad, na.rm = TRUE)
   
   # Calcula el promedio de las cantidades
-  promedio_cantidades <- mean(datos_producto$cantidad)
+  promedio_cantidades <- mean(datos_producto$cantidad, na.rm = TRUE)
   
   # Ajusta la elasticidad para que su rango sea igual al de las cantidades y su punto medio sea el promedio de las cantidades
-  datos_producto$elasticidad_ajustada <- ((datos_producto$elasticidad - min(datos_producto$elasticidad)) / rango_elasticidad) * rango_cantidades + min(datos_producto$cantidad)
-  
+  datos_producto$elasticidad_ajustada <- ((datos_producto$elasticidad - min(datos_producto$elasticidad, na.rm = TRUE)) / rango_elasticidad) * rango_cantidades + min(datos_producto$cantidad)
+  datos_producto$elasticidad_ajustada[is.nan(datos_producto$elasticidad_ajustada)]<-NA
   # Crea el gráfico base
   graf <- plot_ly(datos_producto, x = ~mes, y = ~cantidad, type = "scatter", mode = "lines",
                   name = "Cantidad", text = ~paste("Cantidades: ", round(cantidad,1)," mil toneladas"), hoverinfo = "text", 
@@ -67,11 +67,12 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
            legend = list(orientation = "h", x = 0.5, y = 1.1, xanchor = "center"),
            plot_bgcolor = "white", 
            paper_bgcolor = "white") %>%
-    add_trace(y = ~precio_prom / max(datos_producto$precio_prom) * max(datos_producto$cantidad), name = "Precio/Kg", text = ~paste("Precio: $", formatC(precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)),
+    add_trace(y = ~precio_prom / max(datos_producto$precio_prom, na.rm = TRUE) * max(datos_producto$cantidad, na.rm = TRUE), name = "Precio/Kg", text = ~paste("Precio: $", formatC(precio_prom, format = "f", big.mark = ".", decimal.mark = ",", digits = 0)),
               hoverinfo = "text", line = list(color = "#00596C"))
   
     graf <- graf %>%
-    add_trace(y = ~elasticidad_ajustada, name = "Elasticidad", text = ~paste("Elasticidad:", round(elasticidad,1)), hoverinfo = "text", line = list(color = "#F1B709"), visible = "legendonly")
+    add_trace(y = ~elasticidad_ajustada, name = "Elasticidad", text = ~paste("Elasticidad:", round(elasticidad,1)), hoverinfo = "text",
+              line = list(color = "#F1B709"), visible = "legendonly", connectgaps = TRUE)
   
   p<-graf
   
@@ -136,5 +137,5 @@ graficar_producto_y_precio <- function(df, alimento, fecha = NULL) {
 
 # Usa la función para graficar la cantidad y el precio mensual de un producto específico
 # (reemplaza 'nombre_del_producto' con el nombre del producto que quieres graficar)
-#graficar_producto_y_precio(complet, 'total')$grafico2
+#graficar_producto_y_precio(df=complet,alimento = 'Cebolla Junca', fecha = 2023)$grafico2
 
